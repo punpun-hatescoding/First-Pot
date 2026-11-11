@@ -15,8 +15,18 @@
 html,body{margin:0;min-height:100%;color:var(--ink);font:17px/1.5 'STIX Two Text',Georgia,serif;background:var(--plaster)}
 body{background:radial-gradient(120% 90% at 35% 30%,#f6efe5 0%,var(--plaster) 45%,var(--plaster2) 100%);transition:background 1.2s}
 body.kiln{background:radial-gradient(90% 80% at 35% 45%,#ff9a3c 0%,#a6340f 40%,#2a0d06 100%)}
-.app{display:grid;grid-template-columns:minmax(0,1fr) 400px;min-height:100vh}
-#scene{position:relative;min-height:100vh;touch-action:none;outline:none;overflow:hidden}
+.nav{position:sticky;top:0;z-index:30;height:58px;display:flex;align-items:center;gap:14px;padding:0 clamp(12px,2.4vw,28px);border-bottom:1px solid var(--line);background:rgba(250,244,236,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.nav .logo{font-size:26px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}.nav .logo em{font-weight:400;color:var(--clay)}
+.nav .motto{color:var(--dim);font-style:italic;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.nav nav{margin-left:auto;display:flex;gap:6px;flex:none}
+.nav nav button{min-height:38px;padding:6px 16px;font-size:15px;background:none;border-color:transparent}
+.nav nav button[aria-selected="true"]{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}
+/* the scene fills what is left of the window and never scrolls; the panel beside it scrolls on its own */
+.app{display:grid;grid-template-columns:minmax(0,1fr) clamp(350px,31vw,430px);height:calc(100dvh - 58px);min-height:0}
+#scene{position:relative;min-height:0;height:100%;touch-action:none;outline:none;overflow:hidden}
+aside{overflow-y:auto;overflow-x:hidden;min-height:0}
+aside .steps{gap:4px}aside .steps li{flex:1 1 auto;min-width:0;font-size:clamp(11px,.92vw,14px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#galleryPage{min-height:calc(100dvh - 58px)}
 #scene:focus-visible{box-shadow:inset 0 0 0 3px var(--clay)}
 #scene canvas{display:block;width:100%;height:100%;position:absolute;inset:0}
 #cam{position:absolute;left:20px;bottom:20px;width:180px;transform:scaleX(-1);border-radius:10px;opacity:.8;box-shadow:0 6px 24px rgba(0,0,0,.18);pointer-events:none}
@@ -44,6 +54,8 @@ p{margin:0 0 12px}
 .bar{height:8px;border-radius:8px;background:rgba(42,31,25,.1);overflow:hidden;margin-top:6px}
 .bar i{display:block;height:100%;width:0;background:var(--sage);border-radius:8px;transition:width .15s}
 .bar.warn i{background:var(--clay)}
+.wip{display:inline-block;margin-left:6px;padding:2px 9px;border-radius:999px;background:var(--clay);color:#fbf4ea;font-size:12px;font-weight:400;letter-spacing:.02em;vertical-align:middle}
+.spinBtn[aria-pressed="true"]{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}
 .btns{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 10px}
 button{font:inherit;font-size:16px;color:var(--ink);background:rgba(255,255,255,.6);border:1px solid rgba(42,31,25,.25);border-radius:999px;padding:10px 18px;cursor:pointer;min-height:44px}
 button:hover:not(:disabled){background:#fff}
@@ -58,7 +70,7 @@ button:disabled{opacity:.4;cursor:default}
 .sig{font-size:14px;letter-spacing:.08em;color:var(--clay);margin:8px 0 14px}
 .note{font-size:19px;line-height:1.55}
 #status{font-size:14px;color:var(--dim);min-height:20px}
-.shelf{padding:44px 28px 52px;border-top:1px solid var(--line)}
+.shelf{padding:clamp(20px,4vw,44px) clamp(14px,2.4vw,28px) 40px}
 .shelf:fullscreen{background:radial-gradient(120% 90% at 35% 20%,#f6efe5 0%,var(--plaster) 50%,var(--plaster2) 100%);overflow:auto;padding:5vh 6vw}
 .shelfHead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 20px}
 .shelfHead h2{font-size:30px;margin:0}
@@ -84,7 +96,8 @@ button:disabled{opacity:.4;cursor:default}
 .gesture .hold{width:90px;height:6px;border-radius:6px;background:rgba(42,31,25,.12);overflow:hidden}
 .gesture .hold i{display:block;height:100%;width:0;background:var(--clay)}
 .hdot{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:2px solid #fff;background:rgba(166,90,56,.55);box-shadow:0 2px 8px rgba(0,0,0,.25);pointer-events:none;z-index:5}
-#buckets{position:absolute;left:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:clamp(8px,2vh,18px)}
+#buckets{position:absolute;left:20px;top:50%;transform:translateY(-50%);display:grid;grid-template-columns:auto auto;justify-items:center;gap:clamp(4px,1.2vh,12px) 10px}
+#buckets .bucket i{width:clamp(34px,6.2vh,52px);height:clamp(34px,6.2vh,52px)}#buckets .bucket span{font-size:11px}
 
 .bucket{--p:0;display:grid;justify-items:center;gap:6px;border:0;background:none;padding:6px;border-radius:16px;font-size:15px;min-height:0}
 .bucket i{width:clamp(58px,9vh,88px);aspect-ratio:1;border-radius:50%;box-shadow:inset 0 -10px 18px rgba(0,0,0,.25),0 8px 20px rgba(60,35,20,.2);outline:4px solid rgba(255,255,255,.7);
@@ -100,9 +113,46 @@ button:disabled{opacity:.4;cursor:default}
 #tools{position:absolute;left:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.6vh,14px)}
 #tools .bucket i{background:#fbf6ee;display:grid;place-items:center;width:clamp(52px,8vh,76px)}
 #tools .bucket i svg{width:58%;height:58%}
+#tools.many{left:16px;display:grid;grid-template-columns:auto auto;justify-items:center;gap:clamp(2px,1vh,10px) 8px}
+#tools.many .bucket i{width:clamp(36px,6vh,54px)}#tools.many .bucket{font-size:12px;gap:3px;padding:3px}
 #tools .bucket[aria-pressed="true"] i{outline-color:var(--clay);background:#fff}
 #tools .bucket[aria-pressed="true"] span{font-weight:600}
-.hdot.pinch{background:var(--clay);transform:scale(.75)}
+.hdot.pinch{background:var(--clay)}
+.hdot.thumb{background:#4f7a4a}.hdot.fist{background:rgba(90,80,72,.55)}
+.hdot b{position:absolute;left:50%;top:30px;transform:translateX(-50%);display:flex;align-items:center;gap:4px;white-space:nowrap;font:600 12px/1 system-ui,sans-serif;color:var(--ink);background:rgba(251,244,234,.94);border-radius:20px;padding:3px 8px 3px 4px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.hdot b svg{width:20px;height:20px}
+#sndBtn[aria-pressed="false"]{opacity:.45;text-decoration:line-through}
+#exBanner{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;max-width:86%;text-align:center;font-size:20px;line-height:1.3;background:rgba(251,244,234,.95);border-radius:18px;padding:14px 22px;box-shadow:0 6px 24px rgba(0,0,0,.18);pointer-events:none}
+.exhold{width:180px;height:7px;border-radius:7px;background:rgba(42,31,25,.12);overflow:hidden}.exhold i{display:block;height:100%;width:0;background:var(--clay)}
+.exhibit #vRemove,.exhibit #clearShelf{display:none}
+.opt{margin:6px 0}.patrow{display:flex;gap:12px;align-items:center}.patrow canvas{width:76px;height:76px;border-radius:10px;background:#b4785a;flex:none}
+/* ghost hand: shows the movement once on the clay itself, and fades when you copy it */
+#ghost{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .6s}
+#ghost i{position:absolute;width:0;height:0;transform:scale(2.3)}
+#ghost svg{position:absolute;left:-28px;top:-28px;width:56px;height:68px;overflow:visible;animation:2.6s ease-in-out infinite;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+@media (prefers-reduced-motion:reduce){#ghost svg{animation:none!important}}
+/* gesture cards: one small moving picture and a few words for each thing you can do */
+.guide{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 6px}
+.gcard{width:108px;text-align:center;font-size:13px;line-height:1.25}
+.gcard svg{width:108px;height:72px;display:block;margin-bottom:5px;background:#f6eee2;border:1px solid rgba(42,31,25,.12);border-radius:12px}
+.gcard .a{animation:2.6s ease-in-out infinite}
+.more{margin:6px 0}.more summary{cursor:pointer;font-size:14px;color:#6f5f52;width:max-content;padding:4px 0}
+@keyframes gUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes gSq{0%,100%{transform:scale(1,1)}50%{transform:scale(1.12,.8)}}
+@keyframes gInL{0%,15%,100%{transform:translateX(0)}55%,80%{transform:translateX(11px)}}
+@keyframes gInR{0%,15%,100%{transform:translateX(0)}55%,80%{transform:translateX(-11px)}}
+@keyframes gTall{0%,15%,100%{transform:scale(1,1)}55%,80%{transform:scale(.72,1.3)}}
+@keyframes gWide{0%,15%,100%{transform:scale(1,1)}55%,80%{transform:scale(1.3,.85)}}
+@keyframes gPull{0%,15%{transform:translate(0,0)}65%,90%{transform:translate(17px,-13px)}100%{transform:translate(0,0)}}
+@keyframes gGrow{0%,15%{transform:scale(0)}65%,90%{transform:scale(1)}100%{transform:scale(0)}}
+@keyframes gTap{0%,25%,75%,100%{transform:translate(9px,-9px)}40%,60%{transform:translate(0,0)}}
+@keyframes gDent{0%,38%{opacity:0}45%,90%{opacity:1}100%{opacity:0}}
+@keyframes gRub{0%,100%{transform:translateX(-9px)}50%{transform:translateX(9px)}}
+@keyframes gDraw{0%,10%{transform:translate(0,0)}40%{transform:translate(18px,-7px)}80%,100%{transform:translate(40px,0)}}
+@keyframes gLine{0%,10%{stroke-dashoffset:50}80%,100%{stroke-dashoffset:0}}
+@keyframes gRing{0%,15%{stroke-dashoffset:76}85%,100%{stroke-dashoffset:0}}
+@keyframes gSide{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+@media (prefers-reduced-motion:reduce){.gcard .a{animation:none!important}}
 .edge{position:absolute;top:50%;transform:translateY(-50%);font-size:46px;line-height:1;color:rgba(42,31,25,.3);pointer-events:none}
 #edgeL{left:110px}#edgeR{right:22px}
 .zoom{position:absolute;right:20px;bottom:20px;display:flex;flex-direction:column;gap:6px;z-index:4}
@@ -111,13 +161,15 @@ button:disabled{opacity:.4;cursor:default}
 .nm input{font:inherit;font-size:18px;color:var(--ink);background:rgba(255,255,255,.7);border:1px solid rgba(42,31,25,.25);border-radius:10px;padding:8px 12px}
 .nm input:focus-visible{outline:3px solid var(--clay);outline-offset:1px}
 footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
-@media (max-width:900px){.app{grid-template-columns:1fr}#scene{min-height:68vh}aside{border-left:0;border-top:1px solid var(--line)}.brand h1{font-size:34px}#cam{width:110px}}
+@media (max-width:900px){.app{grid-template-columns:1fr;height:auto}#scene{height:62dvh;min-height:340px}aside{overflow:visible;border-left:0;border-top:1px solid var(--line);padding:20px 16px 32px}#cam{width:110px}.nav .motto{display:none}.nav .logo{font-size:22px}.nav nav button{padding:6px 10px;font-size:14px}}
+@media (max-width:420px){.nav{gap:6px;padding:0 8px}.nav .logo{font-size:19px}.nav nav{gap:2px}.nav nav button{padding:6px 8px;font-size:13px}}
 /* narrow screens: tools and glazes in a row along the bottom, messages above them, camera preview top right */
 @media (max-width:900px){
   #buckets,#tools{left:50%;right:auto;top:auto;bottom:14px;transform:translateX(-50%);flex-direction:row;align-items:flex-end;gap:8px}
-  #buckets .bucket i,#tools .bucket i{width:54px}
+  #buckets .bucket i,#tools .bucket i,#tools.many .bucket i{width:44px}
+  #buckets,#tools,#tools.many{display:flex;flex-wrap:wrap;justify-content:center;width:max-content;max-width:96vw}
   .bucket{padding:2px 4px;font-size:13px;gap:3px}
-  .gesture{top:96px;max-width:calc(100% - 32px);font-size:13px;padding:6px 14px 6px 8px}
+  .gesture{top:12px;max-width:calc(100% - 32px);font-size:13px;padding:6px 14px 6px 8px}
   .gesture .hold{width:60px}
   #teacher{bottom:112px;font-size:14px;padding:8px 14px}
   #cam{left:auto;right:12px;top:12px;bottom:auto;width:110px}
@@ -128,16 +180,17 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
+<header class="nav"><span class="logo">First <em>Pot</em></span><span class="motto">Everyone's first one is a little wrong.</span>
+  <nav aria-label="Sections"><button data-tab="make" aria-selected="true">Make</button><button data-tab="gallery" aria-selected="false">Gallery</button><button data-tab="room" aria-selected="false">Rage room</button></nav></header>
 <div class="app">
   <div id="scene" tabindex="0" aria-label="The wheel. Shape the clay with your hands, mouse or touch. With the keyboard, up and down choose a height, left and right narrow or widen.">
-    <div class="brand"><h1>First <em>Pot</em></h1><p>Everyone's first one is a little wrong.</p></div>
     <video id="cam" playsinline muted hidden></video>
-    <div class="gesture" id="doneGesture" hidden><svg viewBox="0 0 40 30" aria-hidden="true"><rect x="15" y="16" width="10" height="13" rx="3" fill="#a65a38"/><path d="M8 13V3M32 13V3" stroke="#2a1f19" stroke-width="3" stroke-linecap="round"/><path d="M4 7l4-4 4 4M28 7l4-4 4 4" fill="none" stroke="#2a1f19" stroke-width="2"/></svg><span id="doneText">Done? Raise both hands high and hold</span><span class="hold"><i id="doneBar"></i></span></div>
+    <div class="gesture" id="doneGesture" hidden><svg viewBox="0 0 40 30" aria-hidden="true"><rect x="13" y="13" width="15" height="15" rx="4" fill="#a65a38"/><path d="M17 14V5q0-3 3-3t2 4l-1 7" fill="#a65a38" stroke="#2a1f19" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 18h-3M13 22h-3M13 26h-3" stroke="#2a1f19" stroke-width="1.6" stroke-linecap="round"/></svg><span id="doneText">Done? Thumbs up and hold</span><span class="hold"><i id="doneBar"></i></span></div>
     <div id="buckets" hidden aria-label="Glazes"></div>
     <div id="tools" hidden aria-label="Tools"></div>
-    <div class="zoom" role="group" aria-label="Zoom"><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset" aria-label="Reset zoom">⟲</button></div>
+    <div class="zoom" role="group" aria-label="Zoom"><button id="sndBtn" aria-label="Sound" aria-pressed="true" title="Sound">♪</button><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset" aria-label="Reset zoom">⟲</button></div>
     <div class="edge" id="edgeL" hidden aria-hidden="true">‹</div><div class="edge" id="edgeR" hidden aria-hidden="true">›</div>
-    <div class="hdot" id="hd0" hidden></div><div class="hdot" id="hd1" hidden></div>
+    <div id="ghost" hidden aria-hidden="true"></div><div id="exBanner" hidden><span id="exText"></span><span class="exhold"><i id="exBar"></i></span></div><div class="hdot" id="hd0" hidden></div><div class="hdot" id="hd1" hidden></div>
     <div id="teacher" class="off" aria-live="polite"><b>Teacher</b><span id="tsay"></span></div>
   </div>
 
@@ -148,7 +201,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <h2>What will you make?</h2>
       <div class="modes" role="group" aria-label="Mode">
         <button class="mode" data-k="wheel" aria-pressed="true"><b>On the wheel</b><span>Throw a pot with both hands while the clay spins. Then change it by hand: squeeze it oval, pinch a spout, pull a handle, carve lines, then paint it.</span></button>
-        <button class="mode" data-k="hand" aria-pressed="false"><b>Hand-build</b><span>Start from a lump and make anything: a cat, a creature, a strange cup. Add clay, press it in, smooth it. Then paint it.</span></button>
+        <button class="mode" data-k="hand" aria-pressed="false"><b>Hand-build <small class="wip">Still in construction</small></b><span>Start from a lump and make anything: a cat, a creature, a strange cup. Add clay, press it in, smooth it. Then paint it.</span></button>
       </div>
       <div class="how" id="howHand" hidden>
         <div><svg viewBox="0 0 54 40" aria-hidden="true"><circle cx="20" cy="24" r="11" fill="#a65a38"/><path d="M29 18l14-8" stroke="#a65a38" stroke-width="6" stroke-linecap="round"/><path d="M40 6l6 3-3 6" fill="none" stroke="#2a1f19" stroke-width="2"/></svg><span><b>Add</b>: pinch the clay (or press the mouse) and pull out. Ears, a tail, legs.</span></div>
@@ -172,8 +225,8 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <div class="tbtns" role="group" aria-label="Brush size"><button data-b=".12">Small</button><button data-b=".17" aria-pressed="true">Medium</button><button data-b=".24">Large</button></div>
       <div class="tbtns"><button id="mirrorBtn" aria-pressed="true">Mirror: on</button></div>
       <p class="dim">Mirror copies one side to the other, so two ears come out even. Zoom with + and −.</p>
-      <div class="btns"><button id="turnL" aria-label="Turn left">‹ Turn</button><button id="turnR" aria-label="Turn right">Turn ›</button><button id="undoS">Undo</button></div>
-      <p class="dim" id="camSculpt" hidden>With the camera: hold a hand over a tool to switch (the Mirror chip turns mirroring on and off). Pinch to work, open your hand to stop. Hold a hand at the far left or right edge to turn the clay. Raise both hands high and hold to finish.</p>
+      <div class="btns"><button id="turnL" aria-label="Turn left">‹ Turn</button><button id="turnR" aria-label="Turn right">Turn ›</button><button class="spinBtn">Spin the wheel</button><button id="undoS">Undo</button><button id="redoS">Redo</button></div>
+      <p class="dim" id="camSculpt" hidden>With the camera: hold a hand over a tool to switch (the Mirror chip turns mirroring on and off). Pinch to work, open your hand to stop. Hold a hand at the far left or right edge to turn the clay. Give a thumbs-up and hold it to move on.</p>
       <div class="btns"><button id="doneSculpt" class="main">Let it stiffen</button><button id="restart3">Start again</button></div>
     </section>
 
@@ -182,8 +235,8 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p>The wheel has stopped. While the clay is still soft you can change it by hand. Pick a tool, then pinch near the pot or press and drag with the mouse.</p>
       <div class="tbtns" id="alterTools" role="group" aria-label="Tools"></div>
       <p class="dim" id="alterHint"></p>
-      <p class="dim" id="camAlter" hidden>With the camera: hold a hand over a tool on the left to switch. Pinch to work, open your hand to let go. Raise both hands high and hold to move on to glazing.</p>
-      <div class="btns"><button id="glazeIt" class="main">Let it stiffen</button><button id="undoA">Undo</button></div>
+      <p class="dim" id="camAlter" hidden>With the camera: hold a hand over a tool on the left to switch. Pinch to work, open your hand to let go. Give a thumbs-up and hold it to move on.</p>
+      <div class="btns"><button id="glazeIt" class="main">Let it stiffen</button><button id="undoA">Undo</button><button id="redoA">Redo</button></div>
     </section>
 
     <section id="wedgeUI" hidden>
@@ -191,7 +244,8 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p>Clay from the bag has air trapped in it. Push the lump away from you and roll it back, again and again, until the holes are gone. Pinch (or press the mouse) and push up, then come back down.</p>
       <div class="meter">Air in the clay<div class="bar warn" id="airbar"><i></i></div></div>
       <p class="dim">Slow, even pushes work best. Rushing folds air back in. Air left in the clay can burst in the kiln.</p>
-      <p class="dim" id="camWedge" hidden>With the camera: pinch and push your hand up, then back down. Raise both hands high and hold to stop.</p>
+      <p class="dim" id="camWedge" hidden>With the camera: no pinch needed. Hold up open hands, push them up and away, then bring them back down. Repeat. Give a thumbs-up and hold it when you're done.</p>
+      <p class="dim" id="reclaimNote" hidden></p>
       <div class="btns"><button id="wedgePush">Push</button><button id="wedgeDone" class="main">It's ready</button><button id="wedgeSkip">Skip it</button></div>
     </section>
 
@@ -199,10 +253,15 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <h2>Leather-hard</h2>
       <p>A few days under plastic and it has stiffened. You can't bend it any more, but you can still carve into it. This is your last chance to change it.</p>
       <div class="tbtns" id="leatherTools" role="group" aria-label="Tool"></div>
+      <div class="opt" data-for="words" hidden><label class="nm">Your words<input class="wordsIn" maxlength="80" placeholder="A sentence to go around it" autocomplete="off"></label><div class="btns"><button class="wordsMode">Placement: around the pot</button></div><p class="dim">Then touch the piece where it should go.</p></div>
+      <div class="opt" data-for="roller" hidden><div class="patrow"><canvas class="patPrev" width="96" height="96" aria-label="The pattern"></canvas><div class="btns"><button class="patNew">New pattern</button><button class="patFold">Folds: 4</button></div></div><p class="dim">Then touch the piece at the height where it should roll around.</p></div>
+      <div class="opt" data-for="stamp" hidden><div class="tbtns stampKinds" role="group" aria-label="Stamp"></div><p class="dim">Touch the piece where the stamp should go. The size buttons set how big it is.</p></div>
+      <div class="opt" data-for="sprig" hidden><div class="tbtns" id="sprigKinds" role="group" aria-label="Add-on"></div><div class="btns"><button id="sprigUndo">Take the last one off</button></div><p class="dim">Small clay shapes, stuck on while the piece is still leather-hard. Touch the piece where one should go. The Fine, Medium and Wide buttons set its size.</p></div>
+      <div class="opt" data-for="mark" hidden><div class="patrow"><canvas id="markPrev" width="96" height="96" aria-label="Your mark"></canvas><div><label class="nm">Your initials<input id="markIn" maxlength="3" placeholder="AB" autocomplete="off"></label><div class="btns"><button id="markShape">Shape: round</button><button id="markUp">Upload a stamp</button><input type="file" id="markFile" accept="image/png,image/*" hidden></div></div></div><p class="dim">Every maker has a mark. Use your initials, or upload your own stamp: a PNG with a clear background, or dark lines on white. Touch the piece where it should be pressed in. It is remembered for next time.</p></div>
       <div class="tbtns" role="group" aria-label="Line width"><button data-c=".022">Fine</button><button data-c=".04" aria-pressed="true">Medium</button><button data-c=".065">Wide</button></div>
       <p class="dim">Carve lines, patterns, a face. Glaze will pool darker in the lines.</p>
-      <div class="btns"><button id="lthL" aria-label="Turn left">‹ Turn</button><button id="lthR" aria-label="Turn right">Turn ›</button><button id="undoC">Undo</button></div>
-      <p class="dim" id="camLeather" hidden>With the camera: hold a hand over a tool to pick it. Pinch to carve, open your hand to lift the tool. Hold a hand at the far left or right edge to turn it. Raise both hands high and hold when you're finished.</p>
+      <div class="btns"><button id="lthL" aria-label="Turn left">‹ Turn</button><button id="lthR" aria-label="Turn right">Turn ›</button><button class="spinBtn">Spin the wheel</button><button id="undoC">Undo</button><button id="redoC">Redo</button></div>
+      <p class="dim" id="camLeather" hidden>With the camera: hold a hand over a tool to pick it. Point one finger to carve, curl it or open your hand to lift the tool. Hold a hand at the far left or right edge to turn it. Give a thumbs-up and hold it to move on.</p>
       <div class="btns"><button id="doneLeather" class="main">Let it dry</button></div>
     </section>
 
@@ -210,11 +269,14 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <h2>Paint it</h2>
       <p>It has been fired once and is dry and pale now. Paint on it with underglaze colours, or print a picture on it. The glaze goes over the top in the next step.</p>
       <div class="tbtns" id="decoTools" role="group" aria-label="Colour"></div>
+      <div class="opt" data-for="stamp" hidden><div class="tbtns stampKinds" role="group" aria-label="Stamp"></div><p class="dim">Touch the piece where the stamp should go. The size buttons set how big it is.</p></div>
+      <div class="opt" data-for="words" hidden><label class="nm">Your words<input class="wordsIn" maxlength="80" placeholder="A sentence to go around it" autocomplete="off"></label><div class="btns"><button class="wordsMode">Placement: around the pot</button></div><p class="dim">Then touch the piece where it should go.</p></div>
+      <div class="opt" data-for="roller" hidden><div class="patrow"><canvas class="patPrev" width="96" height="96" aria-label="The pattern"></canvas><div class="btns"><button class="patNew">New pattern</button><button class="patFold">Folds: 4</button></div></div><p class="dim">Then touch the piece at the height where it should roll around.</p></div>
       <div class="tbtns" role="group" aria-label="Size"><button data-d=".035">Fine</button><button data-d=".07" aria-pressed="true">Medium</button><button data-d=".13">Broad</button></div>
       <div class="btns"><button id="decoPic">Add a picture</button><input type="file" id="decoFile" accept="image/*" hidden></div>
       <p class="dim" id="decoPicNote">A drawing or logo on a white background works best: the white is left off, like a ceramic decal. The picture stays in this browser.</p>
-      <div class="btns"><button id="decoL" aria-label="Turn left">‹ Turn</button><button id="decoR" aria-label="Turn right">Turn ›</button><button id="undoD">Undo</button><button id="clearD">Clear</button></div>
-      <p class="dim" id="camDeco" hidden>With the camera: hold a hand over a colour to pick it. Pinch to paint, open your hand to lift the brush. Hold a hand at the far left or right edge to turn it. Raise both hands high and hold to move on to glazing.</p>
+      <div class="btns"><button id="decoL" aria-label="Turn left">‹ Turn</button><button id="decoR" aria-label="Turn right">Turn ›</button><button class="spinBtn">Spin the wheel</button><button id="undoD">Undo</button><button id="redoD">Redo</button><button id="clearD">Clear</button></div>
+      <p class="dim" id="camDeco" hidden>With the camera: hold a hand over a colour to pick it. Point one finger to paint, curl it or open your hand to lift the brush. Hold a hand at the far left or right edge to turn it. Give a thumbs-up and hold it to move on.</p>
       <div class="btns"><button id="doneDeco" class="main">Glaze it</button></div>
     </section>
 
@@ -222,28 +284,37 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <h2>Centre the clay</h2>
       <p>Bring your hands to the clay until it glows where you touch, then hold them still. The wobble settles.</p>
       <div class="meter">Centred<div class="bar" id="cbar"><i></i></div></div>
-      <div class="btns"><button id="skipCentre">Skip</button></div>
+      <div class="btns"><button class="wheelBtn">Stop the wheel</button><button id="skipCentre">Skip</button></div>
     </section>
 
     <section id="throwUI" hidden>
       <h2>Throw</h2>
       <p>Touch the clay, then move in to narrow it and lift it, or out, slowly, to swell it. Move up and down to choose where.</p>
-      <p class="dim" id="camDone" hidden>When it feels finished, raise both hands up high (or spread them out to the edges of the screen) and hold them still for two seconds. No need to click. With a keyboard, press Enter.</p>
+      <p class="dim" id="camDone" hidden>When it feels finished, give a thumbs-up and hold it for a moment. A thumbs-up hand never touches the clay. No need to click. With a keyboard, press Enter.</p>
       <div class="meter">Wobble<div class="bar warn" id="wbar"><i></i></div></div>
-      <div class="btns"><button id="doneThrow" class="main">It's done</button><button id="restart1">Start again</button></div>
+      <div class="btns"><button id="doneThrow" class="main">It's done</button><button class="wheelBtn">Stop the wheel</button><button id="restart1">Start again</button></div>
       <p class="dim" id="throwInfo"></p>
+    </section>
+
+    <section id="smashUI" hidden>
+      <h2 id="smashH">Break it</h2>
+      <p id="smashP"></p>
+      <div class="meter">Still standing<div class="bar warn" id="brkbar"><i></i></div></div>
+      <div class="btns"><button id="smashAll">Break it all</button><button id="smashCancel">Change my mind</button><button id="smashNext" class="main" hidden>Start again</button></div>
     </section>
 
     <section id="fallUI" hidden>
       <h2>It fell</h2>
-      <p>Everyone's first one does. You can wedge the clay and start again, or keep this one exactly as it is.</p>
-      <div class="btns"><button id="keepIt" class="main">Keep it anyway</button><button id="restart2">Start again</button></div>
+      <p>Everyone's first one does. You can keep this one exactly as it is, or start again. Nothing is wasted: the clay goes into the reclaim bucket and comes back, marbled, in your next piece.</p>
+      <div class="btns"><button id="keepIt" class="main">Keep it anyway</button><button id="smashFall">Smash it</button><button id="restart2">Start again</button></div>
     </section>
 
     <section id="glazeUI" hidden>
       <h2>Choose a glaze</h2>
       <p>The pot has dried and been fired once. Now pick what it will be dipped in. You will not know exactly how it turns out.</p>
       <p class="dim" id="camGlaze" hidden>Hold a hand over a glaze bucket on the wheel until its ring fills.</p>
+      <div class="tbtns" role="group" aria-label="How the kiln cools"><button data-f="matte">Slow cool: matte</button><button data-f="satin">Even cool: satin</button><button data-f="glossy" aria-pressed="true">Fast cool: glossy</button></div>
+      <p class="dim">How the kiln cools decides the surface. Cooled slowly, the glaze goes soft and matte. Cooled fast, it stays glassy. Choose this first, then the glaze.</p>
       <div class="glazes" id="glazes"></div>
     </section>
 
@@ -258,7 +329,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p class="sig" id="sig"></p>
       <p class="note" id="note"></p>
       <p class="dim">Drag to turn it.</p>
-      <div class="btns"><button id="save" class="main">Save an image</button><button id="again">Make another</button><button id="toIntro">Try the other way</button></div>
+      <div class="btns"><button id="save" class="main">Save an image</button><button id="vid">Save a video</button><button id="stl">Download for 3D printing</button><button id="smashRes">Smash it</button><button id="again">Make another</button><button id="toIntro">Try the other way</button></div>
       <p class="dim">It is on your shelf now. <button id="toShelf" class="small">See your shelf</button></p>
     </section>
 
@@ -269,25 +340,28 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p class="sig" id="vSig"></p>
       <p class="note" id="vNote"></p>
       <p class="dim">Drag to turn it.</p>
-      <div class="btns"><button id="vSave" class="main">Save an image</button><button id="vBack">Back to the wheel</button><button id="vRemove">Remove from shelf</button></div>
+      <div class="btns"><button id="vSave" class="main">Save an image</button><button id="vVid">Save a video</button><button id="vStl">Download for 3D printing</button><button id="vSmash">Smash it</button><button id="vBack">Back to the wheel</button><button id="vRemove">Remove from shelf</button></div>
     </section>
   </aside>
 </div>
 
+<div id="galleryPage" hidden>
 <section class="shelf" id="shelf" aria-labelledby="shelfTitle">
   <div class="shelfHead">
-    <div><h2 id="shelfTitle">Your shelf</h2><p class="dim" id="shelfInfo"></p></div>
-    <div class="btns"><button id="showShelf">Show my shelf</button><button id="saveShelf">Save the shelf as an image</button><button id="clearShelf">Clear</button></div>
+    <div><h2 id="shelfTitle">Gallery</h2><p class="dim" id="shelfInfo"></p></div>
+    <div class="btns"><button id="exhibitBtn">Exhibition mode</button><button id="showShelf">Full screen</button><button id="saveShelf">Save the shelf as an image</button><button id="clearShelf">Clear</button></div>
   </div>
   <div class="wall"><div class="rack" id="rack"></div></div>
 </section>
 
 <footer>A small study about learning a craft: you shape it, then you let go. Built with three.js (MIT) and MediaPipe Hand Landmarker (Google, Apache 2.0), loaded from jsDelivr and Google's model storage. The camera is optional; the video stays in your browser and nothing is recorded or uploaded. Font: STIX Two Text (SIL Open Font License). Made with assistance from Claude Code.</footer>
+</div>
 
 <script type="module">
 import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {MarchingCubes} from 'three/addons/objects/MarchingCubes.js';
+import {STLExporter} from 'three/addons/exporters/STLExporter.js';
 const $=id=>document.getElementById(id);
 const R=Math.random,clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t,RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -358,11 +432,13 @@ function teach(t,force){if(!force&&clock-lastTeach<6)return;lastTeach=clock;$('t
 let curUI='introUI',kind='wheel';
 const STEPS={wheel:['Wedge','Centre','Throw','Alter','Carve','Paint','Glaze','Fire'],hand:['Wedge','Sculpt','Carve','Paint','Glaze','Fire']};
 const STEPAT={wheel:{wedgeUI:0,centreUI:1,throwUI:2,fallUI:2,alterUI:3,leatherUI:4,decoUI:5,glazeUI:6,fireUI:7,resultUI:8},hand:{wedgeUI:0,sculptUI:1,leatherUI:2,decoUI:3,glazeUI:4,fireUI:5,resultUI:6}};
-function show(id){curUI=id;$('buckets').hidden=id!=='glazeUI';$('tools').hidden=!(id==='alterUI'||id==='sculptUI'||id==='decoUI'||id==='leatherUI');if(!$('tools').hidden)buildTools();
-  for(const e of['camDone','camGlaze','camAlter','camSculpt','camDeco','camWedge','camLeather'])$(e).hidden=mode!=='cam';
-  for(const s of['introUI','wedgeUI','sculptUI','alterUI','leatherUI','decoUI','centreUI','throwUI','fallUI','glazeUI','fireUI','resultUI','viewUI'])$(s).hidden=s!==id;
+function show(id){curUI=id;buildGuide(id);$('buckets').hidden=id!=='glazeUI';$('tools').hidden=!(id==='alterUI'||id==='sculptUI'||id==='decoUI'||id==='leatherUI');if(!$('tools').hidden)buildTools();
+  for(const e of['camDone','camGlaze','camAlter','camSculpt','camDeco','camWedge','camLeather'])$(e).hidden=!(mode==='cam'&&CAMUI.includes(id));
+  for(const s of['introUI','smashUI','wedgeUI','sculptUI','alterUI','leatherUI','decoUI','centreUI','throwUI','fallUI','glazeUI','fireUI','resultUI','viewUI'])$(s).hidden=s!==id;
   const st=STEPAT[kind][id]??-1,ol=$('steps');ol.textContent='';if(id!=='viewUI')STEPS[kind].forEach((n,i)=>{const li=document.createElement('li');li.textContent=n;li.className=i===st?'on':i<st?'done':'';ol.append(li)})}
-function begin(){clearDeco(true);startWedge()}
+let bandSpin=false;function setSpin(on){bandSpin=on;document.querySelectorAll('.spinBtn').forEach(b=>{b.textContent=on?'Stop the wheel':'Spin the wheel';b.setAttribute('aria-pressed',on)});if(on)teach('Hold the tool still and let the wheel bring the clay to it.',true)}
+let wheelOn=true;function setWheel(on){wheelOn=on;document.querySelectorAll('.wheelBtn').forEach(b=>b.textContent=on?'Stop the wheel':'Start the wheel');if(!on&&(phase==='centre'||phase==='throw'))teach('The wheel is still. Look at it, turn it over in your head. Start it again to keep throwing.',true)}
+function begin(){setWheel(true);setSpin(false);setSprigs([]);clearShards();clearDeco(true);startWedge()}
 function beginForm(){if(kind==='hand')return beginSculpt();pot.visible=true;clay.visible=false;P=newClay();buildHandles();setMat(wetMat);pot.rotation.set(0,0,0);centreT=0;rushes=0;rushAt=[];kept=false;touched=false;glazeType=null;seed=R()*1e9|0;rebuild();phase='centre';show('centreUI');
   teach(mode==='cam'?'Wet hands, slow wheel. Bring both hands to the clay.':'Press and hold beside the clay, then drag toward it.',true)}
 
@@ -405,7 +481,13 @@ const GL={
   celadon:{name:'Celadon',sw:'linear-gradient(#cfe0d4,#7da893)',base:[143,181,162],pool:[64,112,96],thin:[208,224,212],rough:.07,run:.3,desc:'Sea green. Pools in low places and crazes as it cools.'},
   tenmoku:{name:'Tenmoku',sw:'linear-gradient(#a4522a,#24140f)',base:[42,25,19],pool:[16,9,7],thin:[170,86,44],rough:.1,run:.5,desc:'Iron black. Breaks to rust where it runs thin.'},
   shino:{name:'Shino',sw:'linear-gradient(#f2e6d6,#d88a52)',base:[238,226,210],pool:[222,204,184],thin:[214,132,80],rough:.42,run:.12,desc:'Milky white. The flame paints it orange.'},
-  ash:{name:'Wood ash',sw:'linear-gradient(#b2a05a,#3d5a3d)',base:[126,121,62],pool:[52,84,58],thin:[180,152,92],rough:.2,run:.95,desc:'Olive and runny. It drips, and sometimes crawls.'}};
+  ash:{name:'Wood ash',sw:'linear-gradient(#b2a05a,#3d5a3d)',base:[126,121,62],pool:[52,84,58],thin:[180,152,92],rough:.2,run:.95,desc:'Olive and runny. It drips, and sometimes crawls.'},
+  cobalt:{name:'Cobalt blue',sw:'linear-gradient(#6f8fd0,#16224f)',base:[34,62,140],pool:[14,26,84],thin:[104,138,200],rough:.08,run:.35,desc:'Deep blue. Darkest where it pools, paler on every edge.',line:'The cobalt went darkest where it pooled and paler on every edge.'},
+  copper:{name:'Copper red',sw:'linear-gradient(#d9c4b0,#7a1418)',base:[128,26,30],pool:[70,10,16],thin:[200,174,154],rough:.08,run:.45,desc:'Oxblood. Clears to pale at the rim, where the kiln air reached it.',line:'The copper red cleared to pale at the rim, where the kiln air reached it.'},
+  turquoise:{name:'Turquoise',sw:'linear-gradient(#a6dccf,#16707a)',base:[64,170,168],pool:[22,104,112],thin:[156,216,202],rough:.1,run:.4,desc:'Bright copper green-blue. It likes to run.',line:'The turquoise ran, and gathered deep wherever it could.'},
+  honey:{name:'Honey amber',sw:'linear-gradient(#e6c074,#6e3c0c)',base:[190,128,40],pool:[118,66,16],thin:[228,190,110],rough:.06,run:.5,desc:'Clear amber. The clay shows through, like tea.',line:'The amber stayed clear, and the clay shows through it like tea.'},
+  white:{name:'Tin white',sw:'linear-gradient(#ffffff,#d9d4c6)',base:[240,238,230],pool:[224,226,222],thin:[228,208,182],rough:.14,run:.1,desc:'Plain white. It shows every line you carved or painted.',line:'The white hid nothing: every line you made is there.'},
+  black:{name:'Soft black',sw:'linear-gradient(#5a5350,#0e0e10)',base:[28,28,30],pool:[12,12,14],thin:[74,64,58],rough:.5,run:.1,cc:.15,desc:'Almost no shine. All you see is the shape.',line:'The black took the shine away and left only the shape.'}};
 {const G=$('glazes');for(const[k,g]of Object.entries(GL)){const b=document.createElement('button'),i=document.createElement('i'),n=document.createElement('b'),d=document.createElement('span');i.style.background=g.sw;n.textContent=g.name;d.textContent=g.desc;b.append(i,n,d);b.onclick=()=>fire(k);G.append(b);
   const q=document.createElement('button'),qi=document.createElement('i'),qn=document.createElement('span');q.className='bucket';q.dataset.k=k;qi.style.background=g.sw;qn.textContent=g.name;q.append(qi,qn);q.onclick=()=>fire(k);$('buckets').append(q)}}
 let glazeStats={};
@@ -436,9 +518,10 @@ function paintGlaze(type){const G=GL[type],rr=rng(seed),Wd=1024,Ht=1024,c=docume
   const t=new THREE.CanvasTexture(c);t.flipY=false;t.wrapS=THREE.RepeatWrapping;t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t}
 let glazeMat=null;
 const bisqueOf=()=>kind==='hand'?sculptBisque:bisqueMat;
-function makeGlaze(type){const G=GL[type],o={roughness:G.rough,clearcoat:type==='shino'?.2:.9,clearcoatRoughness:.08};
+let sheen='glossy';const FIN={matte:{roughness:.9,clearcoat:0},satin:{roughness:.55,clearcoat:.3,clearcoatRoughness:.5},glossy:{}};
+function makeGlaze(type){tintSprigs(type);const G=GL[type],o={roughness:G.rough,clearcoat:G.cc??(type==='shino'?.2:.9),clearcoatRoughness:.08,...FIN[sheen]};
   if(kind==='hand'){colorSculpt(type);return decoPatch(new THREE.MeshPhysicalMaterial({...o,vertexColors:true}),1)}return decoPatch(new THREE.MeshPhysicalMaterial({...o,map:paintGlaze(type)}),1)}
-function fire(type){glazeType=type;phase='fire';fireT=0;show('fireUI');document.body.classList.add('kiln');const bq=bisqueOf();bq.emissive.setHex(0xff5a14);bq.emissiveIntensity=0;setMat(bq);
+function fire(type){play('spray_paint',.5,.5,1.6);glazeType=type;phase='fire';fireT=0;show('fireUI');document.body.classList.add('kiln');const bq=bisqueOf();bq.emissive.setHex(0xff5a14);bq.emissiveIntensity=0;setMat(bq);
   glazeMat=makeGlaze(type);glazeMat.emissive.setHex(0xff5a14);glazeMat.emissiveIntensity=0;
   kilnBurst=R()<clamp((wedgeAir-.15)*1.2);blown=false;teach('You cannot touch it now. The kiln decides the rest.',true)}
 function fireTick(dt){fireT+=dt;const t=fireT/6;if(kilnBurst&&!blown&&t>.4){blown=true;blowOut()}$('fbar').firstChild.style.width=clamp(t)*100+'%';
@@ -464,7 +547,7 @@ function describe(){const maxR=Math.max(...P.r),ratio=P.h/maxR,bi=P.r.indexOf(ma
   if(glazeStats.drips>12)s.push(`It ran in ${glazeStats.drips} drips. You did not choose those. The kiln did.`);
   if(glazeStats.crawl)s.push('In a few places the glaze crawled back and left bare clay.');
   s.push(PICK(['It is not the pot you planned. Keep it anyway.','Nobody else could have made this one.','Your hands are in it. That is the point.','Make a hundred more. Keep this one.']));return s.join(' ')}
-function glazeLine(G){return G==='celadon'?'The celadon pooled green in the low places and crazed as it cooled.':G==='tenmoku'?'The tenmoku broke to rust wherever it ran thin.':G==='shino'?'The shino flashed orange where the flame touched it.':'The ash ran down the wall.'}
+function glazeLine(G){if(GL[G]&&GL[G].line)return GL[G].line;return G==='celadon'?'The celadon pooled green in the low places and crazed as it cooled.':G==='tenmoku'?'The tenmoku broke to rust wherever it ran thin.':G==='shino'?'The shino flashed orange where the flame touched it.':'The ash ran down the wall.'}
 function describeHand(){const c=sCount,b=clayBounds(),s=[];
   s.push(`${b.h>b.w*1.3?'Upright':b.w>b.h*1.4?'Low and wide':'Compact'}, about ${Math.round(b.h*10)} cm tall and ${Math.round(b.w*10)} cm across.`);
   if(c.pull+c.push+c.smooth===0)s.push('You left the lump almost as it was. That is a choice too.');
@@ -474,7 +557,7 @@ function describeHand(){const c=sCount,b=clayBounds(),s=[];
   if(glazeStats.drips>10)s.push('It ran where the clay overhangs. You did not choose those drips. The kiln did.');
   s.push(PICK(['No wheel could have made this.','It is a little wrong, which is how you know a person made it.','Whatever it is, it is yours.','Nobody else could have made this one.']));return s.join(' ')}
 const titleOf=n=>kind==='hand'?`Hand-built, no. ${n}`:`First pot, no. ${n}`;
-function finish(){phase='result';potN=bump();$('potName').textContent=titleOf(potN);P.code=code();$('sig').textContent=`One of one · ${P.code} · ${GL[glazeType].name}`;P.note=kind==='hand'?describeHand():describe();{const dl=decoLine(),i=P.note.indexOf('. ')+2;if(dl)P.note=P.note.slice(0,i)+dl+' '+P.note.slice(i)}$('note').textContent=P.note;show('resultUI');
+function finish(){phase='result';resultAt=clock;setTimeout(()=>{play('tap_on_pot',.8)||thud(.3)},250);if(marbleN)setRec(0);potN=bump();$('potName').textContent=titleOf(potN);P.code=code();$('sig').textContent=`One of one · ${P.code} · ${GL[glazeType].name}`;P.note=shortNote();$('note').textContent=P.note;show('resultUI');
   teach('Out of the kiln. Let it cool in your hands.',true);setTimeout(shelve,400)}
 function bump(){try{const n=(+localStorage.getItem('firstPot.n')||0)+1;localStorage.setItem('firstPot.n',n);return n}catch{return 1}}
 function snapshot(w){render();const c=document.createElement('canvas'),s=renderer.domElement,side=Math.min(s.width,s.height);c.width=c.height=w;const g=c.getContext('2d');g.fillStyle='#ece3d7';g.fillRect(0,0,w,w);g.drawImage(s,(s.width-side)/2,(s.height-side)/2,side,side,0,0,w,w);return c}
@@ -496,11 +579,11 @@ function cutout(){const ob=kind==='hand'?clay:pot,hide=[head,pan,floor,ring,...m
   renderer.setPixelRatio(pr);renderer.setSize(size.x,size.y,false);hide.forEach((o,i)=>o.visible=vis[i]);ob.position.x=keep[0];ob.position.z=keep[1];ob.rotation.y=keep[2];render();
   const url=c.toDataURL('image/webp',.86);return url.startsWith('data:image/webp')?url:c.toDataURL('image/png')}
 function loadShelf(){try{return JSON.parse(localStorage.getItem('firstPot.shelf')||'[]')}catch{return[]}}
-function storeShelf(list){for(let n=list.length;n>0;n--){try{localStorage.setItem('firstPot.shelf',JSON.stringify(list.slice(0,n)));return n<list.length}catch{}}return true}
+function storeShelf(list){if(!list.length){try{localStorage.setItem('firstPot.shelf','[]')}catch{}return false}for(let n=list.length;n>0;n--){try{localStorage.setItem('firstPot.shelf',JSON.stringify(list.slice(0,n)));return n<list.length}catch{}}return true}
 const round=(a,d)=>a.map(v=>+v.toFixed(d));
 let landed=0;
-function shelve(){const list=loadShelf().filter(p=>p.n!==potN);
-  list.unshift({n:potN,name:'',code:P.code,glaze:glazeType,note:P.note,date:Date.now(),seed,rushes,img:cutout(),deco:decoUsed?decoURL():null,carve:carveUsed?carveURL():null,
+function shelve(){play('placing_on_shelve',.8);const list=loadShelf().filter(p=>p.n!==potN);
+  list.unshift({n:potN,name:'',code:P.code,glaze:glazeType,note:P.note,date:Date.now(),seed,rushes,img:cutout(),sprigs:sprigList.map(q=>({...q})),finish:sheen,failed:blown||kept,marble:DU.decoMarble.value||0,deco:decoUsed?decoURL():null,carve:carveUsed?carveURL():null,
     shape:kind==='hand'?{kind:'hand',field:packField(),turn:+turn.toFixed(3)}:{blow:P.blow,r:round(P.r,3),asym:round(P.asym,4),ph:round(P.ph,3),h:+P.h.toFixed(3),ridge:+P.ridge.toFixed(3),wob:+P.wob.toFixed(3),
       oval:+P.oval.toFixed(3),spout:+P.spout.toFixed(3),spoutSide:P.spoutSide,grooves:P.grooves.map(g=>({y:+g.y.toFixed(3),d:+g.d.toFixed(4)})),handles:P.handles.map(q=>({...q}))}});
   const dropped=storeShelf(list.slice(0,30));landed=potN;drawShelf();if(dropped)$('shelfInfo').textContent+=' The oldest pots were taken off to make room.'}
@@ -511,36 +594,36 @@ function drawShelf(){const L=loadShelf().slice().reverse(),D=$('rack');D.textCon
   for(const p of L){const b=document.createElement('button'),im=new Image(),t=document.createElement('span'),gn=(GL[p.glaze]||{name:p.glaze}).name;
     b.className='slot'+(p.n===landed?' new':'');b.setAttribute('aria-label',`${p.name||'First pot no. '+p.n}, ${gn}. ${p.note||''}`);
     im.src=p.img;im.alt='';if(!p.shape)im.className='photo';t.className='tag';t.innerHTML=`${esc(p.name||'No. '+p.n)} <small>· ${esc(gn)}</small>`;
-    b.append(im,t);b.onclick=()=>viewPot(p.n);D.append(b)}
+    b.append(im,t);b.onclick=()=>{setTab('make');viewPot(p.n)};D.append(b)}
   const pad=(cols-L.length%cols)%cols+(L.length?0:cols);for(let i=0;i<pad;i++){const e=document.createElement('div');e.className='slot empty';e.setAttribute('aria-hidden','true');D.append(e)}
   landed=0;fitRack()}
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function fitRack(){const D=$('rack'),first=D.firstElementChild;if(!first)return;const w=first.getBoundingClientRect().width,n=Math.max(1,Math.round(D.clientWidth/w));D.style.setProperty('--b',`${-(1-BASEF)*w+1}px`);
+function fitRack(){const D=$('rack'),first=D.firstElementChild;if(!first)return;const w=first.getBoundingClientRect().width;if(!w||!D.clientWidth)return;const n=Math.max(1,Math.round(D.clientWidth/w));D.style.setProperty('--b',`${-(1-BASEF)*w+1}px`);
   if(n!==cols){cols=n;drawShelf()}}
 new ResizeObserver(()=>fitRack()).observe($('rack'));
 
 /* look closer: the pot comes back to the wheel, and whatever you were making waits */
 let stash=null,viewN=0;
 function viewPot(n){const p=loadShelf().find(x=>x.n===n);if(!p||!p.shape||phase==='fire'||phase==='falling')return;
-  if(!stash)stash={P,phase,seed,rushes,rushAt,glazeType,glazeMat,glazeStats,kind,D,turn,potMat:pot.material,clayMat:clay.material,ui:curUI,deco:decoSave()};
+  if(!stash)stash={P,phase,seed,rushes,rushAt,glazeType,glazeMat,glazeStats,kind,D,turn,potMat:pot.material,clayMat:clay.material,ui:curUI,sprigs:sprigList.map(q=>({...q})),finish:sheen,deco:decoSave(),marble:DU.decoMarble.value};DU.decoMarble.value=p.marble||0;sheen=p.finish||'glossy';
   loadDeco(p.deco,p.carve);lumpM.visible=false;
   seed=p.seed;rushes=p.rushes;glazeType=p.glaze;const G=GL[p.glaze];
   if(p.shape.kind==='hand'){kind='hand';D=unpackField(p.shape.field);turn=p.shape.turn||0;clayDirty=true;flushClay();pot.visible=false;clay.visible=true}
   else{kind='wheel';P={oval:0,spout:0,spoutSide:1,grooves:[],handles:[],...p.shape,r:[...p.shape.r],asym:[...p.shape.asym],ph:[...p.shape.ph],h0:p.shape.h,v0:1};rebuild();buildHandles();pot.visible=true;clay.visible=false}
-  glazeMat=makeGlaze(p.glaze);setMat(glazeMat);
+  setSprigs(p.sprigs||[]);glazeMat=makeGlaze(p.glaze);setMat(glazeMat);
   phase='view';viewN=n;dragRot=0;$('vName').textContent=p.name||`No. ${p.n}`;$('vInput').value=p.name||'';$('vSig').textContent=`One of one · ${p.code} · ${G.name}`;$('vNote').textContent=p.note;
   $('vRemove').textContent='Remove from shelf';$('vRemove').dataset.sure='';show('viewUI');scrollTo({top:0,behavior:RM?'auto':'smooth'})}
-function leaveView(){if(!stash)return;decoRestore(stash.deco);lumpM.visible=stash.phase==='wedge';({P,phase,seed,rushes,rushAt,glazeType,glazeMat,glazeStats,kind,D,turn}=stash);
+function leaveView(){if(!stash)return;clearShards();decoRestore(stash.deco);DU.decoMarble.value=stash.marble||0;sheen=stash.finish||'glossy';lumpM.visible=stash.phase==='wedge';({P,phase,seed,rushes,rushAt,glazeType,glazeMat,glazeStats,kind,D,turn}=stash);
   pot.visible=kind==='wheel';clay.visible=kind==='hand';pot.material=stash.potMat;clay.material=stash.clayMat;for(const h of handleMeshes)h.material=pot.material;
   if(kind==='hand'){clayDirty=true;flushClay();if(glazeType&&(phase==='fire'||phase==='result'))colorSculpt(glazeType)}else{rebuild();buildHandles()}
-  show(stash.ui);stash=null;viewN=0}
+  setSprigs(stash.sprigs||[]);if(glazeType&&(phase==='fire'||phase==='result'))tintSprigs(glazeType);show(stash.ui);stash=null;viewN=0}
 function editShelf(n,fn){const L=loadShelf(),p=L.find(x=>x.n===n);if(!p)return;fn(p,L);storeShelf(L.filter(Boolean));drawShelf()}
 $('vInput').addEventListener('input',()=>{const v=$('vInput').value.trim();$('vName').textContent=v||`No. ${viewN}`;clearTimeout(editShelf.h);editShelf.h=setTimeout(()=>editShelf(viewN,p=>p.name=v),300)});
 $('vBack').onclick=leaveView;
 $('vRemove').onclick=()=>{const b=$('vRemove');if(!b.dataset.sure){b.dataset.sure='1';b.textContent='Sure? Remove it';return}
   const L=loadShelf().filter(x=>x.n!==viewN);storeShelf(L);drawShelf();leaveView()};
 $('vSave').onclick=()=>{const p=loadShelf().find(x=>x.n===viewN);if(p)saveCard(p.name||`No. ${p.n}`,`One of one · ${p.code} · ${GL[p.glaze].name}`,p.note,`first-pot-${p.code}.png`)};
-$('toShelf').onclick=()=>$('shelf').scrollIntoView({behavior:RM?'auto':'smooth'});
+$('toShelf').onclick=()=>setTab('gallery');
 
 /* show it off: full screen, or one picture of the whole shelf */
 const fsOK=!!document.documentElement.requestFullscreen;$('showShelf').hidden=!fsOK;
@@ -559,25 +642,32 @@ $('saveShelf').onclick=async()=>{const L=loadShelf().slice().reverse();if(!L.len
 
 /* ---------- hands: MediaPipe, or mouse and touch ---------- */
 const MP='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';let HL=null,camOn=false,lastVT=-1;const vid=$('cam');
-async function startCam(){const st=$('status');st.textContent='Loading hand tracking (about 8 MB the first time)…';$('useHands').disabled=true;
+async function startCam(quiet){const st=$('status');st.textContent='Loading hand tracking (about 8 MB the first time)…';$('useHands').disabled=true;
   try{if(!HL){const V=await import(MP+'/vision_bundle.mjs'),fs=await V.FilesetResolver.forVisionTasks(MP+'/wasm');
       HL=await V.HandLandmarker.createFromOptions(fs,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:'GPU'},runningMode:'VIDEO',numHands:2})}
-    vid.srcObject=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});await vid.play();camOn=true;vid.hidden=false;mode='cam';st.textContent='';begin()}
+    vid.srcObject=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});await vid.play();camOn=true;vid.hidden=false;mode='cam';st.textContent='';if(!quiet)begin()}
   catch(e){st.textContent=`The camera could not start (${e.name||'error'}). Mouse and touch work the same way.`}
   $('useHands').disabled=false}
 const camHands=[];
 function track(){if(!camOn||!HL||vid.readyState<2||vid.currentTime===lastVT)return;lastVT=vid.currentTime;let r;try{r=HL.detectForVideo(vid,performance.now())}catch{return}
   const vw=vid.videoWidth||640,vh=vid.videoHeight||480,box=wrap.getBoundingClientRect(),sa=box.width/box.height,va=vw/vh;
   /* a pinch: thumb tip and index tip close together, measured against the size of the hand */
-  const next=(r.landmarks||[]).map(lm=>{const size=Math.hypot(lm[0].x-lm[9].x,lm[0].y-lm[9].y),ratio=Math.hypot(lm[4].x-lm[8].x,lm[4].y-lm[8].y)/size;
-    const pinch=ratio<.3,p=pinch?{x:(lm[4].x+lm[8].x)/2,y:(lm[4].y+lm[8].y)/2}:[0,5,9,13,17].reduce((a,i)=>({x:a.x+lm[i].x/5,y:a.y+lm[i].y/5}),{x:0,y:0});let u=1-p.x,v=p.y;
-    if(va>sa){const k=sa/va;u=(u-.5)/k+.5}else{const k=va/sa;v=(v-.5)/k+.5}return{u,v,p:pinch,ratio}}).sort((a,b)=>a.u-b.u);
+  /* poses read from the fingers: a finger is out when its tip is well beyond its middle joint, seen from the wrist */
+  const pen=phase==='decorate'||phase==='leather';
+  const next=(r.landmarks||[]).map(lm=>{const size=Math.hypot(lm[0].x-lm[9].x,lm[0].y-lm[9].y),ratio=Math.hypot(lm[4].x-lm[8].x,lm[4].y-lm[8].y)/size,
+      W=i=>Math.hypot(lm[i].x-lm[0].x,lm[i].y-lm[0].y),out=(t,j)=>W(t)/W(j),curled=[[12,10],[16,14],[20,18]].every(([t,j])=>out(t,j)<1.05),
+      idx=out(8,6),fist=curled&&idx<1.08,thumbUp=fist&&lm[4].y<lm[2].y&&Math.hypot(lm[4].x-lm[5].x,lm[4].y-lm[5].y)>size*.42,point=curled&&idx>1.2&&ratio>.45;
+    const pinch=ratio<.3,pose=thumbUp?'thumb':fist?'fist':point?'point':pinch?'pinch':'open',
+      p=pen?{x:lm[8].x,y:lm[8].y}:pinch?{x:(lm[4].x+lm[8].x)/2,y:(lm[4].y+lm[8].y)/2}:[0,5,9,13,17].reduce((a,i)=>({x:a.x+lm[i].x/5,y:a.y+lm[i].y/5}),{x:0,y:0});let u=1-p.x,v=p.y;
+    if(va>sa){const k=sa/va;u=(u-.5)/k+.5}else{const k=va/sa;v=(v-.5)/k+.5}return{u,v,p:pen?point:pinch,ratio,idx,pose,pen}}).sort((a,b)=>a.u-b.u);
   /* a pinch starts below 0.30 and only ends above 0.45, and pinched hands are smoothed more, so small shakes do not start and stop work */
-  camHands.length=0;next.forEach((h,i)=>{const old=lastCam[i],p=old&&old.p?h.ratio<.45:h.p,k=p?.3:.5;camHands.push(old?{u:lerp(old.u,h.u,k),v:lerp(old.v,h.v,k),p}:{...h})});lastCam=camHands.map(h=>({...h}))}
+  /* when painting or carving, one pointing finger is the brush: it starts at a clear point and ends only when the finger folds */
+  camHands.length=0;next.forEach((h,i)=>{const old=lastCam[i];if(old&&old.pose==='thumb'&&h.pose==='fist')h.pose='thumb';const p=h.pose==='thumb'||h.pose==='fist'?false:h.pen?(old&&old.p?h.idx>1.05:h.p):(old&&old.p?h.ratio<.45:h.p),k=p?.3:.5;
+    camHands.push(old?{u:lerp(old.u,h.u,k),v:lerp(old.v,h.v,k),p,pose:h.pose}:{...h,p})});lastCam=camHands.map(h=>({...h}))}
 let lastCam=[];
 const pointers=new Map();
-wrap.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;if(phase==='result'||phase==='view'){drag={x:e.clientX,r:dragRot};wrap.setPointerCapture(e.pointerId);return}if(mode!=='mouse')return;wrap.setPointerCapture(e.pointerId);pointers.set(e.pointerId,uvOf(e))});
-wrap.addEventListener('pointermove',e=>{if(drag){dragRot=drag.r+(e.clientX-drag.x)*.01;return}if(pointers.has(e.pointerId))pointers.set(e.pointerId,uvOf(e))});
+wrap.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;if(phase==='result'||phase==='view'){drag={x:e.clientX,r:dragRot};wrap.setPointerCapture(e.pointerId);return}if(!mode||camNow())return;wrap.setPointerCapture(e.pointerId);pointers.set(e.pointerId,uvOf(e))});
+wrap.addEventListener('pointermove',e=>{if(drag){dragRot=drag.r+(e.clientX-drag.x)*.01;return}const q=pointers.get(e.pointerId);if(q&&!q.gone){if(e.pointerType==='mouse'&&!e.buttons){pointers.delete(e.pointerId);return}pointers.set(e.pointerId,uvOf(e))}});
 const up=e=>{const q=pointers.get(e.pointerId);if(q&&!q.seen)q.gone=true;else pointers.delete(e.pointerId);drag=null};wrap.addEventListener('pointerup',up);wrap.addEventListener('pointercancel',up);
 let drag=null;
 function uvOf(e){const b=wrap.getBoundingClientRect();return{u:(e.clientX-b.left)/b.width,v:(e.clientY-b.top)/b.height,p:true}}
@@ -586,62 +676,126 @@ const kb={on:false,f:.5,r:1};
 wrap.addEventListener('keydown',e=>{if(e.key==='Enter'&&['wedge','throw','alter','sculpt','leather','decorate'].includes(phase)){e.preventDefault();nextStep();return}
   if(phase==='wedge'&&e.key===' '){e.preventDefault();wedgePush();return}if((phase==='sculpt'||phase==='decorate'||phase==='leather')&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();turn+=e.key==='ArrowLeft'?-.25:.25;return}if(!P||!(phase==='centre'||phase==='throw'))return;const k={ArrowUp:[.03,0],ArrowDown:[-.03,0],ArrowLeft:[0,-.05],ArrowRight:[0,.05]}[e.key];if(!k)return;e.preventDefault();
   if(!kb.on){kb.on=true;kb.r=P.r[Math.round(kb.f*(K-1))]}kb.f=clamp(kb.f+k[0]);kb.r=clamp(kb.r+k[1],.2,2.1);clearTimeout(kb.h);kb.h=setTimeout(()=>kb.on=false,1500)});
-function gatherHands(){hands.length=0;if(mode==='cam')hands.push(...camHands);else{for(const[id,q]of pointers){if(q.gone&&q.seen){pointers.delete(id);continue}q.seen=true;hands.push(q)}}
+/* the camera is used for the big movements: wedging, centring, throwing, sculpting. The fine work after that is done with the mouse or a finger */
+const CAMPH=['wedge','centre','throw','falling','fallen','sculpt'],CAMUI=['wedgeUI','centreUI','throwUI','fallUI','sculptUI'],camNow=()=>mode==='cam'&&CAMPH.includes(phase);
+function gatherHands(){hands.length=0;if(camNow())hands.push(...camHands.filter(h=>h.pose!=='thumb'&&h.pose!=='fist'));else{for(const[id,q]of pointers){if(q.gone&&q.seen){pointers.delete(id);continue}q.seen=true;hands.push(q)}}
   if(kb.on&&!hands.length){const y=kb.f*P.h,[a,v]=screenOf(kb.r,y);hands.push({u:a,v})}}
+
+/* ---------- small moving pictures instead of paragraphs ---------- */
+const GS='fill="#fbf4ea" stroke="#2a1f19" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"',GF='fill="none" stroke="#2a1f19" stroke-width="3.6" stroke-linecap="round"';
+/* hands drawn like the thumbs-up on the "done" pill: clay-coloured, dark outline. Every finger is a rounded stroke drawn twice (outline, then fill) */
+const FG=d=>`<path d="${d}" fill="none" stroke="#2a1f19" stroke-width="6.4" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#a65a38" stroke-width="3.6" stroke-linecap="round"/>`,
+  PALM=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="#a65a38" stroke="#2a1f19" stroke-width="1.4"/>`,CR=d=>`<path d="${d}" fill="none" stroke="#2a1f19" stroke-width="1.5" stroke-linecap="round"/>`;
+const GLYPH={open:FG('M-10 13L-13.5 7')+FG('M-5.6 7V-5M-1.9 7V-9M1.9 7V-9M5.6 7V-5')+PALM(-8.6,4,17.2,14),
+  pinch:FG('M11 6V2M14 8V5')+PALM(2,4,14,14)+FG('M8 7L0 0')+FG('M5 15L0 0')+`<circle r="2" fill="#fbf4ea" stroke="#2a1f19" stroke-width="1"/>`,
+  point:FG('M0 8V-9')+PALM(-6,4,15,14)+FG('M-6 13L-8 9.5')+CR('M3 4v6M6.3 4v6'),
+  thumb:FG('M-2 5V-9')+PALM(-7,2,16,14)+CR('M-7 6.5h-3.4M-7 10h-3.4M-7 13.5h-3.4'),
+  fist:PALM(-8,-1,16,15)+CR('M-4 -1v6M0 -1v6M4 -1v6')+FG('M-8 9L-10.5 6'),
+  side:FG('M4 12L10 4')+FG('M-1.6 6V-9M1.8 6V-8')+PALM(-5,4,10.5,14),
+  mouse:`<path d="M0 0v16l4.5-4 3.2 7 2.6-1.2-3.2-6.8h6z" fill="#2a1f19" stroke="#fbf4ea" stroke-width="1.2" stroke-linejoin="round"/>`};
+const POSE={open:'Open',pinch:'Pinch',point:'Point',thumb:'Done',fist:'Closed'};
+const flip=g=>g===GLYPH.mouse?g:`<g transform="scale(-1,1)">${g}</g>`;
+const CLAYF='fill="#a65a38"',an=(n,x='')=>`class="a" style="animation-name:${n};transform-box:fill-box;transform-origin:50% 100%;${x}"`;
+const ART={
+  wedge:g=>`<ellipse cx="48" cy="52" rx="20" ry="13" ${CLAYF} ${an('gSq')}/><g transform="translate(48,34)"><g ${an('gUp')}>${g}</g></g>`,
+  hold:g=>`<rect x="36" y="34" width="24" height="28" rx="9" ${CLAYF}/><g transform="translate(20,42)"><g ${an('gInL')}>${g}</g></g><g transform="translate(76,42)"><g ${an('gInR')}>${flip(g)}</g></g>`,
+  tall:g=>`<rect x="36" y="34" width="24" height="28" rx="9" ${CLAYF} ${an('gTall')}/><g transform="translate(20,42)"><g ${an('gInL')}>${g}</g></g><g transform="translate(76,42)"><g ${an('gInR')}>${flip(g)}</g></g>`,
+  wide:g=>`<rect x="36" y="34" width="24" height="28" rx="9" ${CLAYF} ${an('gWide')}/><g transform="translate(31,42)"><g ${an('gInR')}>${g}</g></g><g transform="translate(65,42)"><g ${an('gInL')}>${flip(g)}</g></g>`,
+  pull:g=>`<ellipse cx="54" cy="36" rx="9" ry="8" ${CLAYF} class="a" style="animation-name:gGrow;transform-box:fill-box;transform-origin:0% 100%"/><circle cx="40" cy="46" r="17" ${CLAYF}/><g transform="translate(50,38)"><g ${an('gPull')}>${g}</g></g>`,
+  tap:g=>`<circle cx="42" cy="44" r="18" ${CLAYF}/><ellipse cx="50" cy="36" rx="6" ry="5" fill="#6f3a22" class="a" style="animation-name:gDent"/><g transform="translate(51,35)"><g ${an('gTap')}>${g}</g></g>`,
+  rub:g=>`<circle cx="46" cy="46" r="18" ${CLAYF}/><path d="M34 36q6-5 12 0t12 0" fill="none" stroke="#fbf4ea" stroke-width="2" stroke-linecap="round" opacity=".7"/><g transform="translate(46,34)"><g class="a" style="animation-name:gRub;animation-duration:1.3s">${g}</g></g>`,
+  carve:g=>`<rect x="14" y="26" width="68" height="34" rx="10" fill="#b4785a"/><path d="M26 44q10-12 20-4t20-3" fill="none" stroke="#6f3a22" stroke-width="3" stroke-linecap="round" stroke-dasharray="50" class="a" style="animation-name:gLine"/><g transform="translate(26,44)"><g ${an('gDraw')}>${g}</g></g>`,
+  paint:g=>`<rect x="14" y="26" width="68" height="34" rx="10" fill="#e6c9ae"/><path d="M26 44q10-12 20-4t20-3" fill="none" stroke="#22418c" stroke-width="4" stroke-linecap="round" stroke-dasharray="50" class="a" style="animation-name:gLine"/><g transform="translate(26,44)"><g ${an('gDraw')}>${g}</g></g>`,
+  hover:g=>`<circle cx="48" cy="30" r="12" fill="#fbf4ea" stroke="rgba(42,31,25,.25)" stroke-width="2"/><circle cx="48" cy="30" r="12" fill="none" stroke="#a65a38" stroke-width="3.5" pathLength="76" stroke-dasharray="76" transform="rotate(-90 48 30)" class="a" style="animation-name:gRing"/><circle cx="48" cy="30" r="6" fill="#22418c"/><g transform="translate(48,40)">${g}</g>`,
+  thumb:g=>`<circle cx="48" cy="36" r="24" fill="none" stroke="rgba(42,31,25,.15)" stroke-width="3"/><circle cx="48" cy="36" r="24" fill="none" stroke="#4f7a4a" stroke-width="3.5" pathLength="76" stroke-dasharray="76" transform="rotate(-90 48 36)" class="a" style="animation-name:gRing"/><g transform="translate(48,32) scale(1.5)">${GLYPH.thumb}</g>`,
+  turn:g=>`<circle cx="40" cy="40" r="15" ${CLAYF}/><path d="M22 58q18 9 36 0" fill="none" stroke="#2a1f19" stroke-width="2" stroke-linecap="round"/><path d="M54 61l5-3-5-4" fill="none" stroke="#2a1f19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M88 6v52" stroke="#a65a38" stroke-width="3" stroke-dasharray="3 4"/><g transform="translate(74,36)"><g class="a" style="animation-name:gSide">${g}</g></g>`};
+const C=(art,glyph,cam,mouse)=>({art,glyph,cam,mouse});
+const GUIDE={wedgeUI:[C('wedge','open','Open hands: push up, come back','Drag up, then down')],
+  centreUI:[C('hold','side','Palms facing, on the clay, hold','Press beside the clay, hold')],
+  throwUI:[C('tall','side','Palms closer: taller','Drag in: taller'),C('wide','side','Apart, slowly: wider','Drag out, slowly: wider')],
+  alterUI:[C('pull','pinch','Pinch and drag','Press and drag'),C('hover','open','Hover: pick a tool',null)],
+  sculptUI:[C('pull','pinch','Add: pinch, pull out','Add: press, drag out'),C('tap','pinch','Press: pinch once','Press: click once'),C('rub','pinch','Smooth: pinch and rub','Smooth: press and rub'),C('turn','open','Hand at the edge: turn',null),C('hover','open','Hover: pick a tool',null)],
+  leatherUI:[C('carve','point','Point one finger: carve','Press and drag: carve'),C('turn','open','Hand at the edge: turn',null),C('hover','open','Hover: pick a tool',null)],
+  decoUI:[C('paint','point','Point one finger: paint','Press and drag: paint'),C('turn','open','Hand at the edge: turn',null),C('hover','open','Hover: pick a colour',null)],
+  glazeUI:[C('hover','open','Hover over a bucket',null)]};
+const DONEABLE=['wedgeUI','throwUI','alterUI','sculptUI','leatherUI','decoUI'];
+/* the written instructions stay, folded away behind "More" */
+for(const id in GUIDE){const sec=$(id),ps=[...sec.querySelectorAll(':scope > p')].filter(q=>!q.id||q.id.startsWith('cam'));if(!ps.length)continue;
+  const d=document.createElement('details'),sm=document.createElement('summary');d.className='more';sm.textContent='More about this step';ps[0].before(d);d.append(sm,...ps);
+  const g=document.createElement('div');g.className='guide';g.id='guide_'+id;sec.querySelector('h2').after(g)}
+function buildGuide(id){const g=$('guide_'+id);if(!g)return;const cam=mode==='cam'&&CAMUI.includes(id),list=GUIDE[id].slice();if(cam&&DONEABLE.includes(id))list.push(C('thumb','thumb','Thumbs up, hold: next step',null));
+  g.innerHTML=list.filter(c=>cam||c.mouse).map(c=>`<div class="gcard"><svg viewBox="0 0 96 72" role="img" aria-label="${cam?c.cam:c.mouse}">${ART[c.art](cam?GLYPH[c.glyph]:GLYPH.mouse)}</svg>${cam?c.cam:c.mouse}</div>`).join('')}
+
+/* ---------- the ghost hand: where on the piece, which hand shape, which movement ---------- */
+const GHOST={wedge:m=>m==='cam'?[['open',-.45,.95,'gUp'],['open',.45,.95,'gUp']]:[['open',0,.95,'gUp']],
+  centre:()=>[['side',-1.35,.5,'gInL'],['side',1.35,.5,'gInR',1]],throw:()=>[['side',-1.35,.55,'gInL'],['side',1.35,.55,'gInR',1]],
+  alter:()=>[['pinch',.8,.7,'gPull']],sculpt:()=>[['pinch',.55,.85,'gPull']],leather:()=>[['point',-.45,.5,'gDraw']],decorate:()=>[['point',-.45,.5,'gDraw']]};
+const ghost={ph:null,t:0,off:false,spec:null};
+function ghostTick(dt){const g=$('ghost'),make=GHOST[phase];if(!make||!mode){g.hidden=true;ghost.ph=null;return}
+  if(ghost.ph!==phase){ghost.ph=phase;ghost.t=0;ghost.off=false;ghost.spec=make(camNow()?'cam':'mouse');
+    g.innerHTML=ghost.spec.map(q=>`<i><svg viewBox="-14 -14 28 34" style="animation-name:${q[3]}">${camNow()?(q[4]?flip(GLYPH[q[0]]):GLYPH[q[0]]):GLYPH.mouse}</svg></i>`).join('');g.hidden=false}
+  ghost.t+=dt;const did=phase==='wedge'?wedge.n>0:phase==='centre'||phase==='throw'?contact:hands.some(h=>h.p);if((did&&ghost.t>.6)||ghost.t>10)ghost.off=true;
+  g.style.opacity=ghost.off?0:.6;if(ghost.off)return;
+  const Rr=phase==='wedge'?.78:kind==='hand'?.8:Math.max(...P.r),H=phase==='wedge'?1.1:kind==='hand'?1.4:P.h,y0=kind==='hand'&&phase!=='wedge'?.1:0;
+  ghost.spec.forEach((q,i)=>{const[u,v]=screenOf(q[1]*Rr,y0+q[2]*H),el=g.children[i];el.style.left=u*100+'%';el.style.top=v*100+'%'})}
 
 /* ---------- gestures to move on: raise both hands to finish, hover to pick a tool or a glaze ---------- */
 let doneT=0;
-function nextStep(){if(phase==='wedge')finishWedge(false);else if(phase==='throw')toAlter();else if(phase==='alter'||phase==='sculpt')toLeather();else if(phase==='leather')toDecorate();else if(phase==='decorate')toGlaze()}
+function nextStep(){click(.12,1200,.05);if(phase==='wedge')finishWedge(false);else if(phase==='throw')toAlter();else if(phase==='alter'||phase==='sculpt')toLeather();else if(phase==='leather')toDecorate();else if(phase==='decorate')toGlaze()}
 function hoverPick(box,dt,hold,cb){const b=wrap.getBoundingClientRect(),st=box._st||(box._st={q:null,t:0});let hit=null;
   for(const q of box.children){const r=q.getBoundingClientRect();if(camHands.some(h=>{const x=b.left+h.u*b.width,y=b.top+h.v*b.height;return x>r.left&&x<r.right&&y>r.top&&y<r.bottom}))hit=q}
   if(hit!==st.q){st.q=hit;st.t=0}else if(hit)st.t+=dt;for(const q of box.children)q.style.setProperty('--p',q===st.q?clamp(st.t/hold):0);
   if(hit&&st.t>=hold){st.t=-1e9;cb(hit.dataset.k)}}
-function gestures(dt){const cam=mode==='cam'&&camOn,hs=camHands,working=['wedge','throw','alter','sculpt','leather','decorate'].includes(phase);
-  ['hd0','hd1'].forEach((id,i)=>{const h=hs[i],el=$(id);el.hidden=!(cam&&h&&(working||phase==='glaze'));if(!el.hidden){el.style.left=h.u*100+'%';el.style.top=h.v*100+'%';el.classList.toggle('pinch',!!h.p)}});
+/* the pot as it was over the last few seconds, so making the thumbs-up cannot change it */
+const potHist=[];
+function gestures(dt){recTick(dt);breakTick(dt);smashTick(dt);ghostTick(dt);sndTick();exhibitTick(dt);if(phase==='throw'&&P&&(!potHist.length||clock-potHist.at(-1).t>.2)){potHist.push({t:clock,P:structuredClone(P)});if(potHist.length>30)potHist.shift()}else if(phase!=='throw'&&potHist.length)potHist.length=0;
+  const cam=camNow()&&camOn,hs=camHands,working=['wedge','throw','alter','sculpt','leather','decorate'].includes(phase);
+  ['hd0','hd1'].forEach((id,i)=>{const h=hs[i],el=$(id);el.hidden=!(h&&((cam&&working)||(mode==='cam'&&camOn&&phase==='break')));if(!el.hidden){el.style.left=h.u*100+'%';el.style.top=h.v*100+'%';el.classList.toggle('pinch',!!h.p);el.classList.toggle('thumb',h.pose==='thumb');el.classList.toggle('fist',h.pose==='fist');const ps=h.p&&h.pose==='open'?'pinch':h.pose||'open';if(el._p!==ps){el._p=ps;el.innerHTML=`<b><svg viewBox="-14 -14 28 34" aria-hidden="true">${GLYPH[ps]||GLYPH.open}</svg>${POSE[ps]||''}</b>`}}});
   $('doneGesture').hidden=!(cam&&working);$('edgeL').hidden=$('edgeR').hidden=!(cam&&(phase==='sculpt'||phase==='decorate'||phase==='leather'));
-  if(cam&&working){const upV=phase==='throw'?Math.max(screenOf(0,P.h+.35)[1],.3):.3,wide=hs.length>=2&&hs[0].u<.14&&hs[hs.length-1].u>.86,
-      up=hs.length>=2&&!hs.some(h=>h.p)&&(hs.every(h=>h.v<upV)||wide)&&!(phase==='throw'&&contact);
-    doneT=up?doneT+dt:Math.max(0,doneT-dt*2);$('doneBar').style.width=clamp(doneT/2)*100+'%';$('doneText').textContent=up?'Hold still…':phase==='throw'||phase==='wedge'?'Done? Raise both hands high and hold':phase==='decorate'?'Ready to glaze? Raise both hands high and hold':phase==='leather'?'Finished carving? Raise both hands high and hold':'Finished shaping? Raise both hands high and hold';
-    if(doneT>=2){doneT=0;teach('Hands off. Let it dry.',true);nextStep()}}else doneT=0;
+  if(cam&&working){const up=hs.some(h=>h.pose==='thumb');
+    doneT=up?doneT+dt:Math.max(0,doneT-dt*2);$('doneBar').style.width=clamp(doneT/1.5)*100+'%';$('doneText').textContent=up?'Hold it…':phase==='throw'||phase==='wedge'?'Done? Thumbs up and hold':phase==='decorate'?'Ready to glaze? Thumbs up and hold':phase==='leather'?'Finished carving? Thumbs up and hold':'Finished shaping? Thumbs up and hold';
+    if(doneT>=1.5){doneT=0;if(phase==='throw'){const back=potHist.filter(q=>q.t<clock-2.4).pop()||potHist[0];if(back)P=structuredClone(back.P)}teach('Hands off.',true);nextStep()}}else doneT=0;
   if(cam&&(phase==='alter'||phase==='sculpt'||phase==='decorate'||phase==='leather'))hoverPick($('tools'),dt,.8,k=>setTool(k));
   if(cam&&phase==='glaze')hoverPick($('buckets'),dt,1.5,k=>fire(k))}
 $('buckets').hidden=true;
 
 /* ---------- controls ---------- */
-$('useHands').onclick=startCam;
-$('useMouse').onclick=()=>{mode='mouse';begin()};
+$('useHands').onclick=()=>{sndInit();startCam()};
+$('useMouse').onclick=()=>{sndInit();mode='mouse';begin()};
 if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia))$('useHands').hidden=true;
 $('skipCentre').onclick=()=>{centreT=3.2;P.wob=.05;phase='throw';show('throwUI')};
 $('doneThrow').onclick=()=>{if(phase==='throw')toAlter()};
 $('keepIt').onclick=()=>{kept=true;toAlter()};
 $('glazeIt').onclick=()=>{if(phase==='alter')toLeather()};
 $('doneSculpt').onclick=()=>{if(phase==='sculpt')toLeather()};$('doneLeather').onclick=()=>{if(phase==='leather')toDecorate()};$('wedgePush').onclick=()=>{if(phase==='wedge')wedgePush()};$('wedgeDone').onclick=()=>{if(phase==='wedge')finishWedge(false)};$('wedgeSkip').onclick=()=>{if(phase==='wedge')finishWedge(true)};$('doneDeco').onclick=()=>{if(phase==='decorate')toGlaze()};
-$('restart3').onclick=()=>{attempts++;begin()};
+$('restart3').onclick=()=>{attempts++;setRec(getRec()+1);begin()};
 document.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{brush=+b.dataset.b;document.querySelectorAll('[data-b]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 function setMirror(m){mirror=m;$('mirrorBtn').setAttribute('aria-pressed',m);$('mirrorBtn').textContent=`Mirror: ${m?'on':'off'}`;buildTools()}
 $('mirrorBtn').onclick=()=>setMirror(!mirror);
-$('undoS').onclick=()=>{if(undoStack.length){D=undoStack.pop();clayDirty=true}};
-$('undoA').onclick=()=>{const u=alterUndo.pop();if(u){Object.assign(P,u);buildHandles()}};
+const redoStack=[],alterRedo=[],carveRedo=[],decoRedo=[];
+$('undoS').onclick=()=>{if(undoStack.length){redoStack.push(D);D=undoStack.pop();clayDirty=true}};$('redoS').onclick=()=>{if(redoStack.length){undoStack.push(D);D=redoStack.pop();clayDirty=true}};
+$('undoA').onclick=()=>{const u=alterUndo.pop();if(u){alterRedo.push(snapAlter());Object.assign(P,u);buildHandles()}};$('redoA').onclick=()=>{const u=alterRedo.pop();if(u){alterUndo.push(snapAlter());Object.assign(P,u);buildHandles()}};
 for(const[id,d]of[['turnL',-1],['turnR',1],['decoL',-1],['decoR',1],['lthL',-1],['lthR',1]]){const b=$(id);b.addEventListener('pointerdown',()=>turnHold=d);for(const ev of['pointerup','pointerleave','pointercancel'])b.addEventListener(ev,()=>turnHold=0);
   b.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();turn+=d*.25}})}
-document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>setKind(b.dataset.k));
+document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>b.dataset.k==='room'?startRoom():setKind(b.dataset.k));
+document.querySelectorAll('.wheelBtn').forEach(b=>b.onclick=()=>setWheel(!wheelOn));document.querySelectorAll('.spinBtn').forEach(b=>b.onclick=()=>setSpin(!bandSpin));
 $('toIntro').onclick=()=>{setKind(kind==='wheel'?'hand':'wheel');phase='intro';show('introUI');scrollTo({top:0,behavior:RM?'auto':'smooth'})};
-const restart=()=>{attempts++;begin();teach('Wedge it, centre it, again. This is the whole job.',true)};
+const restart=()=>{attempts++;setRec(getRec()+1);begin();teach('Wedge it, centre it, again. This is the whole job.',true)};
 $('restart1').onclick=restart;$('restart2').onclick=restart;
 $('again').onclick=()=>{attempts=1;falls=0;begin()};
 $('clearShelf').onclick=()=>{const b=$('clearShelf');if(!b.dataset.sure){b.dataset.sure='1';b.textContent='Sure? Clear every pot';setTimeout(()=>{b.dataset.sure='';b.textContent='Clear'},4000);return}
   b.dataset.sure='';b.textContent='Clear';try{localStorage.removeItem('firstPot.shelf')}catch{}if(phase==='view')leaveView();drawShelf()};
-function toLeather(){phase='leather';setMat(kind==='hand'?sculptLeather:leatherMat);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){turn=0;pot.position.set(0,0,0)}decoLast=null;carveUndo.length=0;show('leatherUI');
+function toLeather(){if(kind==='hand')handsDown();phase='leather';setMat(kind==='hand'?sculptLeather:leatherMat);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){turn=0;pot.position.set(0,0,0)}decoLast=null;carveUndo.length=0;show('leatherUI');
   teach('A few days under plastic. It is leather-hard now: firm, but you can still carve it.',true)}
 function toDecorate(){phase='decorate';const bq=bisqueOf();bq.emissiveIntensity=0;setMat(bq);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){turn=0;pot.position.set(0,0,0)}decoLast=null;decoUndo.length=0;show('decoUI');
   teach('Bone dry, fired once. Paint it now: the glaze will go over the top.',true)}
-function toGlaze(){phase='glaze';const bq=bisqueOf();bq.emissiveIntensity=0;setMat(bq);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){spin=turn;dragRot=0}else spin=0;marks[0].scale.setScalar(1);show('glazeUI');teach(decoUsed?'Your painting is under there. Now the gamble.':'Now the gamble.',true)}
+function toGlaze(){setSpin(false);phase='glaze';const bq=bisqueOf();bq.emissiveIntensity=0;setMat(bq);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){spin=turn;dragRot=0}else spin=0;marks[0].scale.setScalar(1);show('glazeUI');teach(decoUsed?'Your painting is under there. Now the gamble.':'Now the gamble.',true)}
 
 /* ---------- materials follow whichever piece is on the wheel ---------- */
 const handleMeshes=[];
-function setMat(m){if(kind==='hand')clay.material=m;else{pot.material=m;for(const h of handleMeshes)h.material=m}}
+function setMat(m){if(kind==='hand')clay.material=m;else{pot.material=m;for(const h of handleMeshes)h.material=m}for(const q of sprigMeshes)q.material=m}
 function setKind(k){kind=k;document.querySelectorAll('.mode').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));$('howWheel').hidden=k!=='wheel';$('howHand').hidden=k!=='hand';
-  $('introNote').textContent=k==='wheel'?'Rush, and it wobbles. Too much, and it falls.':'Take your time. There is an undo, and nothing falls over.';
+  $('introNote').textContent=k==='wheel'?'Rush, and it wobbles. Too much, and it falls.':'Still in construction: hand-building works, but it is rough and may change. Take your time. There is an undo, and nothing falls over.';
   if(phase==='intro'){pot.visible=k==='wheel';clay.visible=k==='hand';if(k==='hand'){clay.material=sculptWet;lump();flushClay()}else{P=newClay();buildHandles();pot.material=wetMat}}
   $('scene').setAttribute('aria-label',k==='wheel'?'The wheel. Shape the clay with your hands, mouse or touch. With the keyboard, up and down choose a height, left and right narrow or widen.':'The banding wheel. Pinch or press on the clay to work it. Left and right arrows turn it.');show(curUI)}
 
@@ -653,32 +807,38 @@ const ICON={oval:'<ellipse cx="16" cy="16" rx="13" ry="8" fill="none" stroke="#2
   pull:'<circle cx="12" cy="20" r="8" fill="#a65a38"/><path d="M18 14l9-9M21 5h6v6" fill="none" stroke="#2a1f19" stroke-width="2.5" stroke-linecap="round"/>',
   push:'<circle cx="16" cy="18" r="11" fill="#a65a38"/><circle cx="16" cy="16" r="4" fill="#fbf6ee"/>',
   smooth:'<path d="M3 20c5-8 8 4 13-2s8 4 13-3" fill="none" stroke="#2a1f19" stroke-width="2.5" stroke-linecap="round"/>',
+  words:'<text x="16" y="22" text-anchor="middle" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#2a1f19">Aa</text>',
+  roller:'<rect x="4" y="9" width="24" height="14" rx="3" fill="none" stroke="#2a1f19" stroke-width="2.2"/><path d="M8 16l4-4 4 4-4 4zM16 16l4-4 4 4-4 4z" fill="#a65a38"/>',
+  mark:'<circle cx="16" cy="16" r="11" fill="none" stroke="#2a1f19" stroke-width="2.4"/><circle cx="16" cy="16" r="4" fill="#a65a38"/>',
+  stamp:'<path d="M16 5c2 4 6 5 9 4-1 4 1 7 4 8-3 2-4 5-3 8-4-1-7 0-10 3-2-3-6-4-10-3 1-3 0-6-3-8 3-1 5-4 4-8 3 1 7 0 9-4z" fill="none" stroke="#2a1f19" stroke-width="2" stroke-linejoin="round"/><circle cx="16" cy="17" r="3.5" fill="#a65a38"/>',
+  sprig:'<path d="M4 16q8-9 16 0q-8 9-16 0zM20 16l8-6v12z" fill="#a65a38" stroke="#2a1f19" stroke-width="1.6" stroke-linejoin="round"/>',
   erase:'<path d="M4 22c6-6 10 2 16-3s6-4 8-6" fill="none" stroke="#a65a38" stroke-width="5" stroke-linecap="round"/>',
   cobalt:'<circle cx="16" cy="16" r="11" fill="#22418c"/>',iron:'<circle cx="16" cy="16" r="11" fill="#2b1c14"/>',copper:'<circle cx="16" cy="16" r="11" fill="#9c2f22"/>',slip:'<circle cx="16" cy="16" r="11" fill="#f3ece0" stroke="#2a1f19" stroke-width="1.5"/>',
   print:'<rect x="5" y="7" width="22" height="18" rx="2" fill="none" stroke="#2a1f19" stroke-width="2.5"/><path d="M7 23l7-8 5 5 3-3 4 6" fill="#a65a38"/><circle cx="21" cy="12" r="2.5" fill="#a65a38"/>',
   mirror:'<path d="M16 4v24" stroke="#2a1f19" stroke-width="2" stroke-dasharray="3 3"/><path d="M12 10l-7 6 7 6zM20 10l7 6-7 6z" fill="#a65a38"/>'};
-const TOOLS={leather:[['carve','Carve'],['erase','Smooth over']],deco:[['cobalt','Cobalt'],['iron','Iron'],['copper','Copper'],['slip','White'],['print','Picture']],alter:[['oval','Squeeze'],['spout','Spout'],['handle','Handle']],sculpt:[['pull','Add'],['push','Press'],['smooth','Smooth'],['mirror','Mirror']]};
+const TOOLS={leather:[['carve','Carve'],['erase','Smooth over'],['words','Words'],['roller','Pattern'],['stamp','Stamp'],['mark','My mark'],['sprig','Add-on']],deco:[['cobalt','Cobalt'],['iron','Iron'],['copper','Copper'],['slip','White'],['print','Picture'],['words','Words'],['roller','Pattern'],['stamp','Stamp'],['mark','My mark']],alter:[['oval','Squeeze'],['spout','Spout'],['handle','Handle']],sculpt:[['pull','Add'],['push','Press'],['smooth','Smooth'],['mirror','Mirror']]};
 const HINT={oval:'Pinch or press at the side of the pot and move inward to squeeze it oval, outward to widen it.',spout:'Pinch the rim on one side and pull outward to make a spout.',
   handle:'Pinch the side of the pot near the top, then drag down and outward. Let go where the handle should join.',carve:'Pinch or press on the surface and run along it to carve lines around the pot.'};
 let alterTool='oval',sculptTool='pull',alt=null;const alterUndo=[];
-function setTool(k){if(k==='mirror')return setMirror(!mirror);if(phase==='leather'){carveTool=k;return buildTools()}if(phase==='decorate'){if(k==='print'&&!decoImg)return $('decoFile').click();decoTool=k;return buildTools()}if(phase==='alter'){alterTool=k;$('alterHint').textContent=HINT[k]}else sculptTool=k;buildTools()}
+function setTool(k){if(k==='mirror')return setMirror(!mirror);if(phase==='leather'){carveTool=k;if(BAND[k])teach(k==='mark'?'Touch the piece where your mark should go.':'Now touch the piece at the height where it should go.',true);else if(k==='sprig')teach('Pick a shape, then touch the piece where it should stick.',true);return buildTools()}if(phase==='decorate'){if(k==='print'&&!decoImg)return $('decoFile').click();decoTool=k;if(INK[k])decoInk=k;else if(BAND[k])teach(k==='mark'?'Touch the piece to stamp your mark in your last colour. Change the mark in the Carve step.':'Now touch the piece where it should go. It uses your last colour.',true);return buildTools()}if(phase==='alter'){alterTool=k;$('alterHint').textContent=HINT[k]}else sculptTool=k;buildTools()}
 function buildTools(){const set=phase==='alter'||curUI==='alterUI'?'alter':phase==='decorate'||curUI==='decoUI'?'deco':phase==='leather'||curUI==='leatherUI'?'leather':'sculpt',cur=set==='alter'?alterTool:set==='deco'?decoTool:set==='leather'?carveTool:sculptTool,O=$('tools'),Pn=$(set==='alter'?'alterTools':set==='deco'?'decoTools':set==='leather'?'leatherTools':'sculptTools');O.textContent='';Pn.textContent='';
   for(const[k,label]of TOOLS[set]){const q=document.createElement('button'),i=document.createElement('i'),n=document.createElement('span');q.className='bucket';q.dataset.k=k;q.setAttribute('aria-pressed',k==='mirror'?mirror:k===cur);
     i.innerHTML=`<svg viewBox="0 0 32 32" aria-hidden="true">${ICON[k]}</svg>`;n.textContent=label;q.append(i,n);q.onclick=()=>setTool(k);O.append(q);
     if(k==='mirror')continue;const b=document.createElement('button');b.textContent=label;b.setAttribute('aria-pressed',k===cur);b.onclick=()=>setTool(k);Pn.append(b)}
-  if(set==='alter')$('alterHint').textContent=HINT[alterTool]}
+  O.classList.toggle('many',TOOLS[set].length>5);if(set==='alter')$('alterHint').textContent=HINT[alterTool];document.querySelectorAll('.opt').forEach(o=>o.hidden=o.dataset.for!==cur)}
 function rAtH(y){const f=clamp(y/P.h)*(K-1),i=Math.min(K-2,f|0),t=f-i;return lerp(P.r[i],P.r[i+1],t)}
 function buildHandles(){for(const m of handleMeshes){pot.remove(m);m.geometry.dispose()}handleMeshes.length=0;
   for(const q of P.handles){const side=q.side,rs=y=>rAtH(y)*(1-P.oval)-.04,V=(x,y)=>new THREE.Vector3(x,y,0),top=Math.max(rs(q.y1),rs(q.y2));
     const curve=new THREE.CatmullRomCurve3([V(side*rs(q.y1),q.y1),V(side*(rs(q.y1)+q.out*.7),q.y1+.1),V(side*(top+q.out),(q.y1+q.y2)/2+.04),V(side*(rs(q.y2)+q.out*.55),q.y2-.02),V(side*rs(q.y2),q.y2)]);
     const m=new THREE.Mesh(new THREE.TubeGeometry(curve,48,.075,12,false),pot.material);m.castShadow=true;pot.add(m);handleMeshes.push(m)}}
 function snapAlter(){return{oval:P.oval,spout:P.spout,spoutSide:P.spoutSide,grooves:P.grooves.map(g=>({...g})),handles:P.handles.map(h=>({...h}))}}
-function toAlter(){phase='alter';pot.position.set(0,0,0);dragRot=0;ring.visible=false;alterUndo.length=0;show('alterUI');teach('The wheel has stopped. Now your hands can do what the wheel cannot.',true)}
+function toAlter(){handsDown();phase='alter';pot.position.set(0,0,0);dragRot=0;ring.visible=false;alterUndo.length=0;show('alterUI');teach('The wheel has stopped. Now your hands can do what the wheel cannot.',true)}
+const handsDown=()=>{if(mode==='cam')setTimeout(()=>teach('Hands down. From here on, use the mouse or your finger: the fine work is easier that way.',true),50)};
 function alterTick(dt){gatherHands();ring.visible=false;marks[1].visible=false;const h=hands.find(x=>x.p),hov=h||hands[0];
   if(hov){const y=clamp(heightFrac(hov.v),0,1.05)*P.h;marks[0].visible=true;marks[0].position.set(worldX(hov.u,y),y,0);touchMat.emissive.setHex(h?0xd06a3a:0);touchMat.emissiveIntensity=h?.6:0}else marks[0].visible=false;
   if(!h){alt=null;return}
   const f=heightFrac(h.v),y=clamp(f)*P.h,x=worldX(h.u,y),side=x>=0?1:-1,rr=rAtH(y),dx=Math.abs(x)-rr*(1-P.oval);
-  if(!alt){alterUndo.push(snapAlter());if(alterUndo.length>12)alterUndo.shift();alt={tool:alterTool,y0:y,side};
+  if(!alt){alterUndo.push(snapAlter());alterRedo.length=0;if(alterUndo.length>12)alterUndo.shift();alt={tool:alterTool,y0:y,side};
     if(alterTool==='handle'&&!(dx<.5&&f>.25&&f<.98))alt.tool='none';if(alterTool==='spout'&&f<.6)alt.tool='none'}
   switch(alt.tool){
     case'oval':if(dx<.6){let ax=Math.abs(x);const two=hands.filter(q=>q.p);if(two.length>=2)ax=Math.abs(worldX(two[0].u,y)-worldX(two[1].u,y))/2;P.oval=clamp(lerp(P.oval,(rr-ax)/rr*.9,Math.min(1,dt*3)),-.3,.35)}break;
@@ -719,11 +879,11 @@ function smoothAt(H,dt){smoothOne(H,dt,brush*1.3);if(mirror&&Math.abs(H.x)>.06)s
 let brush=.17,mirror=true,userZoom=1;
 function beginSculpt(){P=newClay();P.h=1.9;pot.visible=false;clay.visible=true;clay.material=sculptWet;lump();flushClay();undoStack=[];turn=0;eng=null;sCount={pull:0,push:0,smooth:0};glazeType=null;seed=R()*1e9|0;
   phase='sculpt';show('sculptUI');teach(mode==='cam'?'Pinch the clay and pull out to add. Open your hand to stop.':'Press on the clay and drag to work it.',true)}
-function sculptTick(dt){gatherHands();if(mode==='cam')for(const x of hands)if(!x.p&&(x.u<.07||x.u>.93))turn+=(x.u<.5?-1:1)*1.1*dt;
+function sculptTick(dt){if(bandSpin)turn+=1.5*dt;gatherHands();if(mode==='cam')for(const x of hands)if(!x.p&&(x.u<.07||x.u>.93))turn+=(x.u<.5?-1:1)*1.1*dt;
   turn+=turnHold*1.4*dt;clay.rotation.y=turn;head.rotation.y=turn;clay.updateMatrixWorld();
   const h=hands.find(x=>x.p)||hands[0],engaged=!!(h&&h.p),hit=h?hitClay(h.u,h.v):null;marks[1].visible=false;ring.visible=false;
   marks[0].visible=!!hit;marks[0].scale.setScalar(hit?brush*CS/.13:1);if(hit){marks[0].position.copy(hit.world);touchMat.emissive.setHex(engaged?0xd06a3a:0);touchMat.emissiveIntensity=engaged?.6:0}
-  if(engaged&&!eng&&hit){undoStack.push(D.slice());if(undoStack.length>8)undoStack.shift();sCount[sculptTool]++;
+  if(engaged&&!eng&&hit){undoStack.push(D.slice());redoStack.length=0;if(undoStack.length>8)undoStack.shift();sCount[sculptTool]++;
     eng={tool:sculptTool,A:keepIn(hit.local.clone().addScaledVector(hit.n,-.06)),Aw:hit.world,base:sculptTool==='pull'?D.slice():null,spent:0};if(sculptTool==='push')pushAt(hit.local,hit.n);if(sCount.pull===3&&sculptTool==='pull')teach('Ears? A tail? You decide what it is.',true)}
   /* letting go of a pull softens it once, so it joins the body instead of looking stuck on */
   if(!engaged&&eng){if(eng.tool==='pull'&&eng.B){const m=eng.A.clone().lerp(eng.B,.5),r=brush+eng.A.distanceTo(eng.B)*.6;smoothOne(m,.1,r);smoothOne(eng.A,.2,brush*1.5);if(mirror&&Math.abs(m.x)>.06){smoothOne(mir(m),.1,r);smoothOne(mir(eng.A),.2,brush*1.5)}}eng=null}
@@ -756,51 +916,52 @@ const DW=1024,DH=512,deco=document.createElement('canvas');deco.width=DW;deco.he
 const decoTex=new THREE.CanvasTexture(deco);decoTex.colorSpace=THREE.SRGBColorSpace;decoTex.wrapS=THREE.RepeatWrapping;decoTex.generateMipmaps=false;decoTex.minFilter=THREE.LinearFilter;
 const carv=document.createElement('canvas');carv.width=DW;carv.height=DH;const cg=carv.getContext('2d');
 const carveTex=new THREE.CanvasTexture(carv);carveTex.wrapS=THREE.RepeatWrapping;carveTex.generateMipmaps=false;carveTex.minFilter=THREE.LinearFilter;
-const DU={carveMap:{value:carveTex},decoMap:{value:decoTex},decoY:{value:new THREE.Vector2(0,1)}};
+const DU={decoMarble:{value:0},carveMap:{value:carveTex},decoMap:{value:decoTex},decoY:{value:new THREE.Vector2(0,1)}};
 const INK={cobalt:'#22418c',iron:'#2b1c14',copper:'#9c2f22',slip:'#f3ece0'};
 let decoTool='cobalt',decoSize=.07,decoImg=null,decoUsed=false,decoLast=null,decoEng=false;const decoUndo=[],decoCols=new Set();let decoPrints=0;
-function decoPatch(m,glz){m.onBeforeCompile=sh=>{sh.uniforms.decoMap=DU.decoMap;sh.uniforms.carveMap=DU.carveMap;sh.uniforms.decoY=DU.decoY;sh.uniforms.decoGlz={value:glz};
+function decoPatch(m,glz){m.onBeforeCompile=sh=>{sh.uniforms.decoMap=DU.decoMap;sh.uniforms.decoMarble=DU.decoMarble;sh.uniforms.carveMap=DU.carveMap;sh.uniforms.decoY=DU.decoY;sh.uniforms.decoGlz={value:glz};
   sh.vertexShader='varying vec3 vDecoP;varying vec3 vDecoN;\n'+sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvDecoP=position;vDecoN=normal;');
-  sh.fragmentShader='uniform sampler2D decoMap;uniform sampler2D carveMap;uniform vec2 decoY;uniform float decoGlz;varying vec3 vDecoP;varying vec3 vDecoN;\n'+sh.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
+  sh.fragmentShader='uniform sampler2D decoMap;uniform sampler2D carveMap;uniform float decoMarble;uniform vec2 decoY;uniform float decoGlz;varying vec3 vDecoP;varying vec3 vDecoN;\n'+sh.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
     vec2 dq=vec2(atan(vDecoP.x,vDecoP.z)/6.2831853+.5,(vDecoP.y-decoY.x)/decoY.y);vec4 dk=texture2D(decoMap,dq);
     float cw=smoothstep(-.35,0.,dot(vDecoN.xz,normalize(vDecoP.xz+vec2(1e-5))))*step(0.,dq.y)*step(dq.y,1.),dw=dk.a*cw;
     vec3 dc=mix(dk.rgb,dk.rgb*diffuseColor.rgb*1.5,.22*decoGlz);diffuseColor.rgb=mix(diffuseColor.rgb,dc,dw*(1.-.12*decoGlz));
     float c0=texture2D(carveMap,dq).a,cu=texture2D(carveMap,dq+vec2(0.,.005)).a,cd=texture2D(carveMap,dq-vec2(0.,.005)).a;
-    diffuseColor.rgb*=(1.-cw*c0*(.22+.3*decoGlz))*(1.+cw*.5*(cu-cd));`)};return m}
-decoPatch(bisqueMat,0);decoPatch(sculptBisque,0);
+    diffuseColor.rgb*=(1.-cw*c0*(.22+.3*decoGlz))*(1.+cw*.5*(cu-cd));
+    float mb=smoothstep(.5,.85,sin(vDecoP.y*13.+sin(vDecoP.x*5.+vDecoP.z*4.)*2.2)*.5+.5);diffuseColor.rgb=mix(diffuseColor.rgb,diffuseColor.rgb*vec3(.6,.52,.47),mb*decoMarble*(1.-.55*decoGlz));`)};return m}
+decoPatch(bisqueMat,0);decoPatch(sculptBisque,0);decoPatch(wetMat,0);decoPatch(sculptWet,0);
 const leatherMat=decoPatch(new THREE.MeshStandardMaterial({map:canvasTex(streaks('#b07656','80,44,26','214,170,138')),roughness:.78}),0),sculptLeather=decoPatch(new THREE.MeshStandardMaterial({color:0xb4785a,roughness:.8}),0);
 let carveTool='carve',carveSize=.04,carveUsed=false;const carveUndo=[];
-function clearDeco(all){dg.clearRect(0,0,DW,DH);cg.clearRect(0,0,DW,DH);decoTex.needsUpdate=carveTex.needsUpdate=true;if(all){decoUsed=carveUsed=false;decoCols.clear();decoPrints=0;decoUndo.length=0;carveUndo.length=0}}
+function clearDeco(all){if(all)bandUsed.clear();dg.clearRect(0,0,DW,DH);cg.clearRect(0,0,DW,DH);decoTex.needsUpdate=carveTex.needsUpdate=true;if(all){decoUsed=carveUsed=false;decoCols.clear();decoPrints=0;decoUndo.length=0;carveUndo.length=0}}
 const carveURL=()=>{const c=document.createElement('canvas');c.width=DW/2;c.height=DH/2;c.getContext('2d').drawImage(carv,0,0,DW/2,DH/2);const u=c.toDataURL('image/webp',.7);return u.startsWith('data:image/webp')?u:c.toDataURL('image/png')};
 const decoURL=()=>{const u=deco.toDataURL('image/webp',.82);return u.startsWith('data:image/webp')?u:deco.toDataURL('image/png')};
 function decoSave(){const cp=src=>{const c=document.createElement('canvas');c.width=DW;c.height=DH;c.getContext('2d').drawImage(src,0,0);return c};return{c:cp(deco),k:cp(carv),used:decoUsed,cut:carveUsed}}
 function decoRestore(s){clearDeco();if(s){dg.drawImage(s.c,0,0);cg.drawImage(s.k,0,0);decoUsed=s.used;carveUsed=s.cut}decoTex.needsUpdate=carveTex.needsUpdate=true}
 function loadDeco(url,cut){clearDeco();for(const[u,g,t]of[[url,dg,decoTex],[cut,cg,carveTex]]){if(!u)continue;const im=new Image();im.onload=()=>{g.drawImage(im,0,0,DW,DH);t.needsUpdate=true};im.src=u}}
 /* where the brush meets the surface: the point on the piece, in its own coordinates */
-function decoHit(u,v){if(kind==='hand'){const h=hitClay(u,v);if(!h||h.n.x*h.local.x+h.n.z*h.local.z< -.3*Math.hypot(h.local.x,h.local.z))return null;return{p:h.local,world:h.world,k:1/CS}}
+function decoHit(u,v){if(kind==='hand'){const h=hitClay(u,v);if(!h||h.n.x*h.local.x+h.n.z*h.local.z< -.3*Math.hypot(h.local.x,h.local.z))return null;return{p:h.local,world:h.world,k:1/CS,n:h.n}}
   rc.setFromCamera({x:u*2-1,y:1-v*2},cam);const r=rc.intersectObject(pot,false)[0];if(!r)return null;const p=pot.worldToLocal(r.point.clone());
-  if(r.face&&r.face.normal.x*p.x+r.face.normal.z*p.z<0)return null;return{p,world:r.point,k:1}}
+  if(r.face&&r.face.normal.x*p.x+r.face.normal.z*p.z<0)return null;return{p,world:r.point,k:1,n:r.face.normal.clone(),uv:r.uv}}
 function decoAt(p,k){const y0=kind==='hand'?-1:0,hr=kind==='hand'?2:P.h+.06,r=Math.max(.08,Math.hypot(p.x,p.z));
   return{x:(Math.atan2(p.x,p.z)/(2*Math.PI)+.5)*DW,y:(1-(p.y-y0)/hr)*DH,sx:k/(2*Math.PI*r)*DW,sy:k/hr*DH}}
 function wrapDraw(x,w,fn){fn(x);if(x-w<0)fn(x+DW);if(x+w>DW)fn(x-DW)}
-function dot(q){const rx=Math.min(DW/6,decoSize*q.sx),ry=decoSize*q.sy;dg.fillStyle=INK[decoTool];wrapDraw(q.x,rx,x=>{dg.beginPath();dg.ellipse(x,q.y,rx,ry,0,0,6.2832);dg.fill()})}
+function dot(q){const rx=Math.min(DW/6,decoSize*q.sx),ry=decoSize*q.sy;dg.fillStyle=INK[decoInk];wrapDraw(q.x,rx,x=>{dg.beginPath();dg.ellipse(x,q.y,rx,ry,0,0,6.2832);dg.fill()})}
 function stroke(a,b,sz=decoSize,f=dot){if(!a||Math.abs(a.x-b.x)>DW/2)return f(b);const n=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)/(Math.min(sz*b.sx,sz*b.sy)*.3)));
   for(let i=1;i<=n;i++){const t=i/n;f({x:lerp(a.x,b.x,t),y:lerp(a.y,b.y,t),sx:b.sx,sy:b.sy})}}
 /* a carved line: soft at its edges, so the light can find both walls of the groove */
 function cdot(q){const rx=Math.min(DW/6,carveSize*q.sx),ry=carveSize*q.sy;cg.save();if(carveTool==='erase'){cg.globalCompositeOperation='destination-out';cg.globalAlpha=.5}
   wrapDraw(q.x,rx,x=>{cg.setTransform(rx*(carveTool==='erase'?2.2:1),0,0,ry*(carveTool==='erase'?2.2:1),x,q.y);const gr=cg.createRadialGradient(0,0,0,0,0,1);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.45,'rgba(255,255,255,.9)');gr.addColorStop(1,'rgba(255,255,255,0)');cg.fillStyle=gr;cg.beginPath();cg.arc(0,0,1,0,6.2832);cg.fill()});cg.restore()}
 function printAt(q){const wW=decoSize*11,wH=wW*decoImg.height/decoImg.width,w=Math.min(DW*.9,wW*q.sx),h=wH*q.sy;wrapDraw(q.x,w/2,x=>dg.drawImage(decoImg,x-w/2,q.y-h/2,w,h))}
-function decoTick(dt){gatherHands();if(mode==='cam')for(const x of hands)if(!x.p&&(x.u<.07||x.u>.93))turn+=(x.u<.5?-1:1)*1.1*dt;turn+=turnHold*1.4*dt;
+function decoTick(dt){if(bandSpin)turn+=1.5*dt;gatherHands();if(camNow())for(const x of hands)if(!x.p&&(x.u<.07||x.u>.93))turn+=(x.u<.5?-1:1)*1.1*dt;turn+=turnHold*1.4*dt;
   const ob=kind==='hand'?clay:pot;ob.rotation.y=turn;head.rotation.y=turn;ob.updateMatrixWorld();marks[1].visible=false;ring.visible=false;
   const h=hands.find(x=>x.p)||hands[0],engaged=!!(h&&h.p),hit=h?decoHit(h.u,h.v):null;
   const carving=phase==='leather',sz=carving?carveSize:decoSize;
   marks[0].visible=!!hit&&(carving||decoTool!=='print');if(hit){marks[0].position.copy(hit.world);marks[0].scale.setScalar(Math.max(.025,sz)/.13);touchMat.emissive.setHex(engaged?0xd06a3a:0);touchMat.emissiveIntensity=engaged?.6:0}
   if(!engaged){decoEng=false;decoLast=null;return}if(!hit){decoLast=null;return}
   const q=decoAt(hit.p,hit.k);
-  if(carving){if(!decoEng){decoEng=true;carveUndo.push(cg.getImageData(0,0,DW,DH));if(carveUndo.length>10)carveUndo.shift();if(carveTool==='carve')carveUsed=true}stroke(decoLast,q,carveSize,cdot);decoLast=q;carveTex.needsUpdate=true;return}
-  if(!decoEng){decoEng=true;decoUndo.push(dg.getImageData(0,0,DW,DH));if(decoUndo.length>10)decoUndo.shift();decoUsed=true;
-    if(decoTool==='print'){if(decoImg){printAt(q);decoPrints++}decoTex.needsUpdate=true;return}decoCols.add(decoTool)}
-  if(decoTool==='print')return;stroke(decoLast,q);decoLast=q;decoTex.needsUpdate=true}
+  if(carving){if(!decoEng){decoEng=true;carveUndo.push(cg.getImageData(0,0,DW,DH));carveRedo.length=0;if(carveUndo.length>10)carveUndo.shift();if(carveTool==='sprig'){addSprig({t:sprigKind,p:hit.p.toArray(),n:hit.n.toArray(),s:+(carveSize*8.5*hit.k).toFixed(3),uv:hit.uv?hit.uv.toArray():[0,0]});play('tap_on_pot1',.6)||thud(.35)}else if(carveTool!=='erase')carveUsed=true;if(BAND[carveTool]){BAND[carveTool](cg,q,'#fff',carveSize*5,true);carveTex.needsUpdate=true;bandUsed.add(carveTool);thud(.3)}}if(BAND[carveTool]||carveTool==='sprig')return;stroke(decoLast,q,carveSize,cdot);decoLast=q;carveTex.needsUpdate=true;return}
+  if(!decoEng){decoEng=true;decoUndo.push(dg.getImageData(0,0,DW,DH));decoRedo.length=0;if(decoUndo.length>10)decoUndo.shift();decoUsed=true;
+    if(decoTool==='print'){if(decoImg){printAt(q);decoPrints++}decoTex.needsUpdate=true;return}decoCols.add(decoInk);if(BAND[decoTool]){BAND[decoTool](dg,q,INK[decoInk],decoSize*3.2,false);decoTex.needsUpdate=true;bandUsed.add(decoTool);return}}
+  if(decoTool==='print'||BAND[decoTool])return;stroke(decoLast,q);decoLast=q;decoTex.needsUpdate=true}
 /* a picture: shrunk to a sensible size, and if it sits on white paper the white is left off, like a decal */
 $('decoPic').onclick=()=>$('decoFile').click();
 $('decoFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;let bm;try{bm=await createImageBitmap(f)}catch{teach('That file could not be opened as a picture.',true);return}
@@ -812,13 +973,101 @@ $('decoFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(
   decoImg=c;decoTool='print';buildTools();teach('Now touch the piece where the picture should go. Each touch prints it once.',true)};
 document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{decoSize=+b.dataset.d;document.querySelectorAll('[data-d]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{carveSize=+b.dataset.c;document.querySelectorAll('[data-c]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
-$('undoC').onclick=()=>{const u=carveUndo.pop();if(u){cg.putImageData(u,0,0);carveTex.needsUpdate=true}};
-$('undoD').onclick=()=>{const u=decoUndo.pop();if(u){dg.putImageData(u,0,0);decoTex.needsUpdate=true}};
-$('clearD').onclick=()=>{decoUndo.push(dg.getImageData(0,0,DW,DH));clearDeco()};
-function decoLine(){const w=wedgeLine(),c=carveUsed?'You carved into it while it was leather-hard.':'',d=paintLine();return[w,c,d].filter(Boolean).join(' ')}
-function paintLine(){if(!decoUsed)return'';const N={cobalt:'cobalt blue',iron:'iron black',copper:'copper red',slip:'white slip'},c=[...decoCols].map(k=>N[k]);
+$('undoC').onclick=()=>{const u=carveUndo.pop();if(u){carveRedo.push(cg.getImageData(0,0,DW,DH));cg.putImageData(u,0,0);carveTex.needsUpdate=true}};$('redoC').onclick=()=>{const u=carveRedo.pop();if(u){carveUndo.push(cg.getImageData(0,0,DW,DH));cg.putImageData(u,0,0);carveTex.needsUpdate=true}};
+$('undoD').onclick=()=>{const u=decoUndo.pop();if(u){decoRedo.push(dg.getImageData(0,0,DW,DH));dg.putImageData(u,0,0);decoTex.needsUpdate=true}};$('redoD').onclick=()=>{const u=decoRedo.pop();if(u){decoUndo.push(dg.getImageData(0,0,DW,DH));dg.putImageData(u,0,0);decoTex.needsUpdate=true}};
+$('clearD').onclick=()=>{decoUndo.push(dg.getImageData(0,0,DW,DH));decoRedo.length=0;dg.clearRect(0,0,DW,DH);decoTex.needsUpdate=true};
+function decoLine(){const w=[wedgeLine(),marbleN?`The clay of ${marbleN===1?'a pot':marbleN+' pots'} that failed before it is marbled through this one.`:''].filter(Boolean).join(' '),c=carveUsed?'You carved into it while it was leather-hard.':'',d=paintLine();return[w,c,d].filter(Boolean).join(' ')}
+const QUIP={celadon:'Celadon: calm green, pooled wherever it pleased.',tenmoku:'Tenmoku: black with rusty edges, like good toast.',shino:'Shino: milky, with orange where the flame got nosy.',ash:'Wood ash: drippy. The kiln did that, not you.',
+  cobalt:'Cobalt: very blue. No notes.',copper:'Copper red: dramatic, and it knows it.',turquoise:'Turquoise: ran everywhere. Enthusiastic.',honey:'Honey amber: looks like tea. Do not drink it.',white:'Tin white: hides nothing. Brave.',black:'Soft black: goes with everything.'};
+function sprigNames(){const cnt={};for(const q of sprigList)cnt[q.t]=(cnt[q.t]||0)+1;const n=Object.entries(cnt).map(([k,v])=>v>1?`${v} ${k==='fish'?'fish':k==='leaf'?'leaves':SPRIG[k].toLowerCase()+'s'}`:`a ${SPRIG[k].toLowerCase()}`);return n.length>1?n.slice(0,-1).join(', ')+' and '+n.at(-1):n[0]||''}
+/* what the card says: one line on the shape, the two most notable things that happened, one on the glaze */
+function shortNote(){const s=[],hand=kind==='hand',bits=[];
+  if(hand){const b=clayBounds();s.push(sCount.pull+sCount.push+sCount.smooth===0?'A lump. You left it a lump. Bold.':b.h>b.w*1.3?'Tall, for a lump.':b.w>b.h*1.4?'Low, wide and unbothered.':'It is definitely a something.')}
+  else{const ratio=P.h/Math.max(...P.r);s.push(kept?'It fell over and you kept it anyway. Respect.':ratio>2.2?'A vase with ambitions.':ratio<.9?'Technically a bowl.':'Pot-shaped. Mostly.')}
+  if(blown)bits.push(wedgeAir>.6?'You skipped the wedging and the kiln noticed.':'One air bubble got through. The kiln found it.');
+  if(marbleN)bits.push(`Contains ${marbleN===1?'one failed pot':marbleN+' failed pots'}. Recycling.`);
+  if(sprigList.length)bits.push(`Now with ${sprigNames()}.`);
+  if(!hand&&P.spout>.15)bits.push('It has a spout, so it has opinions.');
+  if(!hand&&P.handles.length)bits.push(P.handles.length>1?'Two handles. Ears, really.':'One handle. Hold on.');
+  const deco=[carveUsed&&'carved',decoUsed&&'painted',bandUsed.has('stamp')&&'stamped',bandUsed.has('words')&&'written on',bandUsed.has('roller')&&'patterned'].filter(Boolean);
+  if(deco.length)bits.push(deco.length>2?'Decorated like you were paid by the mark.':`${deco.join(' and ').replace(/^./,c=>c.toUpperCase())}, by you.`);
+  if(attempts>2)bits.push(`Attempt ${attempts}. Who is counting.`);
+  s.push(...bits.slice(0,2));s.push((QUIP[glazeType]||glazeLine(glazeType))+(sheen==='matte'?' Matte, too.':sheen==='satin'?' Satin finish.':''));return s.join(' ')}
+function paintLine(){const extra=[bandUsed.has('words')?'Your words run around it.':'',bandUsed.has('roller')?'A pattern is rolled around it.':'',bandUsed.has('stamp')?'You stamped it.':'',bandUsed.has('mark')?'Your mark is pressed into it.':''].filter(Boolean).join(' ');const base=paintLine0(),cnt={};for(const q of sprigList)cnt[q.t]=(cnt[q.t]||0)+1;const names=Object.entries(cnt).map(([k,v])=>v>1?`${v} ${k==='fish'?'fish':k==='leaf'?'leaves':SPRIG[k].toLowerCase()+'s'}`:`a ${SPRIG[k].toLowerCase()}`),stuck=names.length?`You stuck on ${names.length>1?names.slice(0,-1).join(', ')+' and '+names.at(-1):names[0]}.`:'';return[base,extra,stuck].filter(Boolean).join(' ')}
+function paintLine0(){if(!decoUsed)return'';const N={cobalt:'cobalt blue',iron:'iron black',copper:'copper red',slip:'white slip'},c=[...decoCols].map(k=>N[k]);
   const a=c.length?`You painted it in ${c.length>1?c.slice(0,-1).join(', ')+' and '+c.at(-1):c[0]}`:'';const b=decoPrints?(a?`, and printed a picture on it ${decoPrints>1?decoPrints+' times':''}`.trimEnd():`You printed a picture on it${decoPrints>1?' '+decoPrints+' times':''}`):'';
   return a||b?a+b+'.':''}
+
+/* ---------- add-ons: small clay shapes stuck on at leather-hard (potters call them sprigs) ---------- */
+const SPRIG={fish:'Fish',cat:'Cat',bow:'Bow',flower:'Flower',leaf:'Leaf'};let sprigKind='fish',sprigList=[];const sprigMeshes=[],sprigGeo={};
+/* the cat's mouth: two small curves side by side, as a thin band */
+const catY=x=>-.11-.065*Math.sin(Math.PI*Math.abs(x)/.15),CATMOUTH=w=>{const a=[],b=[];for(let i=0;i<=24;i++){const x=-.15+.3*i/24;a.push([x,catY(x)+w]);b.unshift([x,catY(x)-w])}return a.concat(b)};
+function sprigShape(t){const S=new THREE.Shape();
+  if(t==='fish'){S.moveTo(-.5,0);S.bezierCurveTo(-.3,.34,.12,.34,.26,.04);S.lineTo(.5,.26);S.lineTo(.5,-.26);S.lineTo(.26,-.04);S.bezierCurveTo(.12,-.34,-.3,-.34,-.5,0)}
+  else if(t==='cat'){S.moveTo(-.36,-.3);S.bezierCurveTo(-.5,-.1,-.48,.12,-.4,.2);S.lineTo(-.42,.5);S.lineTo(-.16,.34);S.bezierCurveTo(-.06,.38,.06,.38,.16,.34);S.lineTo(.42,.5);S.lineTo(.4,.2);S.bezierCurveTo(.48,.12,.5,-.1,.36,-.3);S.bezierCurveTo(.2,-.44,-.2,-.44,-.36,-.3)}
+  else if(t==='bow'){S.moveTo(-.08,.06);S.lineTo(-.5,.3);S.bezierCurveTo(-.56,.1,-.56,-.1,-.5,-.3);S.lineTo(-.08,-.06);S.lineTo(-.2,-.42);S.lineTo(-.04,-.34);S.lineTo(0,-.14);S.lineTo(.04,-.34);S.lineTo(.2,-.42);S.lineTo(.08,-.06);S.lineTo(.5,-.3);S.bezierCurveTo(.56,-.1,.56,.1,.5,.3);S.lineTo(.08,.06);S.bezierCurveTo(.04,.12,-.04,.12,-.08,.06)}
+  else if(t==='flower'){for(let i=0;i<=80;i++){const a=i/80*6.2832,r=.34+.16*Math.cos(5*a);i?S.lineTo(Math.cos(a)*r,Math.sin(a)*r):S.moveTo(r,0)}}
+  else{S.moveTo(-.5,-.06);S.bezierCurveTo(-.2,.38,.24,.34,.5,.06);S.bezierCurveTo(.26,-.34,-.2,-.3,-.5,-.06)}
+  return S}
+function sprigGeom(t){if(!sprigGeo[t]){const g=new THREE.ExtrudeGeometry(sprigShape(t),{depth:.2,bevelEnabled:true,bevelThickness:.08,bevelSize:.05,bevelSegments:4,curveSegments:14});g.translate(0,0,.03);sprigGeo[t]=g}return sprigGeo[t]}
+/* the shape is laid flat against the surface where you touched, the right way up, and sunk in a little so it joins */
+function addSprig(q){const parent=kind==='hand'?clay:pot,n=new THREE.Vector3().fromArray(q.n).normalize(),x=new THREE.Vector3(0,1,0).cross(n);if(x.lengthSq()<1e-4)x.set(1,0,0);x.normalize();const y=n.clone().cross(x),
+    m=new THREE.Matrix4().makeBasis(x,y,n).scale(new THREE.Vector3(q.s,q.s,q.s)).setPosition(new THREE.Vector3().fromArray(q.p).addScaledVector(n,q.s*.03)),g=sprigGeom(q.t).clone();g.applyMatrix4(m);
+  const nv=g.attributes.position.count,uvA=g.attributes.uv.array;for(let i=0;i<nv;i++){uvA[i*2]=q.uv[0];uvA[i*2+1]=q.uv[1]}g.setAttribute('color',new THREE.BufferAttribute(new Float32Array(nv*3).fill(1),3));
+  const mesh=new THREE.Mesh(g,parent.material);mesh.castShadow=true;parent.add(mesh);sprigMeshes.push(mesh);sprigList.push(q)}
+function setSprigs(list){for(const m of sprigMeshes){m.parent&&m.parent.remove(m);m.geometry.dispose()}sprigMeshes.length=0;sprigList=[];for(const q of list)addSprig({...q})}
+/* on a hand-built piece the glaze is painted on point by point, so the add-ons are given the glaze colour too */
+function tintSprigs(type){const G=GL[type],c=new THREE.Color().setRGB(G.base[0]/255,G.base[1]/255,G.base[2]/255,THREE.SRGBColorSpace);for(const m of sprigMeshes){const a=m.geometry.attributes.color;for(let i=0;i<a.count;i++)a.setXYZ(i,c.r,c.g,c.b);a.needsUpdate=true}}
+{const box=$('sprigKinds');for(const k in SPRIG){const b=document.createElement('button');b.textContent=SPRIG[k];b.setAttribute('aria-pressed',k===sprigKind);b.onclick=()=>{sprigKind=k;[...box.children].forEach(o=>o.setAttribute('aria-pressed',o===b))};box.append(b)}}
+$('sprigUndo').onclick=()=>{if(sprigList.length)setSprigs(sprigList.slice(0,-1))};
+
+/* ---------- bands and stamps: words around the pot, a rolled pattern, your own mark ---------- */
+let decoInk='cobalt',wordsSpot=false,wordsText='',pat={folds:4,seed:R()*1e9|0};const bandUsed=new Set(),patC=document.createElement('canvas');patC.width=patC.height=128;
+const soft=(g,on)=>{try{g.filter=on?'blur(1.1px)':'none'}catch{}};
+/* words: the sentence is repeated as many whole times as fit, then stretched a little so it closes exactly */
+function bandWords(g,q,color,size,carve){const text=(wordsText||'').trim();if(!text){teach('Type your words in the panel first.',true);return}const F=clamp(size*q.sy,9,130),xs=q.sx/q.sy,unit=text+'   ·   ';
+  if(wordsSpot){g.save();g.font=`600 ${F}px "STIX Two Text",Georgia,serif`;const w0=g.measureText(text).width,k=Math.min(xs,DW*.9/w0);g.fillStyle=color;g.textBaseline='middle';g.textAlign='center';soft(g,carve);
+    wrapDraw(q.x,w0*k/2,x=>{g.setTransform(k,0,0,k/xs,x,q.y);g.fillText(text,0,0)});g.restore();soft(g,false);return}
+  g.save();g.font=`600 ${F}px "STIX Two Text",Georgia,serif`;const w=g.measureText(unit).width,n=Math.max(1,Math.round(DW/(w*xs)));g.setTransform(DW/(n*w),0,0,1,0,q.y);g.fillStyle=color;g.textBaseline='middle';soft(g,carve);
+  for(let i=0;i<n;i++)g.fillText(unit,i*w,0);g.restore();soft(g,false)}
+/* a pattern tile: a few marks, repeated by turning and mirroring, like folded cut paper */
+function makePattern(){const g=patC.getContext('2d'),rr=rng(pat.seed),n=pat.folds;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,128,128);g.strokeStyle=g.fillStyle='#fff';g.lineCap='round';
+  const shapes=Array.from({length:3},()=>({t:rr()*3|0,a:8+rr()*46,b:6+rr()*50,c:rr()*.9,w:3+rr()*5}));
+  for(let k=0;k<n;k++)for(const m of[1,-1]){g.setTransform(1,0,0,1,64,64);g.rotate(k*2*Math.PI/n);g.scale(1,m);
+    for(const q of shapes){g.lineWidth=q.w;g.beginPath();if(q.t===0){g.moveTo(q.a*.3,2);g.quadraticCurveTo(q.a,q.b*q.c,Math.min(58,q.a+q.b*.4),3);g.stroke()}else if(q.t===1){g.arc(Math.min(52,q.a),4+q.b*.12,2+q.w*.9,0,6.2832);g.fill()}else{g.arc(0,0,Math.min(58,10+q.b),.08,Math.PI/n*.8);g.stroke()}}}
+  g.setTransform(1,0,0,1,0,0);document.querySelectorAll('.patPrev').forEach(c=>{const x=c.getContext('2d');x.clearRect(0,0,96,96);x.drawImage(patC,0,0,96,96)});document.querySelectorAll('.patFold').forEach(b=>b.textContent=`Folds: ${n}`)}
+const tinted=(src,color)=>{const c=document.createElement('canvas');c.width=src.width;c.height=src.height;const g=c.getContext('2d');g.drawImage(src,0,0);g.globalCompositeOperation='source-in';g.fillStyle=color;g.fillRect(0,0,c.width,c.height);return c};
+function bandRoller(g,q,color,size,carve){const h=clamp(size*1.7*q.sy,14,DH*.4),n=Math.max(3,Math.round(DW/(h*q.sx/q.sy))),w=DW/n,t=tinted(patC,color),ln=Math.max(1.5,h*.035);g.save();soft(g,carve);
+  for(let i=0;i<n;i++)g.drawImage(t,i*w,q.y-h/2,w,h);g.fillStyle=color;g.fillRect(0,q.y-h/2-ln*2,DW,ln);g.fillRect(0,q.y+h/2+ln,DW,ln);g.restore();soft(g,false)}
+/* your mark: initials in a ring or a square, kept in this browser and pressed in wherever you touch */
+const markC=document.createElement('canvas');markC.width=markC.height=128;let mark={t:'',shape:'round'};try{mark={...mark,...JSON.parse(localStorage.getItem('firstPot.mark')||'{}')}}catch{}
+let markImg=null;function drawMark(){const g=markC.getContext('2d');g.clearRect(0,0,128,128);if(mark.img){if(markImg)g.drawImage(markImg,0,0,128,128);const x=$('markPrev').getContext('2d');x.clearRect(0,0,96,96);x.drawImage(markC,0,0,96,96);$('markShape').textContent='Use initials instead';try{localStorage.setItem('firstPot.mark',JSON.stringify(mark))}catch{}return}g.strokeStyle=g.fillStyle='#fff';g.lineWidth=8;g.beginPath();if(mark.shape==='round')g.arc(64,64,56,0,6.2832);else g.roundRect(9,9,110,110,10);g.stroke();
+  const t=(mark.t||'').trim().toUpperCase();if(t){g.font=`700 ${t.length===1?78:t.length===2?58:42}px "STIX Two Text",Georgia,serif`;g.textAlign='center';g.textBaseline='middle';g.fillText(t,64,69)}else{g.beginPath();g.arc(64,64,14,0,6.2832);g.fill()}
+  const x=$('markPrev').getContext('2d');x.clearRect(0,0,96,96);x.drawImage(markC,0,0,96,96);$('markShape').textContent=`Shape: ${mark.shape}`;try{localStorage.setItem('firstPot.mark',JSON.stringify(mark))}catch{}}
+function bandMark(g,q,color,size,carve){const w=Math.min(DW/5,.3*q.sx),h=.3*q.sy,t=tinted(markC,color);g.save();soft(g,carve);wrapDraw(q.x,w/2,x=>g.drawImage(t,x-w/2,q.y-h/2,w,h));g.restore();soft(g,false)}
+/* the same five shapes as flat stamps: an outline pressed into clay, or a solid print in colour */
+let stampKind='fish';const stampC={};
+function stampCanvas(t,solid){const key=t+solid;if(!stampC[key]){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),pts=sprigShape(t).getPoints(36);g.beginPath();pts.forEach((q,i)=>{const x=64+q.x*104,y=64-q.y*104;i?g.lineTo(x,y):g.moveTo(x,y)});g.closePath();
+    g.fillStyle=g.strokeStyle='#fff';g.lineJoin='round';const face=()=>{for(const ex of[-.17,.17]){g.beginPath();g.ellipse(64+ex*104,64-.04*104,5.5,6.5,0,0,6.2832);g.fill()}g.beginPath();CATMOUTH(.026).forEach((q,i)=>{const x=64+q[0]*104,y=64-q[1]*104;i?g.lineTo(x,y):g.moveTo(x,y)});g.closePath();g.fill()};
+    if(solid){g.fill();if(t==='cat'){g.globalCompositeOperation='destination-out';face();g.globalCompositeOperation='source-over'}}else{g.lineWidth=9;g.stroke();if(t==='cat')face();if(t==='fish'||t==='flower'){g.beginPath();g.arc(t==='fish'?40:64,64,t==='flower'?12:5,0,6.2832);g.fill()}}stampC[key]=c}return stampC[key]}
+function bandStamp(g,q,color,size,carve){const k=size*2.2,w=Math.min(DW/4,k*q.sx),h=k*q.sy,t=tinted(stampCanvas(stampKind,!carve),color);g.save();soft(g,carve);wrapDraw(q.x,w/2,x=>g.drawImage(t,x-w/2,q.y-h/2,w,h));g.restore();soft(g,false)}
+const BAND={words:bandWords,roller:bandRoller,mark:bandMark,stamp:bandStamp};
+document.querySelectorAll('.stampKinds').forEach(box=>{for(const k in SPRIG){const b=document.createElement('button');b.textContent=SPRIG[k];b.dataset.s=k;b.setAttribute('aria-pressed',k===stampKind);b.onclick=()=>{stampKind=k;document.querySelectorAll('.stampKinds button').forEach(o=>o.setAttribute('aria-pressed',o.dataset.s===k))};box.append(b)}});
+document.querySelectorAll('.wordsIn').forEach(i=>i.addEventListener('input',()=>{wordsText=i.value;document.querySelectorAll('.wordsIn').forEach(o=>{if(o!==i)o.value=i.value})}));
+document.querySelectorAll('.wordsMode').forEach(b=>b.onclick=()=>{wordsSpot=!wordsSpot;document.querySelectorAll('.wordsMode').forEach(o=>o.textContent=`Placement: ${wordsSpot?'once, where I touch':'around the pot'}`)});
+document.querySelectorAll('.patNew').forEach(b=>b.onclick=()=>{pat.seed=R()*1e9|0;makePattern()});
+document.querySelectorAll('.patFold').forEach(b=>b.onclick=()=>{pat.folds=pat.folds>=8?2:pat.folds+2;makePattern()});
+$('markIn').value=mark.t;$('markIn').addEventListener('input',()=>{mark.t=$('markIn').value;drawMark()});$('markShape').onclick=()=>{if(mark.img){mark.img=null;markImg=null}else mark.shape=mark.shape==='round'?'square':'round';drawMark()};
+if(mark.img){const im=new Image();im.onload=()=>{markImg=im;drawMark()};im.src=mark.img}
+$('markUp').onclick=()=>$('markFile').click();
+/* an uploaded stamp becomes a single-colour mask: its own transparency if it has one, otherwise its dark lines */
+$('markFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;let bm;try{bm=await createImageBitmap(f)}catch{teach('That file could not be opened as a picture.',true);return}
+  const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),k=Math.min(120/bm.width,120/bm.height),w=bm.width*k,h=bm.height*k;g.drawImage(bm,(128-w)/2,(128-h)/2,w,h);
+  const id=g.getImageData(0,0,128,128),d=id.data;let clear=0;for(let i=3;i<d.length;i+=4)if(d[i]<128)clear++;const hasAlpha=clear-(128*128-w*h)>w*h*.05;
+  for(let i=0;i<d.length;i+=4){const a=hasAlpha?d[i+3]:d[i+3]*clamp((215-(d[i]*.3+d[i+1]*.6+d[i+2]*.1))/110);d[i]=d[i+1]=d[i+2]=255;d[i+3]=a}g.putImageData(id,0,0);
+  mark.img=c.toDataURL('image/png');const im=new Image();im.onload=()=>{markImg=im;drawMark();teach('That is your stamp now. Touch the piece to press it in.',true)};im.src=mark.img};
+makePattern();drawMark();
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{sheen=b.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 
 /* ---------- wedging: push the lump away, roll it back, until the air is out ---------- */
 const wcan=document.createElement('canvas');wcan.width=256;wcan.height=128;const wg=wcan.getContext('2d'),wTex=new THREE.CanvasTexture(wcan);wTex.colorSpace=THREE.SRGBColorSpace;
@@ -827,14 +1076,14 @@ const HOLES=Array.from({length:70},()=>[R()*256,10+R()*108,1.5+R()*3.5]);
 function drawLump(air){wg.fillStyle='#985638';wg.fillRect(0,0,256,128);for(let i=0;i<260;i++){wg.fillStyle=`rgba(${R()<.5?'62,30,16':'200,140,104'},${R()*.12})`;wg.fillRect(R()*256,R()*128,6+R()*50,1+R()*2)}
   const n=Math.round(air*HOLES.length);for(let i=0;i<n;i++){const[x,y,r]=HOLES[i];wg.fillStyle='rgba(40,18,8,.85)';wg.beginPath();wg.ellipse(x,y,r,r*.7,0,0,6.2832);wg.fill();wg.fillStyle='rgba(220,170,130,.35)';wg.beginPath();wg.ellipse(x,y+r*.5,r,r*.3,0,0,3.1416);wg.fill()}wTex.needsUpdate=true}
 let wedge={air:1,n:0,arm:true,base:null,last:-9,sq:0,rot:0,done:false},wedgeAir=1,wedgeSkipped=false,kilnBurst=false,blown=false;
-function startWedge(){phase='wedge';P=newClay();pot.visible=false;clay.visible=false;lumpM.visible=true;marks.forEach(m=>m.visible=false);ring.visible=false;lumpM.rotation.set(0,0,0);lumpM.scale.setScalar(1);
+function startWedge(){marbleN=getRec();DU.decoMarble.value=marbleN?Math.min(1,.5+.15*marbleN):0;$('reclaimNote').hidden=!marbleN;$('reclaimNote').textContent=marbleN?`From the reclaim bucket: the clay of ${marbleN} pot${marbleN>1?'s':''} that did not make it is in this lump.`:'';phase='wedge';P=newClay();pot.visible=false;clay.visible=false;lumpM.visible=true;marks.forEach(m=>m.visible=false);ring.visible=false;lumpM.rotation.set(0,0,0);lumpM.scale.setScalar(1);
   wedge={air:1,n:0,arm:true,base:null,last:-9,sq:0,rot:0,done:false};drawLump(1);$('airbar').firstChild.style.width='100%';show('wedgeUI');
-  teach(mode==='cam'?'First, wedge it. Pinch, push up and away, come back. Slowly.':'First, wedge it. Press and drag up, then back down. Slowly.',true)}
-function wedgePush(){const gap=clock-wedge.last,rush=gap<.45;wedge.last=clock;wedge.n++;wedge.air*=rush?.93:.74;wedge.sq=1;wedge.rot-=.55;drawLump(wedge.air);$('airbar').firstChild.style.width=wedge.air*100+'%';
+  teach(mode==='cam'?'First, wedge it. Open hands: push up and away, come back down. Slowly.':'First, wedge it. Press and drag up, then back down. Slowly.',true)}
+function wedgePush(){thud(.9);const gap=clock-wedge.last,rush=gap<.45;wedge.last=clock;wedge.n++;wedge.air*=rush?.9:.7;wedge.sq=1;wedge.rot-=.55;wedge.base=null;drawLump(wedge.air);$('airbar').firstChild.style.width=wedge.air*100+'%';
   if(rush)teach('Slower. Rushing folds air back in.');else if(wedge.n===3)teach('Push with the heels of your hands. Roll it back. Again.',true);
   if(wedge.air<.12&&!wedge.done){wedge.done=true;teach('Cut it with the wire: no holes. It is ready.',true);setTimeout(()=>{if(phase==='wedge')finishWedge(false)},1600)}}
-function wedgeTick(dt){gatherHands();const h=hands.find(x=>x.p);
-  if(h){if(wedge.base===null||h.v>wedge.base)wedge.base=h.v;const push=clamp((wedge.base-h.v)/.09);wedge.sq=Math.max(wedge.sq,push*.9);
+function wedgeTick(dt){gatherHands();const cam=mode==='cam',h=cam?(hands.length?{v:hands.reduce((a,x)=>a+x.v,0)/hands.length}:null):hands.find(x=>x.p),reach=cam?.06:.09;
+  if(h){if(wedge.base===null||h.v>wedge.base)wedge.base=h.v;const push=clamp((wedge.base-h.v)/reach);wedge.sq=Math.max(wedge.sq,push*.9);
     if(wedge.arm&&push>=1){wedge.arm=false;wedgePush()}else if(!wedge.arm&&push<.35){wedge.arm=true;wedge.base=h.v}}else{wedge.base=null;wedge.arm=true}
   wedge.sq=Math.max(0,wedge.sq-dt*2.2);const s=wedge.sq;lumpM.scale.set(1+.26*s,1-.3*s,1+.2*s);lumpM.position.y=.55-.17*s;lumpM.position.z=-.15*s;
   lumpM.rotation.x=lerp(lumpM.rotation.x,wedge.rot,Math.min(1,dt*6));head.rotation.y=0}
@@ -842,15 +1091,221 @@ function finishWedge(skip){wedgeSkipped=skip&&wedge.n<3;wedgeAir=wedge.air;lumpM
 function wedgeLine(){if(blown)return wedgeAir>.6?'You did not wedge it, and a pocket of air burst in the kiln and blew a piece off the side.':'A pocket of air you missed when wedging burst in the kiln and blew a piece off the side.';
   if(wedgeAir>.6)return'You skipped the wedging and got away with it.';return''}
 /* the air you left in: in the kiln it expands and blows a piece off */
-function blowOut(){teach('A crack from inside the kiln. Air in the clay.',true);const phi=R()*6.283;
+function blowOut(){crack();teach('A crack from inside the kiln. Air in the clay.',true);const phi=R()*6.283;
   if(kind==='wheel'){P.blow={phi:+phi.toFixed(3),y:+((.25+.5*R())*P.h).toFixed(3),d:+(WALL*1.5).toFixed(3)};return}
   const dx=Math.sin(phi),dz=Math.cos(phi),y=-.5+R()*.2;let r=0;while(r<.95&&sampleD(dx*r,y,dz*r)>.5)r+=.01;
   const c=new THREE.Vector3(dx*r,y,dz*r),rad=.17;box(c,c,rad*1.6,(i,x,yy,z)=>{const q=Math.hypot(x-c.x,yy-c.y,z-c.z)/rad;D[i]=Math.max(0,D[i]-Math.exp(-q*q*2)*(2+.6*Math.sin(x*60+yy*47)))});
   smoothOne(c,.15,rad*1.2);flushClay();if(glazeType)colorSculpt(glazeType)}
 
+/* ---------- breaking a piece by hand: it is cut into shards that stay in place until you hit them ---------- */
+const shards=[];let brk=null;
+function clearShards(){for(const q of shards){scene.remove(q.pivot);q.mesh.geometry.dispose()}if(shards.length){const m=shards[0].mesh.material[0];if(m.side!==THREE.FrontSide){m.side=THREE.FrontSide;m.needsUpdate=true}}shards.length=0;brk=null}
+/* a shard is built from two lists of triangles: its skin (glazed, like the piece) and its broken faces (bare clay) */
+function addShard(src,skin,raw,share,mats){const n=skin.p.length/3,m=raw.length/3,P_=new Float32Array((n+m)*3),N_=new Float32Array((n+m)*3),U_=new Float32Array((n+m)*2),C_=new Float32Array((n+m)*3).fill(1),c=new THREE.Vector3();
+  P_.set(skin.p);N_.set(skin.n);if(skin.u)U_.set(skin.u);if(skin.c)C_.set(skin.c);
+  /* every skin triangle is wound to agree with its own surface normal, so both faces are lit correctly */
+  for(let t=0;t<n/3;t++){const o=t*9,ax=P_[o+3]-P_[o],ay=P_[o+4]-P_[o+1],az=P_[o+5]-P_[o+2],bx=P_[o+6]-P_[o],by=P_[o+7]-P_[o+1],bz=P_[o+8]-P_[o+2];
+    if((ay*bz-az*by)*N_[o]+(az*bx-ax*bz)*N_[o+1]+(ax*by-ay*bx)*N_[o+2]<0){const sw=(arr,w)=>{for(let k=0;k<w;k++){const x=arr[(t*3+1)*w+k];arr[(t*3+1)*w+k]=arr[(t*3+2)*w+k];arr[(t*3+2)*w+k]=x}};sw(P_,3);sw(N_,3);sw(U_,2);sw(C_,3)}}for(let i=0;i<n;i++)c.add(new THREE.Vector3(skin.p[i*3],skin.p[i*3+1],skin.p[i*3+2]));c.multiplyScalar(1/Math.max(1,n));
+  /* broken faces look outward from the middle of the shard, so the light falls on them properly */
+  const A=new THREE.Vector3(),B=new THREE.Vector3(),C=new THREE.Vector3(),nn=new THREE.Vector3(),e=new THREE.Vector3();
+  for(let t=0;t<m/3;t++){A.fromArray(raw,t*9);B.fromArray(raw,t*9+3);C.fromArray(raw,t*9+6);nn.crossVectors(B.clone().sub(A),C.clone().sub(A)).normalize();e.copy(A).add(B).add(C).multiplyScalar(1/3).sub(c);
+    if(nn.dot(e)<0){nn.negate();const tmp=B.clone();B.copy(C);C.copy(tmp)}const o=(n+t*3)*3;A.toArray(P_,o);B.toArray(P_,o+3);C.toArray(P_,o+6);for(let k=0;k<3;k++)nn.toArray(N_,o+k*3)}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(P_,3));g.setAttribute('normal',new THREE.BufferAttribute(N_,3));g.setAttribute('uv',new THREE.BufferAttribute(U_,2));g.setAttribute('color',new THREE.BufferAttribute(C_,3));
+  g.addGroup(0,n,0);g.addGroup(n,m,1);const sc=src.scale.x,pivot=new THREE.Group(),mesh=new THREE.Mesh(g,mats);mesh.castShadow=true;
+  mesh.quaternion.copy(src.quaternion);mesh.scale.setScalar(sc);mesh.position.copy(c).multiplyScalar(-sc).applyQuaternion(src.quaternion);pivot.position.copy(src.localToWorld(c.clone()));pivot.add(mesh);scene.add(pivot);
+  shards.push({pivot,mesh,on:true,cracked:false,v:new THREE.Vector3(),w:new THREE.Vector3(),r:.1+R()*.08,size:clamp(share*12),rest:true})}
+function fracture(fired){const hand=kind==='hand',src=hand?clay:pot;src.updateMatrixWorld(true);const mat=src.material;mat.side=THREE.DoubleSide;mat.needsUpdate=true;
+  const mats=[mat,new THREE.MeshStandardMaterial({color:fired?0xd2ae8f:hand?0x7d4630:0x834a31,roughness:1,side:THREE.DoubleSide})];
+  if(hand)fractureSolid(src,mats);else fractureWall(src,mats);src.visible=false}
+/* a thrown pot: the wall is unrolled flat, cut into irregular cells with wavering edges, and each cell becomes a slab with the full thickness of the wall */
+function fractureWall(src,mats){/* the wall is measured along its own curve, not by height, so a wide dish is cut as evenly as a tall vase */
+  const al=[0];for(let i=1;i<K;i++)al.push(al[i-1]+Math.hypot(P.r[i]-P.r[i-1],P.h/(K-1)));const Rm=Math.max(...P.r),W=2*Math.PI*Rm,H=al[K-1],N=26,NA=geo.attributes.normal.array;
+  const seeds=Array.from({length:N},()=>[R()*W,H*(.05+.9*R())]);
+  const clip=(poly,mx,my,nx,ny)=>{const out=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],da=(a[0]-mx)*nx+(a[1]-my)*ny,db=(b[0]-mx)*nx+(b[1]-my)*ny;if(da<=0)out.push(a);if((da<0&&db>0)||(da>0&&db<0)){const t=da/(da-db);out.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t])}}return out};
+  /* the same gentle wobble is applied to every boundary point, so neighbouring shards still fit each other exactly */
+  const warp=q=>{const f=q[0]/Rm,y=q[1],a=.035;let x=q[0]+a*Rm*(Math.sin(y*17+Math.sin(5*f)*2)+.5*Math.sin(y*41+11*f))/Rm*1,yy=y;if(y>1e-4&&y<H-1e-4)yy=clamp(y+a*(Math.sin(13*f+Math.sin(y*6)*2)+.5*Math.sin(31*f+y*13)),.002,H-.002);return[x,yy]};
+  /* a point on the unrolled wall, put back on the pot: outside skin or inside skin */
+  const at=(q,inner)=>{let fi=((q[0]/W)%1+1)%1*M,i0=Math.min(M-1,Math.floor(fi)),ti=fi-i0,yy_=clamp(q[1],0,H),r0=(()=>{let a=0;while(a<K-2&&al[a+1]<yy_)a++;return a})(),tr=clamp((yy_-al[r0])/Math.max(1e-6,al[r0+1]-al[r0])),pi=r=>inner?3+K+(K-1-r):2+r,o={p:[0,0,0],n:[0,0,0],u:[0,0]};
+    for(const[ii,rr,w]of[[i0,r0,(1-ti)*(1-tr)],[i0+1,r0,ti*(1-tr)],[i0,r0+1,(1-ti)*tr],[i0+1,r0+1,ti*tr]]){const v=ii*PN+pi(rr);for(let k=0;k<3;k++){o.p[k]+=pos[v*3+k]*w;o.n[k]+=NA[v*3+k]*w}o.u[0]+=uv[v*2]*w;o.u[1]+=uv[v*2+1]*w}return o};
+  for(const s0 of seeds){let poly=[[s0[0]-W/2,0],[s0[0]+W/2,0],[s0[0]+W/2,H],[s0[0]-W/2,H]];
+    for(const o of seeds)for(const sh of[-W,0,W]){if(o===s0&&!sh)continue;const qx=o[0]+sh,qy=o[1];poly=clip(poly,(s0[0]+qx)/2,(s0[1]+qy)/2,qx-s0[0],qy-s0[1]);if(poly.length<3)break}
+    if(poly.length<3)continue;let area=0,cx=0,cy=0;for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length];area+=a[0]*b[1]-b[0]*a[1];cx+=a[0];cy+=a[1]}cx/=poly.length;cy/=poly.length;area=Math.abs(area)/2;if(area<1e-4)continue;
+    const bd=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],n=Math.max(1,Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/.06));for(let k=0;k<n;k++)bd.push(warp([a[0]+(b[0]-a[0])*k/n,a[1]+(b[1]-a[1])*k/n]))}
+    const S=7,skin={p:[],n:[],u:[]},raw=[],push=(a,b,c)=>{for(const v of[a,b,c]){skin.p.push(...v.p);skin.n.push(...v.n);skin.u.push(...v.u)}},L=bd.length;
+    for(const inner of[false,true]){const ring=k=>bd.map(q=>at([cx+(q[0]-cx)*k/S,cy+(q[1]-cy)*k/S],inner)),ctr=at([cx,cy],inner);let prev=null;
+      for(let k=1;k<=S;k++){const cur=ring(k);for(let j=0;j<L;j++){const j2=(j+1)%L;if(k===1)inner?push(ctr,cur[j2],cur[j]):push(ctr,cur[j],cur[j2]);else if(inner){push(prev[j],cur[j2],cur[j]);push(prev[j],prev[j2],cur[j2])}else{push(prev[j],cur[j],cur[j2]);push(prev[j],cur[j2],prev[j2])}}prev=cur}}
+    /* the broken edge: bare clay joining the outside skin to the inside skin. Along the lip it is glazed rim instead */
+    for(let j=0;j<L;j++){const a=bd[j],b=bd[(j+1)%L],ao=at(a,false),bo=at(b,false),ai=at(a,true),bi=at(b,true);
+      if(a[1]>H-.004&&b[1]>H-.004){const up=v=>({p:v.p,n:[0,1,0],u:ao.u});push(up(ao),up(bo),up(bi));push(up(ao),up(bi),up(ai))}else raw.push(...ao.p,...bo.p,...bi.p,...ao.p,...bi.p,...ai.p)}
+    addShard(src,skin,raw,area/(W*H),mats)}
+  /* the foot: the bottom of the pot and the floor inside it, as one disc */
+  const skin={p:[],n:[],u:[]},raw=[];for(let i=0;i<M;i++){for(const pq of[0,1,PN-2]){const q=(i*(PN-1)+pq)*6;for(let k=0;k<6;k++){const v=idx[q+k];skin.p.push(pos[v*3],pos[v*3+1],pos[v*3+2]);skin.n.push(NA[v*3],NA[v*3+1],NA[v*3+2]);skin.u.push(uv[v*2],uv[v*2+1])}}
+    const V=(ii,pp)=>[pos[(ii*PN+pp)*3],pos[(ii*PN+pp)*3+1],pos[(ii*PN+pp)*3+2]];raw.push(...V(i,2),...V(i+1,2),...V(i+1,PN-2),...V(i,2),...V(i+1,PN-2),...V(i,PN-2))}
+  addShard(src,skin,raw,.08,mats);
+  for(const h of[...handleMeshes,...sprigMeshes]){const g=h.geometry.toNonIndexed();addShard(src,{p:[...g.attributes.position.array],n:[...g.attributes.normal.array],u:[...g.attributes.uv.array]},[],.03,mats);g.dispose()}}
+/* a hand-built piece is solid: each chunk of surface is closed with bare clay faces running into the middle of the piece */
+function fractureSolid(src,mats){const PA=clay.positionArray,NO=clay.normalArray,CO=clay.colorArray,nV=clay.count,nT=nV/3,cen=t=>[(PA[t*9]+PA[t*9+3]+PA[t*9+6])/3,(PA[t*9+1]+PA[t*9+4]+PA[t*9+7])/3,(PA[t*9+2]+PA[t*9+5]+PA[t*9+8])/3];
+  const N=18,seeds=Array.from({length:N},()=>cen(R()*nT|0)),groups=seeds.map(()=>[]),mid=[0,0,0];
+  /* wavering borders between chunks, instead of straight ones */
+  const wob=c=>[c[0]+.05*Math.sin(c[1]*21+c[2]*13),c[1]+.05*Math.sin(c[2]*19+c[0]*15),c[2]+.05*Math.sin(c[0]*23+c[1]*11)];
+  for(let t=0;t<nT;t++){const c0=cen(t),c=wob(c0);for(let k=0;k<3;k++)mid[k]+=c0[k]/nT;let best=0,bd=1e9;for(let j=0;j<N;j++){const d=(c[0]-seeds[j][0])**2+(c[1]-seeds[j][1])**2+(c[2]-seeds[j][2])**2;if(d<bd){bd=d;best=j}}groups[best].push(t)}
+  const ids=new Map(),vid=new Int32Array(nV);for(let i=0;i<nV;i++){const key=Math.round(PA[i*3]*400)+','+Math.round(PA[i*3+1]*400)+','+Math.round(PA[i*3+2]*400);let id=ids.get(key);if(id===undefined){id=ids.size;ids.set(key,id)}vid[i]=id}
+  for(const g of groups){if(!g.length)continue;const skin={p:[],n:[],c:[]},raw=[],edges=new Map(),c=[0,0,0];
+    for(const t of g){for(let k=0;k<9;k++){skin.p.push(PA[t*9+k]);skin.n.push(NO[t*9+k]);skin.c.push(CO[t*9+k])}const q=cen(t);for(let k=0;k<3;k++)c[k]+=q[k]/g.length;
+      for(let k=0;k<3;k++){const a=t*3+k,b=t*3+(k+1)%3,key=vid[a]<vid[b]?vid[a]*1e6+vid[b]:vid[b]*1e6+vid[a],e=edges.get(key);if(e)e.n++;else edges.set(key,{n:1,a,b})}}
+    const apex=[c[0]+(mid[0]-c[0])*.7,c[1]+(mid[1]-c[1])*.7,c[2]+(mid[2]-c[2])*.7];
+    for(const e of edges.values())if(e.n===1)raw.push(PA[e.a*3],PA[e.a*3+1],PA[e.a*3+2],PA[e.b*3],PA[e.b*3+1],PA[e.b*3+2],...apex);
+    addShard(src,skin,raw,g.length/nT,mats)}}
+const left=()=>shards.filter(q=>q.on).length;
+function loosen(q,v){q.on=false;q.rest=false;q.v.copy(v);q.w.set(R()-.5,R()-.5,R()-.5).multiplyScalar(5+R()*8)}
+/* one blow: shards near it fly, the ones around them crack, and when too little is left standing the rest goes */
+function strike(pt,dir,str,struck){if(!brk||brk.done)return;const rad=.22+str*.42;let n=0;
+  for(const q of shards){if(!q.on)continue;const d=q.pivot.position.distanceTo(pt);
+    if(d<rad||q.mesh===struck){const away=q.pivot.position.clone().sub(pt).normalize().multiplyScalar(.8).add(dir).normalize();loosen(q,away.multiplyScalar((1.2+R()*2.2)*(.5+str)).add(new THREE.Vector3(0,.8+R()*1.6*str,0)));n++}
+    else if(d<rad*2.1+.25&&!q.cracked){q.cracked=true;q.pivot.position.add(new THREE.Vector3(R()-.5,R()-.5,R()-.5).multiplyScalar(.022));q.pivot.rotateOnWorldAxis(new THREE.Vector3(R()-.5,R()-.5,R()-.5).normalize(),(R()-.5)*.07)}}
+  if(!brk.hits){if(brk.shelfN){storeShelf(loadShelf().filter(x=>x.n!==brk.shelfN));drawShelf()}$('smashCancel').hidden=!brk.room}
+  brk.hits++;shatter(str,brk.fired,n);if(!brk.room)shake(str);
+  if(n&&brk.hits===1&&!brk.room)teach('Again.',true);
+  if(left()<shards.length*.3)for(const q of shards)if(q.on)loosen(q,new THREE.Vector3((R()-.5)*1.2,.3+R(),(R()-.5)*1.2));
+  $('brkbar').firstChild.style.width=left()/shards.length*100+'%';if(!left())breakDone()}
+function breakDone(){brk.done=true;if(brk.room)return roomDone();setRec(getRec()+1);$('smashAll').hidden=true;$('smashCancel').hidden=true;$('smashNext').hidden=false;$('smashNext').textContent=stash?'Back to what you were making':'Start again';$('smashH').textContent='In pieces';
+  $('smashP').textContent='The shards go in the reclaim bucket, and the clay comes back, marbled, in your next piece.';teach(brk.hits>4?'Feel better?':'There.',true)}
+function strikeAt(u,v,str,du,dv){rc.setFromCamera({x:u*2-1,y:1-v*2},cam);const hit=rc.intersectObjects(shards.filter(q=>q.on).map(q=>q.mesh),false)[0];if(!hit)return false;
+  const f=new THREE.Vector3(),rt=new THREE.Vector3(),up=new THREE.Vector3();cam.getWorldDirection(f);rt.crossVectors(f,cam.up).normalize();up.crossVectors(rt,f);
+  strike(hit.point,f.multiplyScalar(.7).addScaledVector(rt,du).addScaledVector(up,-dv).normalize(),str,hit.object);return true}
+function enterBreak(fromShelf,room){if(brk)return;const fired=room||phase==='result'||phase==='view',prev={phase,ui:curUI,src:kind==='hand'?clay:pot};fracture(fired);
+  brk={prev,fired,room:!!room,shelfN:fired&&!room?(fromShelf?viewN:potN):0,hits:0,done:false,cool:[0,0],last:[]};phase='break';
+  $('smashH').textContent='Break it';$('smashP').textContent=mode==='cam'?'Swing your hand through it. A harder swing breaks more. Or click it.':'Click it to chip pieces off. Swipe across it fast to hit harder.';
+  $('smashAll').hidden=false;$('smashCancel').hidden=false;$('smashNext').hidden=true;$('brkbar').firstChild.style.width='100%';show('smashUI');if(room){$('smashCancel').textContent='Leave';$('smashP').textContent=(mode==='cam'&&camOn?'Swing your hand through it, or click it.':'Click it, or swipe across it fast to hit harder.')+` Pots broken: ${roomN}.`}else{$('smashCancel').textContent='Change my mind';teach(fired?'It took a week to make. It is yours to break.':'Go on.',true)}}
+function breakTick(dt){if(phase!=='break'||!brk||brk.done)return;
+  camHands.forEach((h,i)=>{const o=brk.last[i];brk.cool[i]=Math.max(0,(brk.cool[i]||0)-dt);if(o&&dt>0){const du=(h.u-o.u)/dt,dv=(h.v-o.v)/dt,sp=Math.hypot(du,dv);
+      if(sp>1.1&&!brk.cool[i]&&strikeAt(h.u,h.v,clamp(sp/4.5,.25,1),du/sp,dv/sp))brk.cool[i]=.22}brk.last[i]={u:h.u,v:h.v}});brk.last.length=camHands.length}
+/* mouse and touch: a click chips, a fast swipe hits hard */
+let swipe=null;
+wrap.addEventListener('pointerdown',e=>{if(phase!=='break'||e.target.closest('button'))return;const q=uvOf(e);swipe={u:q.u,v:q.v,t:performance.now(),cool:0};strikeAt(q.u,q.v,.45,0,0)});
+wrap.addEventListener('pointermove',e=>{if(phase!=='break'||!swipe)return;const q=uvOf(e),now=performance.now(),dt=(now-swipe.t)/1000;if(dt<.016)return;const du=(q.u-swipe.u)/dt,dv=(q.v-swipe.v)/dt,sp=Math.hypot(du,dv);
+  if(sp>1.3&&now>swipe.cool&&strikeAt(q.u,q.v,clamp(sp/5,.3,1),du/sp,dv/sp))swipe.cool=now+200;swipe.u=q.u;swipe.v=q.v;swipe.t=now});
+addEventListener('pointerup',()=>{swipe=null});
+function shake(str){if(RM)return;wrap.animate([{transform:`translate(${(R()-.5)*14*str}px,${(R()-.5)*14*str}px)`},{transform:`translate(${(R()-.5)*8*str}px,${(R()-.5)*8*str}px)`},{transform:'none'}],{duration:160})}
+function smashTick(dt){let clinks=0;for(const q of shards){if(q.on||q.rest)continue;q.v.y-=9.8*dt;q.pivot.position.addScaledVector(q.v,dt);if(q.w.lengthSq()>1e-4)q.pivot.rotateOnWorldAxis(q.w.clone().normalize(),q.w.length()*dt);
+    const p=q.pivot.position,floor=(Math.hypot(p.x,p.z)<2.4?0:-.75)+q.r;
+    if(p.y<floor){p.y=floor;const hit=Math.abs(q.v.y);if(hit<1.1){q.v.set(0,0,0);q.w.set(0,0,0);q.rest=true}else{q.v.y*=-.3;q.v.x*=.6;q.v.z*=.6;q.w.multiplyScalar(.5)}
+      if(hit>.6&&clinks++<2)click(clamp(hit/80,.01,.03),700+q.size*500,.035,'bandpass')}}}
+$('smashFall').onclick=()=>{if(phase==='fallen')enterBreak(false)};$('smashRes').onclick=()=>{if(phase==='result')enterBreak(false)};$('vSmash').onclick=()=>{if(phase==='view')enterBreak(true)};
+$('smashAll').onclick=()=>{if(!brk||brk.done)return;play('smash',.16,0,3.5);const c=new THREE.Vector3();for(const q of shards)c.add(q.pivot.position);c.multiplyScalar(1/shards.length);strike(c,new THREE.Vector3(0,.2,0),3)};
+$('smashCancel').onclick=()=>{if(brk&&brk.room){roomOn=false;goIntro();return setTab('make')}if(!brk||brk.hits)return;const b=brk;clearShards();b.prev.src.visible=true;phase=b.prev.phase;show(b.prev.ui)};
+$('smashNext').onclick=()=>{if(brk&&brk.room)return roomPot();if(stash){leaveView()}else{attempts++;begin()}};
+
+/* ---------- the smash room: ready-made pots to break, one after another. Nothing here touches the shelf or the reclaim bucket ---------- */
+let roomOn=false,roomN=0;
+const ROOMPOTS=[{h:2.4,r:f=>.42+.55*Math.sin(f*2.6+.2)*(1-.3*f)},{h:1.0,r:f=>.5+.95*Math.pow(f,.6)},{h:2.6,r:f=>f<.6?.78+.16*Math.sin(f/.6*Math.PI):lerp(.78,.26,clamp((f-.6)/.25))},
+  {h:1.7,r:f=>.72+.36*Math.sin(f*3)},{h:1.3,r:f=>.68+.1*f,handle:true},{h:.4,r:f=>.6+1.25*f},{h:2.0,r:f=>.55+.5*Math.sin(f*3.1)+.12*Math.sin(f*9)}];
+function roomPot(){clearShards();roomOn=true;kind='wheel';clay.visible=false;lumpM.visible=false;clearDeco(true);setSprigs([]);DU.decoMarble.value=0;const q=ROOMPOTS[R()*ROOMPOTS.length|0];P=newClay();P.h=P.h0=q.h*(.85+R()*.3);
+  for(let i=0;i<K;i++){P.r[i]=Math.max(.2,q.r(i/(K-1))*(.9+R()*.04));P.asym[i]=.01+R()*.02}P.wob=0;P.handles=q.handle?[{side:1,y1:+(P.h*.78).toFixed(3),y2:+(P.h*.28).toFixed(3),out:.45}]:[];
+  rebuild();buildHandles();pot.visible=true;pot.position.set(0,0,0);pot.rotation.y=R()*6.28;seed=R()*1e9|0;const keys=Object.keys(GL);glazeType=keys[R()*keys.length|0];sheen=['matte','satin','glossy'][R()*3|0];
+  glazeMat=makeGlaze(glazeType);setMat(glazeMat);pot.updateMatrixWorld(true);phase='result';enterBreak(false,true)}
+function startRoom(){sndInit();if(!mode)mode='mouse';roomN=0;roomPot();teach('Nobody made these. Nobody will miss them.',true)}
+function roomDone(){roomN++;$('smashAll').hidden=true;$('smashNext').hidden=false;$('smashNext').textContent='Another pot';$('smashH').textContent='In pieces';$('smashP').textContent=`Pots broken: ${roomN}. Press "Another pot" when you want the next one.`;$('smashCancel').hidden=false}
+
+/* ---------- video: one slow full turn of the finished piece, recorded straight from the scene ---------- */
+let rec=null;
+function saveVideo(file){if(rec)return;const cv=renderer.domElement;if(!cv.captureStream||!window.MediaRecorder){teach('This browser cannot record video.',true);return}
+  const type=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm'].find(t=>MediaRecorder.isTypeSupported(t))||'',mr=new MediaRecorder(cv.captureStream(30),type?{mimeType:type,videoBitsPerSecond:8e6}:{}),chunks=[];
+  mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};mr.onstop=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(chunks,{type:type||'video/webm'}));a.download=file+(type.includes('mp4')?'.mp4':'.webm');a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    for(const b of['vid','vVid'])$(b).textContent='Save a video';teach('Saved. One full turn.',true)};
+  rec={t:0,dur:8,mr,from:dragRot};mr.start();for(const b of['vid','vVid'])$(b).textContent='Recording…';teach('Recording one slow turn. Eight seconds.',true)}
+function recTick(dt){if(!rec)return;rec.t+=dt;dragRot=rec.from+(2*Math.PI-.35*rec.dur)*Math.min(1,rec.t/rec.dur);if(rec.t>=rec.dur||(phase!=='result'&&phase!=='view')){const m=rec.mr;rec=null;m.stop()}}
+$('vid').onclick=()=>saveVideo(`first-pot-${P.code}`);$('vVid').onclick=()=>{const p=loadShelf().find(x=>x.n===viewN);saveVideo(`first-pot-${p?p.code:viewN}`)};
+
+/* ---------- the three sections: making (home), the gallery, the rage room ---------- */
+let tab='make';
+function markTab(t){tab=t;document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t))}
+function setTab(t){if(t==='room'&&!roomOn&&!['intro','result','view','smashed'].includes(phase)&&!confirm('Leave the piece you are making? It will be lost.'))return;
+  markTab(t);$('galleryPage').hidden=t!=='gallery';document.querySelector('.app').hidden=t==='gallery';
+  if(t==='room'){if(!roomOn)startRoom()}else if(roomOn){goIntro();markTab(t)}
+  if(t==='gallery'){drawShelf();scrollTo(0,0)}else requestAnimationFrame(resize)}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+new ResizeObserver(()=>resize()).observe(wrap);
+
+/* ---------- reclaim bucket: abandoned clay comes back, marbled, in the next piece ---------- */
+function getRec(){try{return +localStorage.getItem('firstPot.reclaim')||0}catch{return 0}}
+function setRec(n){try{localStorage.setItem('firstPot.reclaim',n)}catch{}}
+let marbleN=0,resultAt=0;
+
+/* ---------- 3D printing: the shape as an STL file, in millimetres, standing upright ---------- */
+function exportSTL(file){let obj;
+  if(kind==='hand'){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(clay.positionArray.slice(0,clay.count*3),3));obj=new THREE.Mesh(g);obj.scale.setScalar(CS*100)}
+  else{obj=new THREE.Group();obj.add(new THREE.Mesh(geo));for(const h of handleMeshes)obj.add(new THREE.Mesh(h.geometry));obj.scale.setScalar(100)}
+  if(sprigMeshes.length){const g=new THREE.Group();g.add(obj);for(const q of sprigMeshes){const m=new THREE.Mesh(q.geometry);m.scale.setScalar(kind==='hand'?CS*100:100);g.add(m)}obj=g}
+  obj.rotation.x=Math.PI/2;obj.updateMatrixWorld(true);const data=new STLExporter().parse(obj,{binary:true}),a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([data],{type:'model/stl'}));a.download=file;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  teach('Shape only: the carving, paint and glaze are not in the file.',true)}
+$('stl').onclick=()=>exportSTL(`first-pot-${P.code}.stl`);
+$('vStl').onclick=()=>{const p=loadShelf().find(x=>x.n===viewN);exportSTL(`first-pot-${p?p.code:viewN}.stl`)};
+
+/* ---------- sound, made in the browser: the wheel, wet clay, a carving tool, the kiln ---------- */
+const snd={ctx:null,on:true};
+function sndInit(){if(snd.ctx||!snd.on)return;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  const c=snd.ctx=new AC(),buf=snd.buf=c.createBuffer(1,c.sampleRate*2,c.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+  /* a small room: every sound also goes through a short reverb, so it sits in a space instead of inside the speaker */
+  const ir=c.createBuffer(2,c.sampleRate*1.3,c.sampleRate);for(let ch=0;ch<2;ch++){const x=ir.getChannelData(ch);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*Math.pow(1-i/x.length,3.2)}
+  const rev=c.createConvolver(),wet=c.createGain(),comp=c.createDynamicsCompressor();rev.buffer=ir;wet.gain.value=.3;comp.connect(c.destination);
+  snd.master=c.createGain();snd.master.gain.value=.9;snd.master.connect(comp);snd.master.connect(rev);rev.connect(wet).connect(comp);
+  const loop=(type,f,q)=>{const src=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();src.buffer=buf;src.loop=true;fl.type=type;fl.frequency.value=f;fl.Q.value=q;g.gain.value=0;src.connect(fl).connect(g).connect(snd.master);src.start(0,Math.random());return{g,fl}};
+  snd.touch=loop('bandpass',520,1.4);snd.scratch=loop('bandpass',2900,2.2);snd.roar=loop('lowpass',150,.6);snd.whirr=loop('bandpass',240,3);
+  /* wet clay squelches: the tone of the touch drifts slowly */
+  const lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=2.3;lg.gain.value=170;lfo.connect(lg).connect(snd.touch.fl.frequency);lfo.start();
+  const o=snd.humO=c.createOscillator(),of=c.createBiquadFilter(),og=snd.hum=c.createGain();o.type='sawtooth';o.frequency.value=52;of.type='lowpass';of.frequency.value=140;og.gain.value=0;o.connect(of).connect(og).connect(snd.master);o.start();sndLoad()}
+/* recordings from the sfx folder. They load after the first click; until then, or if a file is missing, the made-up sounds are used */
+const SFX=['carving','crack','crack1','crack3','fire','paint2','placing_on_shelve','smash','spray_paint','tap_on_pot','tap_on_pot1'];snd.smp={};snd.L={};
+function sndLoad(){for(const n of SFX)fetch(`sfx/${n}.mp3`).then(r=>r.ok?r.arrayBuffer():Promise.reject()).then(a=>snd.ctx.decodeAudioData(a)).then(b=>{snd.smp[n]=b;
+    if(['carving','fire','paint2'].includes(n)){const src=snd.ctx.createBufferSource(),g=snd.ctx.createGain();src.buffer=b;src.loop=true;g.gain.value=0;src.connect(g).connect(snd.master);src.start();snd.L[n]=g}}).catch(()=>{})}
+function play(n,v=.7,off=0,dur=0,at=0){if(!ok()||!snd.smp[n])return false;const c=snd.ctx,t=c.currentTime+at,src=c.createBufferSource(),g=c.createGain();src.buffer=snd.smp[n];g.gain.setValueAtTime(v,t);
+  if(dur){g.gain.setValueAtTime(v,t+dur*.7);g.gain.linearRampToValueAtTime(0,t+dur)}src.connect(g).connect(snd.master);src.start(t,off);if(dur)src.stop(t+dur+.05);return true}
+const anyCrack=(v,at=0)=>play(['crack','crack1','crack3'][Math.random()*3|0],v,0,0,at);
+function sndTick(){if(!snd.ctx)return;const c=snd.ctx,t=c.currentTime,on=snd.on?1:0,spinning=(phase==='centre'||phase==='throw'||phase==='falling')&&wheelOn,set=(g,v)=>g.gain.setTargetAtTime(v*on,t,.09);
+  set(snd.hum,spinning?.05:0);set(snd.whirr.g,spinning?.05:0);snd.humO.frequency.setTargetAtTime(52+(P?P.wob*10:0),t,.2);snd.whirr.fl.frequency.setTargetAtTime(240+(P?P.wob*160:0),t,.2);
+  const down=hands.some(h=>h.p),painting=phase==='decorate'&&decoEng&&down,carvingNow=phase==='leather'&&decoEng&&down,L=snd.L;
+  set(snd.touch.g,(spinning&&contact)||(phase==='sculpt'&&eng)||(phase==='alter'&&alt)||(painting&&!L.paint2)?.14:0);if(L.paint2)set(L.paint2,painting?.8:0);
+  set(snd.scratch.g,carvingNow&&!L.carving?.07:0);if(L.carving)set(L.carving,carvingNow?.8:0);
+  const glow=phase==='fire'?Math.sin(clamp(fireT/6)*Math.PI):0;set(snd.roar.g,.5*glow);if(L.fire)set(L.fire,.22*glow);
+  if(glow>.2&&Math.random()<.05)click(.05+Math.random()*.08,900+Math.random()*2500)}
+function ok(){return snd.ctx&&snd.on}
+/* a short burst of filtered noise: a click, a slap, the bite of a break */
+function click(v,f,len=.03,type='bandpass',at=0){if(!ok())return;const c=snd.ctx,t=c.currentTime+at,src=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();src.buffer=snd.buf;fl.type=type;fl.frequency.value=f;fl.Q.value=.9;
+  g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+len);src.connect(fl).connect(g).connect(snd.master);src.start(t,Math.random()*1.5);src.stop(t+len+.02)}
+/* fired clay rings: a few tones that are not in tune with each other, each dying away at its own speed. Big pieces ring lower and longer. Unfired clay only thuds. */
+function ceramic(v=.3,size=.5,fired=true,at=0){if(!ok())return;if(!fired){thud(v*1.5,at);return}const c=snd.ctx,t=c.currentTime+at,base=(2700-1900*size)*(.88+Math.random()*.26),dur=.12+.55*size;
+  click(v*.9,3200+Math.random()*2500,.012,'highpass',at);
+  for(const[m,g,k]of[[1,1,1],[2.32,.6,.7],[3.86,.42,.5],[5.53,.28,.36],[8.1,.16,.25]]){const o=c.createOscillator(),e=c.createGain();o.frequency.value=base*m*(1+(Math.random()-.5)*.03);
+    e.gain.setValueAtTime(.0001,t);e.gain.exponentialRampToValueAtTime(v*g*.5,t+.003);e.gain.exponentialRampToValueAtTime(.0001,t+dur*k);o.connect(e).connect(snd.master);o.start(t);o.stop(t+dur*k+.02)}}
+function thud(v=.5,at=0){if(!ok())return;const c=snd.ctx,t=c.currentTime+at,o=c.createOscillator(),e=c.createGain();o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(46,t+.16);
+  e.gain.setValueAtTime(v*.6,t);e.gain.exponentialRampToValueAtTime(.0001,t+.24);o.connect(e).connect(snd.master);o.start(t);o.stop(t+.26);click(v*.35,420,.06,'lowpass',at)}
+/* a blow: the hit itself, the snap of the break, then the pieces ringing one after another */
+function shatter(str,fired,n){str=Math.min(1,str);thud(.08+str*.08);if(!n)return;if(fired&&anyCrack(.07+str*.08))return;click(.08*str+.04,fired?2200:700,.05,fired?'highpass':'lowpass')}
+function blip(f,len=.25,v=.12){if(!ok())return;const c=snd.ctx,o=c.createOscillator(),g=c.createGain();o.frequency.value=f;g.gain.setValueAtTime(v,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+len);o.connect(g).connect(snd.master);o.start();o.stop(c.currentTime+len)}
+function crack(){click(.5,1800,.3,'highpass');thud(.7)}
+$('sndBtn').onclick=()=>{snd.on=!snd.on;$('sndBtn').setAttribute('aria-pressed',snd.on);if(snd.on)sndInit()};
+
+/* ---------- exhibition mode: starts with a raised hand, resets itself, shows past pieces while it waits ---------- */
+let exhibit=false,lastActive=0,exT=0,exShow=0,exIdx=0;
+addEventListener('pointerdown',()=>{lastActive=clock});addEventListener('keydown',()=>{lastActive=clock});
+function goIntro(){roomOn=false;if(tab==='room')markTab('make');setSprigs([]);clearShards();if(stash)leaveView();phase='intro';lumpM.visible=false;clearDeco(true);document.body.classList.remove('kiln');DU.decoMarble.value=0;setKind(kind);show('introUI')}
+function setExhibit(on){exhibit=on;document.body.classList.toggle('exhibit',on);$('exhibitBtn').textContent=on?'Leave exhibition mode':'Exhibition mode';lastActive=clock;exT=0;
+  if(on){sndInit();if(!camOn&&navigator.mediaDevices)startCam(true);document.documentElement.requestFullscreen?.().catch(()=>{})}else{$('exBanner').hidden=true;if(phase==='view')leaveView();if(document.fullscreenElement)document.exitFullscreen()}}
+$('exhibitBtn').onclick=()=>{setTab('make');setExhibit(!exhibit)};
+function exhibitTick(dt){if(!exhibit)return;const b=$('exBanner');if(camHands.length||pointers.size)lastActive=clock;const idle=clock-lastActive;
+  if(phase==='intro'||phase==='view'){b.hidden=false;const h=camOn&&camHands.find(x=>x.pose!=='fist'&&x.pose!=='thumb');
+    if(h){exT+=dt;const k=h.u<.5?'wheel':'hand';$('exText').textContent=(k==='wheel'?'The wheel':'Hand-building')+': keep your hand up';$('exBar').style.width=clamp(exT/1.5)*100+'%';
+      if(exT>=1.5){exT=0;if(phase==='view')leaveView();phase='intro';setKind(k);mode='cam';attempts=1;begin()}}
+    else{exT=0;$('exBar').style.width='0%';$('exText').textContent=camOn?'Hold up a hand to start. Left side: the wheel. Right side: hand-building.':'Choose a way to start.';
+      /* while it waits, past pieces take turns on the wheel */
+      exShow+=dt;if(idle>6&&(phase==='intro'||exShow>8)){const L=loadShelf().filter(p=>p.shape);if(L.length){exShow=0;exIdx=(exIdx+1)%L.length;if(phase==='view')leaveView();viewPot(L[exIdx].n)}}}}
+  else{b.hidden=true;exT=0;if(phase==='result'){if(idle>10&&clock-resultAt>25)goIntro()}else if(phase!=='fire'&&phase!=='falling'&&idle>50)goIntro()}}
+
 /* ---------- loop ---------- */
 let camFit=1;const zoom={l:1.15,k:1};
-function resize(){const b=wrap.getBoundingClientRect();renderer.setSize(b.width,b.height,false);cam.aspect=b.width/b.height;camFit=cam.aspect<1?1/cam.aspect:1;placeCam();cam.updateProjectionMatrix()}
+function resize(){const b=wrap.getBoundingClientRect();if(!b.width||!b.height)return;renderer.setSize(b.width,b.height,false);cam.aspect=b.width/b.height;camFit=cam.aspect<1?1/cam.aspect:1;placeCam();cam.updateProjectionMatrix()}
 function placeCam(){LOOK.set(0,zoom.l,0);cam.position.set(0,zoom.l+1.85*camFit*zoom.k,9.2*camFit*zoom.k);cam.lookAt(LOOK);cam.updateMatrixWorld()}
 function followPot(dt){const h=kind==='hand'?2:P?P.h:1.25,t=Math.min(1,dt*2.5);zoom.l=lerp(zoom.l,Math.max(1.15,.3+h*.5)-(kind==='hand'?(1-userZoom)*.35:0),t);zoom.k=lerp(zoom.k,Math.max(1,(h+1.4)/3)*userZoom,t);placeCam()}
 function setZoom(z){userZoom=clamp(z,.45,1.4)}
@@ -863,11 +1318,11 @@ let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;clock+=dt;track();if(P){followPot(dt);gestures(dt)}
   DU.decoY.value.set(kind==='hand'?-1:0,kind==='hand'?2:(P?P.h:1)+.06);
   if(kind==='hand'){if(phase==='wedge')wedgeTick(dt);else if(phase==='sculpt')sculptTick(dt);else if(phase==='decorate'||phase==='leather')decoTick(dt);else{marks[0].visible=false;if(phase==='fire')fireTick(dt);spin+=dt*(phase==='result'||phase==='view'?.35:.15);clay.rotation.y=turn+spin+dragRot;head.rotation.y=clay.rotation.y}}
-  else if(P){if(phase==='wedge')wedgeTick(dt);else if(phase==='alter')alterTick(dt);else if(phase==='decorate'||phase==='leather')decoTick(dt);else if(phase==='centre'||phase==='throw'){gatherHands();shape(dt);$('cbar').firstChild.style.width=clamp(centreT/3.2)*100+'%';$('wbar').firstChild.style.width=clamp(P.wob)*100+'%';
+  else if(P){if(phase==='wedge')wedgeTick(dt);else if(phase==='alter')alterTick(dt);else if(phase==='decorate'||phase==='leather')decoTick(dt);else if((phase==='centre'||phase==='throw')&&!wheelOn){gatherHands();contact=false;ring.visible=false;marks.forEach(m=>m.visible=false)}else if(phase==='centre'||phase==='throw'){gatherHands();shape(dt);$('cbar').firstChild.style.width=clamp(centreT/3.2)*100+'%';$('wbar').firstChild.style.width=clamp(P.wob)*100+'%';
       $('throwInfo').textContent=`Height ${(P.h*10).toFixed(0)} cm · widest ${(Math.max(...P.r)*20).toFixed(0)} cm`}
     else if(phase!=='alter'){ring.visible=false;marks.forEach(m=>m.visible=false)}
     if(phase==='falling')fallTick(dt);if(phase==='fire')fireTick(dt);
-    const spinning=phase==='centre'||phase==='throw'||phase==='falling';spin+=dt*(spinning?(RM?2:5.5):phase==='result'||phase==='view'?.35:.15);
+    const spinning=(phase==='centre'||phase==='throw'||phase==='falling')&&(wheelOn||phase==='falling');spin+=dt*(spinning?(RM?2:5.5):phase==='result'||phase==='view'?.35:.15);
     pot.rotation.y=phase==='alter'?0:phase==='decorate'||phase==='leather'?turn:spin+dragRot;const w=spinning?P.wob*.09:0;pot.position.x=Math.sin(spin*1)*w;pot.position.z=Math.cos(spin*1)*w;head.rotation.y=spin;
     rebuild()}
   render();requestAnimationFrame(frame)}
