@@ -119,6 +119,7 @@ button:disabled{opacity:.4;cursor:default}
 .modes{display:grid;gap:10px;margin:14px 0 4px}
 .mode{border-radius:16px;text-align:left;display:grid;gap:4px;padding:14px 16px;font-size:15px;line-height:1.4}
 .mode b{font-size:19px}
+dialog.ready{width:min(620px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;padding:26px 28px 20px;border:1px solid var(--line);border-radius:22px;background:#fbf6ee;color:var(--ink);box-shadow:0 30px 80px rgba(40,24,14,.35)}dialog.ready::backdrop{background:rgba(42,31,25,.45);backdrop-filter:blur(3px)}dialog.ready h2{margin:0 0 4px}.ready p{margin:0 0 16px;font-size:16px}dialog.ready .btns{margin:16px 0 0;justify-content:flex-end}.readyRow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.readyRow button{display:grid;justify-items:center;gap:6px;padding:14px 6px 12px;min-height:0;border-radius:16px;font-size:16px;background:#fff}.readyRow button:hover{border-color:var(--clay);box-shadow:inset 0 0 0 2px var(--clay)}.readyRow svg{width:100%;max-width:92px;height:auto}@media (max-width:560px){.readyRow{grid-template-columns:repeat(3,1fr)}dialog.ready{padding:20px 16px 16px}}
 .mode[aria-pressed="true"]{background:#fff;border-color:var(--clay);box-shadow:inset 0 0 0 2px var(--clay)}
 .tbtns{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
 aside .tbtns[aria-label]::before{content:attr(aria-label);flex:0 0 100%;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
@@ -246,7 +247,8 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
         <div><svg viewBox="0 0 54 40" aria-hidden="true"><rect x="19" y="8" width="16" height="26" rx="5" fill="#a65a38"/><path d="M10 10v20M44 10v20" stroke="#2a1f19" stroke-width="3" stroke-linecap="round"/><path d="M6 14l4-4 4 4M40 26l4 4 4-4" fill="none" stroke="#2a1f19" stroke-width="2"/></svg><span><b>Up and down</b> chooses where you touch.</span></div>
       </div>
       <p class="dim" id="introNote">Rush, and it wobbles. Too much, and it falls.</p>
-      <div class="btns"><button id="useHands" class="main">Use my hands (camera)</button><button id="useMouse">Use mouse or touch</button></div>
+      <div class="btns"><button id="useHands" class="main">Use my hands (camera)</button><button id="useMouse">Use mouse or touch</button><button id="useReady" aria-haspopup="dialog">Use a ready-made pot</button></div>
+      <dialog class="ready" id="readyBox" aria-labelledby="readyH"><h2 id="readyH">Pick a pot</h2><p class="dim">Skip the wheel and go straight to carving.</p><div class="readyRow" id="readyRow" role="group" aria-label="Ready-made pots"></div><div class="btns"><button id="readyClose">Cancel</button></div></dialog>
       <p id="status"></p>
     </section>
 
@@ -497,7 +499,7 @@ function setTip(){const el=$('tip');let t=TIP[curUI];if(t&&!Array.isArray(t)){co
 let throwTool='hands';
 let bandSpin=false;function setSpin(on){bandSpin=on;document.querySelectorAll('.spinBtn').forEach(b=>{b.textContent=on?'Stop the wheel':'Spin the wheel';b.setAttribute('aria-pressed',on)});if(on)teach('Hold the tool still and let the wheel bring the clay to it.',true);setTip()}
 let wheelOn=true;function setWheel(on){wheelOn=on;document.querySelectorAll('.wheelBtn').forEach(b=>b.textContent=on?'Stop the wheel':'Start the wheel');if(!on&&(phase==='centre'||phase==='throw'))teach('The wheel is still. Look at it, turn it over in your head. Start it again to keep throwing.',true)}
-function begin(){throwTool='hands';setWheel(true);setSpin(false);setSprigs([]);clearShards();clearDeco(true);startWedge()}
+function begin(){readyMade=false;throwTool='hands';setWheel(true);setSpin(false);setSprigs([]);clearShards();clearDeco(true);startWedge()}
 function beginForm(){if(kind==='hand')return beginSculpt();pot.visible=true;clay.visible=false;P=newClay();buildHandles();setMat(wetMat);pot.rotation.set(0,0,0);centreT=0;rushes=0;rushAt=[];kept=false;touched=false;glazeType=null;seed=R()*1e9|0;rebuild();phase='centre';show('centreUI');
   teach(mode==='cam'?'Wet hands, slow wheel. Bring both hands to the clay.':'Press and hold beside the clay, then drag toward it.',true)}
 
@@ -604,9 +606,9 @@ function code(){const a=hash().toString(36).toUpperCase().padStart(7,'0'),b=(Mat
 function describe(){const maxR=Math.max(...P.r),ratio=P.h/maxR,bi=P.r.indexOf(maxR)/(K-1),lean=Math.max(...P.asym);let s=[];
   s.push(ratio<.8?'Wide and low, nearly a bowl':ratio<1.4?'Round and steady':ratio<2.2?'Upright, like a jar':'Tall and narrow, like a bottle');
   s[0]+=bi<.35?', heavy at the bottom':bi<.68?', full in the middle':', widest near the top';s[0]+=lean>.05?', and it leans a little.':'.';
-  if(kept)s.push('It fell, and you kept it. That takes nerve.');else if(attempts>1)s.push(`Attempt ${attempts}. The clay remembers the ones before.`);
+  if(readyMade)s.push('It started as a ready-made pot. The carving and the colour are yours.');else if(kept)s.push('It fell, and you kept it. That takes nerve.');else if(attempts>1)s.push(`Attempt ${attempts}. The clay remembers the ones before.`);
   if(rushes){const w=rushAt[0]<.3?'base':rushAt[0]<.7?'belly':'neck';s.push(rushes>2?`You rushed it ${rushes} times, mostly at the ${w}; it shows, and that is fine.`:`You rushed once at the ${w}. Look, you can see where.`)}
-  if(P.handles.length)s.push(P.handles.length>1?'You gave it two handles.':'You pulled a handle, and it held.');
+  if(P.handles.length&&!readyMade)s.push(P.handles.length>1?'You gave it two handles.':'You pulled a handle, and it held.');
   if(P.spout>.2)s.push('A pinched spout, for pouring something one day.');
   if(Math.abs(P.oval)>.08)s.push(P.oval>0?'You squeezed it oval while it was soft.':'You pressed it wide.');
   if(P.grooves.length)s.push(`${P.grooves.length} groove${P.grooves.length>1?'s':''} run${P.grooves.length>1?'':'s'} around it.`);
@@ -864,7 +866,7 @@ function toAddon(){setSpin(false);carveTool='sprig';decoLast=null;show('addonUI'
 function goBack(){click(.1,700,.05);setSpin(false);decoLast=null;
   switch(curUI){case'wedgeUI':return goIntro();case'centreUI':case'sculptUI':return startWedge();case'throwUI':beginForm();return teach('Fresh clay. Thrown clay cannot go back to a lump, so this is a new one to centre.',true);
     case'alterUI':P.oval=0;P.spout=0;P.handles=[];buildHandles();potHist.length=0;contact=false;prevG=null;phase='throw';setWheel(true);show('throwUI');return teach('Back on the wheel. The spout and handles came off.',true);
-    case'leatherUI':if(kind==='hand'){phase='sculpt';clay.material=sculptWet;for(const q of sprigMeshes)q.material=sculptWet;show('sculptUI')}else{toAlter();setMat(wetMat)}return teach('Soft again. Your carving is still there.',true);
+    case'leatherUI':if(readyMade)return goIntro();if(kind==='hand'){phase='sculpt';clay.material=sculptWet;for(const q of sprigMeshes)q.material=sculptWet;show('sculptUI')}else{toAlter();setMat(wetMat)}return teach('Soft again. Your carving is still there.',true);
     case'addonUI':carveTool='carve';return show('leatherUI');
     case'decoUI':phase='leather';setMat(kind==='hand'?sculptLeather:leatherMat);carveTool='sprig';return show('addonUI');
     case'glazeUI':return toDecorate()}}
@@ -1083,12 +1085,12 @@ function sprigNames(){const cnt={};for(const q of sprigList)cnt[q.t]=(cnt[q.t]||
 /* what the card says: one line on the shape, the two most notable things that happened, one on the glaze */
 function shortNote(){const s=[],hand=kind==='hand',bits=[];
   if(hand){const b=clayBounds();s.push(sCount.pull+sCount.push+sCount.smooth===0?'A lump. You left it a lump. Bold.':b.h>b.w*1.3?'Tall, for a lump.':b.w>b.h*1.4?'Low, wide and unbothered.':'It is definitely a something.')}
-  else{const ratio=P.h/Math.max(...P.r);s.push(kept?'It fell over and you kept it anyway. Respect.':ratio>2.2?'A vase with ambitions.':ratio<.9?'Technically a bowl.':'Pot-shaped. Mostly.')}
+  else{const ratio=P.h/Math.max(...P.r);s.push(readyMade?'Ready-made shape, finished by you.':kept?'It fell over and you kept it anyway. Respect.':ratio>2.2?'A vase with ambitions.':ratio<.9?'Technically a bowl.':'Pot-shaped. Mostly.')}
   if(blown)bits.push(wedgeAir>.6?'You skipped the wedging and the kiln noticed.':'One air bubble got through. The kiln found it.');
   if(marbleN)bits.push(`Contains ${marbleN===1?'one failed pot':marbleN+' failed pots'}. Recycling.`);
   if(sprigList.length)bits.push(`Now with ${sprigNames()}.`);
   if(!hand&&P.spout>.15)bits.push('It has a spout, so it has opinions.');
-  if(!hand&&P.handles.length)bits.push(P.handles.length>1?'Two handles. Ears, really.':'One handle. Hold on.');
+  if(!hand&&P.handles.length&&!readyMade)bits.push(P.handles.length>1?'Two handles. Ears, really.':'One handle. Hold on.');
   const deco=[carveUsed&&'carved',decoUsed&&'painted',bandUsed.has('stamp')&&'stamped',bandUsed.has('words')&&'written on',bandUsed.has('roller')&&'patterned'].filter(Boolean);
   if(deco.length)bits.push(deco.length>2?'Decorated like you were paid by the mark.':`${deco.join(' and ').replace(/^./,c=>c.toUpperCase())}, by you.`);
   if(attempts>2)bits.push(`Attempt ${attempts}. Who is counting.`);
@@ -1316,6 +1318,17 @@ function roomPot(){clearShards();roomOn=true;kind='wheel';clay.visible=false;lum
   for(let i=0;i<K;i++){P.r[i]=Math.max(.2,q.r(i/(K-1))*(.9+R()*.04));P.asym[i]=.01+R()*.02}P.wob=0;P.handles=q.handle?[{side:1,y1:+(P.h*.78).toFixed(3),y2:+(P.h*.28).toFixed(3),out:.45}]:[];
   rebuild();buildHandles();pot.visible=true;pot.position.set(0,0,0);pot.rotation.y=R()*6.28;seed=R()*1e9|0;const keys=Object.keys(GL);glazeType=keys[R()*keys.length|0];sheen=['matte','satin','glossy'][R()*3|0];
   glazeMat=makeGlaze(glazeType);setMat(glazeMat);pot.updateMatrixWorld(true);phase='result';enterBreak(false,true)}
+/* ---------- ready-made pots: skip wedging, centring, throwing and altering, and start at the carving ---------- */
+const READY=[['Bowl',1],['Vase',0],['Bottle',2],['Mug',4],['Jar',3]];let readyMade=false;
+function startReady(i){const q=ROOMPOTS[i];sndInit();if(!mode)mode='mouse';roomOn=false;phase='intro';setKind('wheel');setSpin(false);setSprigs([]);clearShards();clearDeco(true);marbleN=0;DU.decoMarble.value=0;lumpM.visible=false;
+  wedgeAir=0;wedgeSkipped=false;blown=false;kilnBurst=false;rushes=0;rushAt=[];kept=false;attempts=1;touched=false;glazeType=null;seed=R()*1e9|0;
+  P=newClay();P.h=P.h0=q.h;for(let k=0;k<K;k++){P.r[k]=Math.max(.2,q.r(k/(K-1))*.92);P.asym[k]=.012}P.wob=0;P.handles=q.handle?[{side:1,y1:+(P.h*.78).toFixed(3),y2:+(P.h*.28).toFixed(3),out:.45}]:[];
+  pot.visible=true;clay.visible=false;pot.rotation.set(0,0,0);rebuild();buildHandles();readyMade=true;$('readyBox').close();toLeather();teach('A ready-made pot, leather-hard. Carve it, or go straight on.',true)}
+{const row=$('readyRow'),S=20;READY.forEach(([name,i])=>{const q=ROOMPOTS[i],pts=[];for(let k=0;k<=16;k++){const f=k/16;pts.push([Math.max(.2,q.r(f))*S,56-f*q.h*S])}
+    const d='M'+pts.map(([x,y])=>`${(36-x).toFixed(1)} ${y.toFixed(1)}`).join('L')+'L'+pts.slice().reverse().map(([x,y])=>`${(36+x).toFixed(1)} ${y.toFixed(1)}`).join('L')+'Z',top=pts[16],
+      hd=q.handle?`<path d="M${36+pts[12][0]} ${pts[12][1]}c14 0 14 ${(pts[4][1]-pts[12][1]).toFixed(1)} ${(pts[4][0]-pts[12][0]).toFixed(1)} ${(pts[4][1]-pts[12][1]).toFixed(1)}" fill="none" stroke="#a65a38" stroke-width="3.2" stroke-linecap="round"/>`:'';
+    const b=document.createElement('button');b.innerHTML=`<svg viewBox="0 0 72 60" aria-hidden="true">${hd}<path d="${d}" fill="#a65a38"/><ellipse cx="36" cy="${top[1].toFixed(1)}" rx="${(top[0]*.86).toFixed(1)}" ry="${Math.max(1.2,top[0]*.16).toFixed(1)}" fill="#6f3a22"/></svg>`;b.append(name);b.onclick=()=>startReady(i);row.append(b)})}
+$('useReady').onclick=()=>$('readyBox').showModal();$('readyClose').onclick=()=>$('readyBox').close();$('readyBox').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 function startRoom(){sndInit();if(!mode)mode='mouse';roomN=0;roomPot();teach('Nobody made these. Nobody will miss them.',true)}
 function roomDone(){roomN++;$('smashAll').hidden=true;$('smashNext').hidden=false;$('smashNext').textContent='Another pot';$('smashH').textContent='In pieces';$('smashP').textContent=`Pots broken: ${roomN}. Press "Another pot" when you want the next one.`;$('smashCancel').hidden=false}
 
