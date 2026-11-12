@@ -25,7 +25,7 @@ body.kiln{background:radial-gradient(90% 80% at 35% 45%,#ff9a3c 0%,#a6340f 40%,#
 .app{display:grid;grid-template-columns:minmax(0,1fr) clamp(350px,31vw,430px);height:calc(100dvh - 58px);min-height:0}
 #scene{position:relative;min-height:0;height:100%;touch-action:none;outline:none;overflow:hidden}
 aside{overflow-y:auto;overflow-x:hidden;min-height:0}
-aside .steps{gap:4px}aside .steps li{flex:1 1 auto;min-width:0;font-size:clamp(11px,.92vw,14px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+aside .steps{gap:8px 5px;flex-wrap:wrap}aside .steps li{flex:1 0 18%;font-size:clamp(11px,.92vw,14px);white-space:nowrap}
 #galleryPage{min-height:calc(100dvh - 58px)}
 #scene:focus-visible{box-shadow:inset 0 0 0 3px var(--clay)}
 #scene canvas{display:block;width:100%;height:100%;position:absolute;inset:0}
@@ -92,6 +92,12 @@ button:disabled{opacity:.4;cursor:default}
 .slot.empty{cursor:default}
 .slot.empty::before{content:'';position:absolute;left:32%;right:32%;bottom:2px;height:34%;border:1.5px dashed rgba(42,31,25,.18);border-radius:40% 40% 10px 10px}
 .gesture{position:absolute;left:50%;top:22px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 18px 8px 10px;font-size:15px;box-shadow:0 8px 24px rgba(60,35,20,.12);pointer-events:none}
+#tip{position:absolute;left:50%;top:22px;transform:translateX(-50%);max-width:min(480px,calc(100% - 40px));text-align:center;font-size:15px;line-height:1.3;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:8px 16px;box-shadow:0 8px 24px rgba(60,35,20,.1);pointer-events:none;z-index:3}
+#bar{position:absolute;left:50%;top:12px;transform:translateX(-50%);display:flex;gap:8px;z-index:4;max-width:calc(100% - 24px)}
+#bar button{min-height:0;padding:8px 14px;font-size:14px;white-space:nowrap;background:rgba(255,250,243,.9)}#bar button[aria-pressed="true"]{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}
+#bar:not([hidden])~#tip,#scene:has(#bar:not([hidden])) .gesture{top:66px}
+#scene:has(#bar:not([hidden])) .gesture:not([hidden])~#tip{top:124px}
+.gesture:not([hidden])~#tip{top:80px}
 .gesture svg{width:40px;height:30px;flex:none}
 .gesture .hold{width:90px;height:6px;border-radius:6px;background:rgba(42,31,25,.12);overflow:hidden}
 .gesture .hold i{display:block;height:100%;width:0;background:var(--clay)}
@@ -109,10 +115,21 @@ button:disabled{opacity:.4;cursor:default}
 .mode b{font-size:19px}
 .mode[aria-pressed="true"]{background:#fff;border-color:var(--clay);box-shadow:inset 0 0 0 2px var(--clay)}
 .tbtns{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+aside .tbtns[aria-label]::before{content:attr(aria-label);flex:0 0 100%;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+#tools .cap{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:4px}#tools .cap:first-child{margin-top:0}
+#tools.two{display:grid;grid-template-columns:auto auto;column-gap:16px;justify-items:center;align-items:center}#tools.two>.bucket,#tools.two>.cap{grid-column:1}
+#tools .extra{grid-column:2;grid-row:1/span 8;display:flex;flex-direction:column;align-items:center;gap:8px}#tools .extra .cap{margin-top:6px}#tools .extra .cap:first-child{margin-top:0}
+#tools .inks{margin-top:0}
+#tools .sizes{display:flex;flex-direction:column;gap:8px}.sizes button{width:30px;height:30px;min-height:0;padding:0;border-radius:50%;display:grid;place-items:center;background:#fbf6ee;border:1px solid var(--line);outline:3px solid transparent}
+.sizes button i{display:block;border-radius:50%;background:var(--ink)}.sizes button[aria-pressed="true"]{outline-color:var(--clay);background:#fff}
 .tbtns button[aria-pressed="true"]{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}
 #tools{position:absolute;left:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.6vh,14px)}
-#tools .bucket i{background:#fbf6ee;display:grid;place-items:center;width:clamp(52px,8vh,76px)}
+#tools .bucket i{background:#fbf6ee;display:grid;place-items:center;width:clamp(42px,6.4vh,68px)}
 #tools .bucket i svg{width:58%;height:58%}
+#tools .inks{display:grid;grid-template-columns:auto auto;gap:8px;margin-top:4px}
+.inks button{width:34px;height:34px;min-height:0;padding:0;border-radius:50%;border:2px solid #fff;outline:3px solid transparent;box-shadow:0 1px 5px rgba(0,0,0,.3)}
+.inks button[aria-pressed="true"]{outline-color:var(--clay)}
+#inkRow button i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px;box-shadow:0 0 0 1px rgba(42,31,25,.35)}
 #tools.many{left:16px;display:grid;grid-template-columns:auto auto;justify-items:center;gap:clamp(2px,1vh,10px) 8px}
 #tools.many .bucket i{width:clamp(36px,6vh,54px)}#tools.many .bucket{font-size:12px;gap:3px;padding:3px}
 #tools .bucket[aria-pressed="true"] i{outline-color:var(--clay);background:#fff}
@@ -122,9 +139,9 @@ button:disabled{opacity:.4;cursor:default}
 .hdot b{position:absolute;left:50%;top:30px;transform:translateX(-50%);display:flex;align-items:center;gap:4px;white-space:nowrap;font:600 12px/1 system-ui,sans-serif;color:var(--ink);background:rgba(251,244,234,.94);border-radius:20px;padding:3px 8px 3px 4px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 .hdot b svg{width:20px;height:20px}
 #sndBtn[aria-pressed="false"]{opacity:.45;text-decoration:line-through}
-#exBanner{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;max-width:86%;text-align:center;font-size:20px;line-height:1.3;background:rgba(251,244,234,.95);border-radius:18px;padding:14px 22px;box-shadow:0 6px 24px rgba(0,0,0,.18);pointer-events:none}
-.exhold{width:180px;height:7px;border-radius:7px;background:rgba(42,31,25,.12);overflow:hidden}.exhold i{display:block;height:100%;width:0;background:var(--clay)}
-.exhibit #vRemove,.exhibit #clearShelf{display:none}
+a.logo{color:inherit;text-decoration:none;cursor:pointer}
+.patSel{display:block;margin-top:4px;font:inherit;font-size:16px;color:var(--ink);padding:9px 34px 9px 14px;border:1px solid var(--line);border-radius:999px;background:#fbf6ee url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%232a1f19' stroke-width='1.8'/%3E%3C/svg%3E") no-repeat right 13px center/11px;appearance:none;-webkit-appearance:none;cursor:pointer;min-width:150px}
+.addPrev{width:76px;height:76px;border-radius:10px;background:#b4785a;flex:none}#tools .patSel{min-width:0;font-size:15px}
 .opt{margin:6px 0}.patrow{display:flex;gap:12px;align-items:center}.patrow canvas{width:76px;height:76px;border-radius:10px;background:#b4785a;flex:none}
 /* ghost hand: shows the movement once on the clay itself, and fades when you copy it */
 #ghost{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .6s}
@@ -171,7 +188,10 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
   .bucket{padding:2px 4px;font-size:13px;gap:3px}
   .gesture{top:12px;max-width:calc(100% - 32px);font-size:13px;padding:6px 14px 6px 8px}
   .gesture .hold{width:60px}
-  #teacher{bottom:112px;font-size:14px;padding:8px 14px}
+  #tools{flex-wrap:wrap;justify-content:center;max-width:calc(100% - 16px)}#tools.two{display:flex}#tools .cap{display:none}#tools .extra{display:contents}#tools .inks{display:flex;margin:0}#tools .sizes{flex-direction:row}
+  #tip{top:12px;font-size:13px;padding:6px 12px;max-width:calc(100% - 24px)}.gesture:not([hidden])~#tip{top:62px}
+  #bar{top:8px;gap:5px}#bar button{padding:7px 10px;font-size:13px}#bar:not([hidden])~#tip,#scene:has(#bar:not([hidden])) .gesture{top:52px}#scene:has(#bar:not([hidden])) .gesture:not([hidden])~#tip{top:102px}
+  #tip{transition:opacity .4s}#scene:has(#teacher:not(.off)) #tip{opacity:0}#scene:has(.gesture:not([hidden])) #teacher{top:62px}#scene:has(#bar:not([hidden])) #teacher{top:52px}#scene:has(#bar:not([hidden])):has(.gesture:not([hidden])) #teacher{top:102px}#teacher{top:12px;bottom:auto;width:max-content;max-width:calc(100% - 24px);font-size:14px;padding:8px 14px}
   #cam{left:auto;right:12px;top:12px;bottom:auto;width:110px}
   #edgeL{left:6px}#edgeR{right:6px}
   .zoom{right:10px;bottom:auto;top:132px}
@@ -180,7 +200,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
-<header class="nav"><span class="logo">First <em>Pot</em></span><span class="motto">Everyone's first one is a little wrong.</span>
+<header class="nav"><a class="logo" id="logo" href="#" aria-label="First Pot: back to the start">First <em>Pot</em></a><span class="motto">Everyone's first one is a little wrong.</span>
   <nav aria-label="Sections"><button data-tab="make" aria-selected="true">Make</button><button data-tab="gallery" aria-selected="false">Gallery</button><button data-tab="room" aria-selected="false">Rage room</button></nav></header>
 <div class="app">
   <div id="scene" tabindex="0" aria-label="The wheel. Shape the clay with your hands, mouse or touch. With the keyboard, up and down choose a height, left and right narrow or widen.">
@@ -188,9 +208,11 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
     <div class="gesture" id="doneGesture" hidden><svg viewBox="0 0 40 30" aria-hidden="true"><rect x="13" y="13" width="15" height="15" rx="4" fill="#a65a38"/><path d="M17 14V5q0-3 3-3t2 4l-1 7" fill="#a65a38" stroke="#2a1f19" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 18h-3M13 22h-3M13 26h-3" stroke="#2a1f19" stroke-width="1.6" stroke-linecap="round"/></svg><span id="doneText">Done? Thumbs up and hold</span><span class="hold"><i id="doneBar"></i></span></div>
     <div id="buckets" hidden aria-label="Glazes"></div>
     <div id="tools" hidden aria-label="Tools"></div>
+    <div id="bar" hidden role="group" aria-label="Step and wheel"><button class="backBtn">‹ Back</button><button id="barL" aria-label="Turn left">‹ Turn</button><button class="spinBtn">Spin the wheel</button><button class="wheelBtn">Stop the wheel</button><button id="barR" aria-label="Turn right">Turn ›</button></div>
+    <div id="tip" hidden aria-hidden="true"></div>
     <div class="zoom" role="group" aria-label="Zoom"><button id="sndBtn" aria-label="Sound" aria-pressed="true" title="Sound">♪</button><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset" aria-label="Reset zoom">⟲</button></div>
     <div class="edge" id="edgeL" hidden aria-hidden="true">‹</div><div class="edge" id="edgeR" hidden aria-hidden="true">›</div>
-    <div id="ghost" hidden aria-hidden="true"></div><div id="exBanner" hidden><span id="exText"></span><span class="exhold"><i id="exBar"></i></span></div><div class="hdot" id="hd0" hidden></div><div class="hdot" id="hd1" hidden></div>
+    <div id="ghost" hidden aria-hidden="true"></div><div class="hdot" id="hd0" hidden></div><div class="hdot" id="hd1" hidden></div>
     <div id="teacher" class="off" aria-live="polite"><b>Teacher</b><span id="tsay"></span></div>
   </div>
 
@@ -222,10 +244,10 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <h2>Hand-build</h2>
       <p><b>Add</b>: pinch the clay and pull out, like adding a coil. <b>Press</b>: pinch once to make a dent. <b>Smooth</b>: pinch and rub. With the mouse, press and drag instead.</p>
       <div class="tbtns" id="sculptTools" role="group" aria-label="Tools"></div>
-      <div class="tbtns" role="group" aria-label="Brush size"><button data-b=".12">Small</button><button data-b=".17" aria-pressed="true">Medium</button><button data-b=".24">Large</button></div>
+      <div class="tbtns" role="group" aria-label="Size"><button data-b=".12">Small</button><button data-b=".17" aria-pressed="true">Medium</button><button data-b=".24">Large</button></div>
       <div class="tbtns"><button id="mirrorBtn" aria-pressed="true">Mirror: on</button></div>
       <p class="dim">Mirror copies one side to the other, so two ears come out even. Zoom with + and −.</p>
-      <div class="btns"><button id="turnL" aria-label="Turn left">‹ Turn</button><button id="turnR" aria-label="Turn right">Turn ›</button><button class="spinBtn">Spin the wheel</button><button id="undoS">Undo</button><button id="redoS">Redo</button></div>
+      <div class="btns"><button id="undoS">Undo</button><button id="redoS">Redo</button></div>
       <p class="dim" id="camSculpt" hidden>With the camera: hold a hand over a tool to switch (the Mirror chip turns mirroring on and off). Pinch to work, open your hand to stop. Hold a hand at the far left or right edge to turn the clay. Give a thumbs-up and hold it to move on.</p>
       <div class="btns"><button id="doneSculpt" class="main">Let it stiffen</button><button id="restart3">Start again</button></div>
     </section>
@@ -254,28 +276,35 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p>A few days under plastic and it has stiffened. You can't bend it any more, but you can still carve into it. This is your last chance to change it.</p>
       <div class="tbtns" id="leatherTools" role="group" aria-label="Tool"></div>
       <div class="opt" data-for="words" hidden><label class="nm">Your words<input class="wordsIn" maxlength="80" placeholder="A sentence to go around it" autocomplete="off"></label><div class="btns"><button class="wordsMode">Placement: around the pot</button></div><p class="dim">Then touch the piece where it should go.</p></div>
-      <div class="opt" data-for="roller" hidden><div class="patrow"><canvas class="patPrev" width="96" height="96" aria-label="The pattern"></canvas><div class="btns"><button class="patNew">New pattern</button><button class="patFold">Folds: 4</button></div></div><p class="dim">Then touch the piece at the height where it should roll around.</p></div>
-      <div class="opt" data-for="stamp" hidden><div class="tbtns stampKinds" role="group" aria-label="Stamp"></div><p class="dim">Touch the piece where the stamp should go. The size buttons set how big it is.</p></div>
-      <div class="opt" data-for="sprig" hidden><div class="tbtns" id="sprigKinds" role="group" aria-label="Add-on"></div><div class="btns"><button id="sprigUndo">Take the last one off</button></div><p class="dim">Small clay shapes, stuck on while the piece is still leather-hard. Touch the piece where one should go. The Fine, Medium and Wide buttons set its size.</p></div>
+      <div class="opt" data-for="roller" hidden><div class="patrow"><canvas class="patPrev" width="96" height="96" aria-label="The pattern"></canvas><div><label class="nm">Shape<select class="patSel"></select></label><div class="btns"><button class="patFold">Repeats: 4</button><button class="patMode">Placement: around the pot</button></div></div></div><p class="dim">Then touch the piece where it should go. The size buttons set how big it is.</p></div>
       <div class="opt" data-for="mark" hidden><div class="patrow"><canvas id="markPrev" width="96" height="96" aria-label="Your mark"></canvas><div><label class="nm">Your initials<input id="markIn" maxlength="3" placeholder="AB" autocomplete="off"></label><div class="btns"><button id="markShape">Shape: round</button><button id="markUp">Upload a stamp</button><input type="file" id="markFile" accept="image/png,image/*" hidden></div></div></div><p class="dim">Every maker has a mark. Use your initials, or upload your own stamp: a PNG with a clear background, or dark lines on white. Touch the piece where it should be pressed in. It is remembered for next time.</p></div>
-      <div class="tbtns" role="group" aria-label="Line width"><button data-c=".022">Fine</button><button data-c=".04" aria-pressed="true">Medium</button><button data-c=".065">Wide</button></div>
+      <div class="tbtns" role="group" aria-label="Size"><button data-c=".022">Fine</button><button data-c=".04" aria-pressed="true">Medium</button><button data-c=".065">Wide</button></div>
       <p class="dim">Carve lines, patterns, a face. Glaze will pool darker in the lines.</p>
-      <div class="btns"><button id="lthL" aria-label="Turn left">‹ Turn</button><button id="lthR" aria-label="Turn right">Turn ›</button><button class="spinBtn">Spin the wheel</button><button id="undoC">Undo</button><button id="redoC">Redo</button></div>
+      <div class="btns"><button id="undoC">Undo</button><button id="redoC">Redo</button></div>
       <p class="dim" id="camLeather" hidden>With the camera: hold a hand over a tool to pick it. Point one finger to carve, curl it or open your hand to lift the tool. Hold a hand at the far left or right edge to turn it. Give a thumbs-up and hold it to move on.</p>
-      <div class="btns"><button id="doneLeather" class="main">Let it dry</button></div>
+      <div class="btns"><button id="doneLeather" class="main">Next: add-ons</button></div>
+    </section>
+
+    <section id="addonUI" hidden>
+      <h2>Add-ons</h2>
+      <p>Small clay shapes, stuck on while the piece is still leather-hard. Pick a shape, then touch the piece where it should go. Or skip this step.</p>
+      <div class="tbtns" id="addonTools" role="group" aria-label="Shape" style="display:block"></div>
+      <div class="tbtns" role="group" aria-label="Size"><button data-c=".022">Small</button><button data-c=".04" aria-pressed="true">Medium</button><button data-c=".065">Large</button></div>
+      <div class="btns"><button id="sprigUndo">Take the last one off</button></div>
+      <div class="btns"><button id="doneAddon" class="main">Let it dry</button></div>
     </section>
 
     <section id="decoUI" hidden>
       <h2>Paint it</h2>
       <p>It has been fired once and is dry and pale now. Paint on it with underglaze colours, or print a picture on it. The glaze goes over the top in the next step.</p>
-      <div class="tbtns" id="decoTools" role="group" aria-label="Colour"></div>
-      <div class="opt" data-for="stamp" hidden><div class="tbtns stampKinds" role="group" aria-label="Stamp"></div><p class="dim">Touch the piece where the stamp should go. The size buttons set how big it is.</p></div>
+      <div class="tbtns" id="decoTools" role="group" aria-label="Tool"></div>
+      <div class="tbtns" id="inkRow" role="group" aria-label="Colour"></div>
       <div class="opt" data-for="words" hidden><label class="nm">Your words<input class="wordsIn" maxlength="80" placeholder="A sentence to go around it" autocomplete="off"></label><div class="btns"><button class="wordsMode">Placement: around the pot</button></div><p class="dim">Then touch the piece where it should go.</p></div>
-      <div class="opt" data-for="roller" hidden><div class="patrow"><canvas class="patPrev" width="96" height="96" aria-label="The pattern"></canvas><div class="btns"><button class="patNew">New pattern</button><button class="patFold">Folds: 4</button></div></div><p class="dim">Then touch the piece at the height where it should roll around.</p></div>
+      <div class="opt" data-for="roller" hidden><div class="patrow"><canvas class="patPrev" width="96" height="96" aria-label="The pattern"></canvas><div><label class="nm">Shape<select class="patSel"></select></label><div class="btns"><button class="patFold">Repeats: 4</button><button class="patMode">Placement: around the pot</button></div></div></div><p class="dim">Then touch the piece where it should go. The size buttons set how big it is.</p></div>
       <div class="tbtns" role="group" aria-label="Size"><button data-d=".035">Fine</button><button data-d=".07" aria-pressed="true">Medium</button><button data-d=".13">Broad</button></div>
       <div class="btns"><button id="decoPic">Add a picture</button><input type="file" id="decoFile" accept="image/*" hidden></div>
       <p class="dim" id="decoPicNote">A drawing or logo on a white background works best: the white is left off, like a ceramic decal. The picture stays in this browser.</p>
-      <div class="btns"><button id="decoL" aria-label="Turn left">‹ Turn</button><button id="decoR" aria-label="Turn right">Turn ›</button><button class="spinBtn">Spin the wheel</button><button id="undoD">Undo</button><button id="redoD">Redo</button><button id="clearD">Clear</button></div>
+      <div class="btns"><button id="undoD">Undo</button><button id="redoD">Redo</button><button id="clearD">Clear</button></div>
       <p class="dim" id="camDeco" hidden>With the camera: hold a hand over a colour to pick it. Point one finger to paint, curl it or open your hand to lift the brush. Hold a hand at the far left or right edge to turn it. Give a thumbs-up and hold it to move on.</p>
       <div class="btns"><button id="doneDeco" class="main">Glaze it</button></div>
     </section>
@@ -284,15 +313,17 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <h2>Centre the clay</h2>
       <p>Bring your hands to the clay until it glows where you touch, then hold them still. The wobble settles.</p>
       <div class="meter">Centred<div class="bar" id="cbar"><i></i></div></div>
-      <div class="btns"><button class="wheelBtn">Stop the wheel</button><button id="skipCentre">Skip</button></div>
+      <div class="btns"><button id="skipCentre">Skip</button></div>
     </section>
 
     <section id="throwUI" hidden>
       <h2>Throw</h2>
       <p>Touch the clay, then move in to narrow it and lift it, or out, slowly, to swell it. Move up and down to choose where.</p>
+      <div class="tbtns" id="throwTools" role="group" aria-label="Touch"></div>
+      <p class="dim">Whole hand shapes the pot. <b>Fingertip</b> presses a groove at the height you touch: hold longer for a deeper one, then move up or down for the next. Rows of grooves make ridges. Go over a groove with the whole hand to smooth it away.</p>
       <p class="dim" id="camDone" hidden>When it feels finished, give a thumbs-up and hold it for a moment. A thumbs-up hand never touches the clay. No need to click. With a keyboard, press Enter.</p>
       <div class="meter">Wobble<div class="bar warn" id="wbar"><i></i></div></div>
-      <div class="btns"><button id="doneThrow" class="main">It's done</button><button class="wheelBtn">Stop the wheel</button><button id="restart1">Start again</button></div>
+      <div class="btns"><button id="doneThrow" class="main">It's done</button><button id="restart1">Start again</button></div>
       <p class="dim" id="throwInfo"></p>
     </section>
 
@@ -349,7 +380,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
 <section class="shelf" id="shelf" aria-labelledby="shelfTitle">
   <div class="shelfHead">
     <div><h2 id="shelfTitle">Gallery</h2><p class="dim" id="shelfInfo"></p></div>
-    <div class="btns"><button id="exhibitBtn">Exhibition mode</button><button id="showShelf">Full screen</button><button id="saveShelf">Save the shelf as an image</button><button id="clearShelf">Clear</button></div>
+    <div class="btns"><button id="showShelf">Full screen</button><button id="saveShelf">Save the shelf as an image</button><button id="clearShelf">Clear</button></div>
   </div>
   <div class="wall"><div class="rack" id="rack"></div></div>
 </section>
@@ -430,15 +461,30 @@ const hands=[];// {u,v,src}
 let contact=false,prevG=null;
 function teach(t,force){if(!force&&clock-lastTeach<6)return;lastTeach=clock;$('tsay').textContent=t;$('teacher').classList.remove('off');clearTimeout(teach.h);teach.h=setTimeout(()=>$('teacher').classList.add('off'),6500)}
 let curUI='introUI',kind='wheel';
-const STEPS={wheel:['Wedge','Centre','Throw','Alter','Carve','Paint','Glaze','Fire'],hand:['Wedge','Sculpt','Carve','Paint','Glaze','Fire']};
-const STEPAT={wheel:{wedgeUI:0,centreUI:1,throwUI:2,fallUI:2,alterUI:3,leatherUI:4,decoUI:5,glazeUI:6,fireUI:7,resultUI:8},hand:{wedgeUI:0,sculptUI:1,leatherUI:2,decoUI:3,glazeUI:4,fireUI:5,resultUI:6}};
-function show(id){curUI=id;buildGuide(id);$('buckets').hidden=id!=='glazeUI';$('tools').hidden=!(id==='alterUI'||id==='sculptUI'||id==='decoUI'||id==='leatherUI');if(!$('tools').hidden)buildTools();
+const STEPS={wheel:['Wedge','Centre','Throw','Alter','Carve','Add-ons','Paint','Glaze','Fire'],hand:['Wedge','Sculpt','Carve','Add-ons','Paint','Glaze','Fire']};
+const STEPAT={wheel:{wedgeUI:0,centreUI:1,throwUI:2,fallUI:2,alterUI:3,leatherUI:4,addonUI:5,decoUI:6,glazeUI:7,fireUI:8,resultUI:9},hand:{wedgeUI:0,sculptUI:1,leatherUI:2,addonUI:3,decoUI:4,glazeUI:5,fireUI:6,resultUI:7}};
+function show(id){curUI=id;buildGuide(id);$('buckets').hidden=id!=='glazeUI';$('tools').hidden=!(id==='alterUI'||id==='sculptUI'||id==='decoUI'||id==='leatherUI'||id==='throwUI'||id==='addonUI');if(!$('tools').hidden)buildTools();setTip();
+  {const B=$('bar'),turnable=['sculptUI','leatherUI','addonUI','decoUI'].includes(id),q=c=>B.querySelector(c);q('.backBtn').hidden=!['wedgeUI','centreUI','throwUI','sculptUI','alterUI','leatherUI','addonUI','decoUI','glazeUI'].includes(id);$('barL').hidden=$('barR').hidden=!turnable;q('.spinBtn').hidden=!['sculptUI','leatherUI','decoUI'].includes(id);q('.wheelBtn').hidden=!(id==='centreUI'||id==='throwUI');B.hidden=q('.backBtn').hidden}
   for(const e of['camDone','camGlaze','camAlter','camSculpt','camDeco','camWedge','camLeather'])$(e).hidden=!(mode==='cam'&&CAMUI.includes(id));
-  for(const s of['introUI','smashUI','wedgeUI','sculptUI','alterUI','leatherUI','decoUI','centreUI','throwUI','fallUI','glazeUI','fireUI','resultUI','viewUI'])$(s).hidden=s!==id;
+  for(const s of['introUI','smashUI','wedgeUI','sculptUI','alterUI','leatherUI','addonUI','decoUI','centreUI','throwUI','fallUI','glazeUI','fireUI','resultUI','viewUI'])$(s).hidden=s!==id;
   const st=STEPAT[kind][id]??-1,ol=$('steps');ol.textContent='';if(id!=='viewUI')STEPS[kind].forEach((n,i)=>{const li=document.createElement('li');li.textContent=n;li.className=i===st?'on':i<st?'done':'';ol.append(li)})}
-let bandSpin=false;function setSpin(on){bandSpin=on;document.querySelectorAll('.spinBtn').forEach(b=>{b.textContent=on?'Stop the wheel':'Spin the wheel';b.setAttribute('aria-pressed',on)});if(on)teach('Hold the tool still and let the wheel bring the clay to it.',true)}
+/* one short line on the workspace itself; the full text stays in the side panel */
+const TIP={wedgeUI:['Drag up, then back down. Repeat until the air is gone.','Open hands: push up, come back down. Repeat.'],
+  centreUI:['Press beside the clay and hold still.','Palms on the clay. Hold still.'],
+  throwUI:{hands:['Drag in: taller. Drag out, slowly: wider.','Palms closer: taller. Apart, slowly: wider.'],finger:['Press on the clay to make a groove. Move up or down for the next one.','Close your hands in at one height to press a groove.']},
+  alterUI:{oval:['Drag in at the side to squeeze it oval.','Pinch at the side and move in to squeeze it oval.'],spout:['Drag the rim outward to pull a spout.','Pinch the rim and pull out for a spout.'],handle:['Drag from near the top, down and out. Let go where it joins.','Pinch near the top, drag down and out, let go.']},
+  sculptUI:{pull:['Press on the clay and drag out to add.','Pinch the clay and pull out to add.'],push:['Click to press a dent.','Pinch once to press a dent.'],smooth:['Press and rub to smooth.','Pinch and rub to smooth.']},
+  leatherUI:{carve:['Press and drag to carve.'],erase:['Rub over carving to smooth it away.'],words:['Type your words on the right, then touch the pot.'],roller:['Touch the pot at the height where the shapes should go around.'],mark:['Touch the pot to press in your mark.']},
+  addonUI:['Pick a shape, then touch the pot to stick it on.'],smashUI:['Click the pot to break pieces off.','Swing your hand through it, or click it.'],
+  decoUI:{_:['Press and drag to paint.'],print:['Touch the pot where the picture should go.'],words:['Type your words on the right, then touch the pot.'],roller:['Touch the pot at the height where the shapes should go around.'],mark:['Touch the pot to stamp your mark.']},
+  glazeUI:['Pick a bucket to dip it.','Hold a hand over a bucket to dip it.']};
+function setTip(){const el=$('tip');let t=TIP[curUI];if(t&&!Array.isArray(t)){const k=curUI==='throwUI'?throwTool:curUI==='alterUI'?alterTool:curUI==='sculptUI'?sculptTool:curUI==='leatherUI'?carveTool:decoTool;t=t[k]||t._;if(k==='roller'&&pat.spot)t=['Touch the pot where the shape should go.']}
+  if(t&&bandSpin&&(curUI==='leatherUI'||curUI==='decoUI')&&t===(TIP[curUI].carve||TIP[curUI]._))t=['Hold the tool still: the wheel draws the line around.'];
+  el.hidden=!t||!mode;if(t)el.textContent=t[mode==='cam'&&CAMUI.includes(curUI)&&t[1]?1:0]}
+let throwTool='hands';
+let bandSpin=false;function setSpin(on){bandSpin=on;document.querySelectorAll('.spinBtn').forEach(b=>{b.textContent=on?'Stop the wheel':'Spin the wheel';b.setAttribute('aria-pressed',on)});if(on)teach('Hold the tool still and let the wheel bring the clay to it.',true);setTip()}
 let wheelOn=true;function setWheel(on){wheelOn=on;document.querySelectorAll('.wheelBtn').forEach(b=>b.textContent=on?'Stop the wheel':'Start the wheel');if(!on&&(phase==='centre'||phase==='throw'))teach('The wheel is still. Look at it, turn it over in your head. Start it again to keep throwing.',true)}
-function begin(){setWheel(true);setSpin(false);setSprigs([]);clearShards();clearDeco(true);startWedge()}
+function begin(){throwTool='hands';setWheel(true);setSpin(false);setSprigs([]);clearShards();clearDeco(true);startWedge()}
 function beginForm(){if(kind==='hand')return beginSculpt();pot.visible=true;clay.visible=false;P=newClay();buildHandles();setMat(wetMat);pot.rotation.set(0,0,0);centreT=0;rushes=0;rushAt=[];kept=false;touched=false;glazeType=null;seed=R()*1e9|0;rebuild();phase='centre';show('centreUI');
   teach(mode==='cam'?'Wet hands, slow wheel. Bring both hands to the clay.':'Press and hold beside the clay, then drag toward it.',true)}
 
@@ -454,10 +500,14 @@ function shape(dt){if(!hands.length){contact=false;ring.visible=false;marks.forE
   touchMat.emissive.setHex(contact?0xd06a3a:0x000000);touchMat.emissiveIntensity=contact?.6:0;
   const g={t:target,f};let speed=0;if(prevG)speed=(Math.abs(g.t-prevG.t)+Math.abs(g.f-prevG.f)*P.h)/Math.max(dt,1/120);prevG=g;
   if(!contact)return;if(!touched){touched=true;teach('Good. Feel it push back.')}
-  const tgt=clamp(target,WALL+.07,2.1);
+  if(phase==='throw'&&throwTool==='finger'){/* a fingertip: a groove at this height, the shape is left alone */
+    const gy=ri/(K-1)*P.h;if(ri>1&&ri<K-2&&target<cur+.06){const g=P.grooves.find(q=>Math.abs(q.y-gy)<Math.max(.08,P.h/(K-1)*1.5));if(g)g.d=Math.min(.08,g.d+dt*.07);else if(P.grooves.length<18){P.grooves.push({y:gy,d:.02});if(P.grooves.length===1)teach('A groove. Hold for a deeper one, then move up or down for the next.',true)}}
+    P.wob=Math.max(0,P.wob-dt*.05);return}
+  const tgt=clamp(target,WALL+.07,2.1),hWas=P.h;
   for(let j=0;j<K;j++){const w=Math.exp(-(((j-row)/3.4)**2));P.r[j]+=(tgt-P.r[j])*w*Math.min(1,dt*3.2)}
   for(let k=0;k<2;k++)for(let j=1;j<K-1;j++)P.r[j]=P.r[j]*.9+.05*(P.r[j-1]+P.r[j+1]);
   const vol=P.r.reduce((a,b)=>a+b**1.8,0);P.h=clamp(P.h0*P.v0/vol,.7,3.9);
+  if(P.grooves.length){const sc=P.h/hWas;P.grooves=P.grooves.filter(g=>{g.y*=sc;g.d-=Math.exp(-(((g.y-y)/.28)**2))*dt*.1;return g.d>.004})}
   P.ridge=Math.min(1,P.ridge+dt*.05);
   if(phase==='centre'){if(speed<.9)centreT+=dt;P.wob=Math.max(.05,.7*(1-centreT/3.2));for(let j=0;j<K;j++)P.asym[j]=lerp(P.asym[j],.006,dt*.8);
     if(centreT>=3.2){phase='throw';show('throwUI');teach('Centred. That took me a month.',true)}return}
@@ -473,7 +523,7 @@ let fallAnim=null;
 function fall(){if(phase!=='throw')return;phase='falling';falls++;const from=P.r.slice(),fh=P.h,to=from.map((v,j)=>{const f=j/(K-1);return clamp(v*(1+f*f*(.4+R()*.6))+(R()-.5)*.15,WALL+.07,2.3)});
   fallAnim={t:0,from,to,fh,th:P.h*(.5+R()*.12)};{const a=.08+R()*.08;for(let j=0;j<K;j++)P.asym[j]+=(j/(K-1))**2*a}
   teach(PICK(['It fell. Everyone\'s first one does. Mine fell four times.','There it goes. That is how you learn where the edge is.']),true)}
-function fallTick(dt){fallAnim.t=Math.min(1,fallAnim.t+dt/1.3);const e=1-(1-fallAnim.t)**3;for(let j=0;j<K;j++)P.r[j]=lerp(fallAnim.from[j],fallAnim.to[j],e);P.h=lerp(fallAnim.fh,fallAnim.th,e);
+function fallTick(dt){fallAnim.t=Math.min(1,fallAnim.t+dt/1.3);const e=1-(1-fallAnim.t)**3;for(let j=0;j<K;j++)P.r[j]=lerp(fallAnim.from[j],fallAnim.to[j],e);{const was=P.h;P.h=lerp(fallAnim.fh,fallAnim.th,e);for(const g of P.grooves)g.y*=P.h/was}
   if(fallAnim.t>=1){phase='fallen';show('fallUI')}}
 
 /* ---------- glazes and the kiln ---------- */
@@ -542,7 +592,7 @@ function describe(){const maxR=Math.max(...P.r),ratio=P.h/maxR,bi=P.r.indexOf(ma
   if(P.handles.length)s.push(P.handles.length>1?'You gave it two handles.':'You pulled a handle, and it held.');
   if(P.spout>.2)s.push('A pinched spout, for pouring something one day.');
   if(Math.abs(P.oval)>.08)s.push(P.oval>0?'You squeezed it oval while it was soft.':'You pressed it wide.');
-  if(P.grooves.length)s.push(`${P.grooves.length} carved line${P.grooves.length>1?'s':''} run${P.grooves.length>1?'':'s'} around it.`);
+  if(P.grooves.length)s.push(`${P.grooves.length} groove${P.grooves.length>1?'s':''} run${P.grooves.length>1?'':'s'} around it.`);
   s.push(glazeLine(glazeType));
   if(glazeStats.drips>12)s.push(`It ran in ${glazeStats.drips} drips. You did not choose those. The kiln did.`);
   if(glazeStats.crawl)s.push('In a few places the glaze crawled back and left bare clay.');
@@ -712,7 +762,7 @@ const ART={
 const C=(art,glyph,cam,mouse)=>({art,glyph,cam,mouse});
 const GUIDE={wedgeUI:[C('wedge','open','Open hands: push up, come back','Drag up, then down')],
   centreUI:[C('hold','side','Palms facing, on the clay, hold','Press beside the clay, hold')],
-  throwUI:[C('tall','side','Palms closer: taller','Drag in: taller'),C('wide','side','Apart, slowly: wider','Drag out, slowly: wider')],
+  throwUI:[C('tall','side','Palms closer: taller','Drag in: taller'),C('wide','side','Apart, slowly: wider','Drag out, slowly: wider'),C('tap','point','Fingertip: press in, a groove','Fingertip: press, a groove')],
   alterUI:[C('pull','pinch','Pinch and drag','Press and drag'),C('hover','open','Hover: pick a tool',null)],
   sculptUI:[C('pull','pinch','Add: pinch, pull out','Add: press, drag out'),C('tap','pinch','Press: pinch once','Press: click once'),C('rub','pinch','Smooth: pinch and rub','Smooth: press and rub'),C('turn','open','Hand at the edge: turn',null),C('hover','open','Hover: pick a tool',null)],
   leatherUI:[C('carve','point','Point one finger: carve','Press and drag: carve'),C('turn','open','Hand at the edge: turn',null),C('hover','open','Hover: pick a tool',null)],
@@ -741,21 +791,21 @@ function ghostTick(dt){const g=$('ghost'),make=GHOST[phase];if(!make||!mode){g.h
 
 /* ---------- gestures to move on: raise both hands to finish, hover to pick a tool or a glaze ---------- */
 let doneT=0;
-function nextStep(){click(.12,1200,.05);if(phase==='wedge')finishWedge(false);else if(phase==='throw')toAlter();else if(phase==='alter'||phase==='sculpt')toLeather();else if(phase==='leather')toDecorate();else if(phase==='decorate')toGlaze()}
+function nextStep(){click(.12,1200,.05);if(phase==='wedge')finishWedge(false);else if(phase==='throw')toAlter();else if(phase==='alter'||phase==='sculpt')toLeather();else if(phase==='leather'){if(curUI==='leatherUI')toAddon();else toDecorate()}else if(phase==='decorate')toGlaze()}
 function hoverPick(box,dt,hold,cb){const b=wrap.getBoundingClientRect(),st=box._st||(box._st={q:null,t:0});let hit=null;
-  for(const q of box.children){const r=q.getBoundingClientRect();if(camHands.some(h=>{const x=b.left+h.u*b.width,y=b.top+h.v*b.height;return x>r.left&&x<r.right&&y>r.top&&y<r.bottom}))hit=q}
+  for(const q of box.children){if(!q.dataset.k)continue;const r=q.getBoundingClientRect();if(camHands.some(h=>{const x=b.left+h.u*b.width,y=b.top+h.v*b.height;return x>r.left&&x<r.right&&y>r.top&&y<r.bottom}))hit=q}
   if(hit!==st.q){st.q=hit;st.t=0}else if(hit)st.t+=dt;for(const q of box.children)q.style.setProperty('--p',q===st.q?clamp(st.t/hold):0);
   if(hit&&st.t>=hold){st.t=-1e9;cb(hit.dataset.k)}}
 /* the pot as it was over the last few seconds, so making the thumbs-up cannot change it */
 const potHist=[];
-function gestures(dt){recTick(dt);breakTick(dt);smashTick(dt);ghostTick(dt);sndTick();exhibitTick(dt);if(phase==='throw'&&P&&(!potHist.length||clock-potHist.at(-1).t>.2)){potHist.push({t:clock,P:structuredClone(P)});if(potHist.length>30)potHist.shift()}else if(phase!=='throw'&&potHist.length)potHist.length=0;
+function gestures(dt){recTick(dt);breakTick(dt);smashTick(dt);ghostTick(dt);sndTick();if(phase==='throw'&&P&&(!potHist.length||clock-potHist.at(-1).t>.2)){potHist.push({t:clock,P:structuredClone(P)});if(potHist.length>30)potHist.shift()}else if(phase!=='throw'&&potHist.length)potHist.length=0;
   const cam=camNow()&&camOn,hs=camHands,working=['wedge','throw','alter','sculpt','leather','decorate'].includes(phase);
   ['hd0','hd1'].forEach((id,i)=>{const h=hs[i],el=$(id);el.hidden=!(h&&((cam&&working)||(mode==='cam'&&camOn&&phase==='break')));if(!el.hidden){el.style.left=h.u*100+'%';el.style.top=h.v*100+'%';el.classList.toggle('pinch',!!h.p);el.classList.toggle('thumb',h.pose==='thumb');el.classList.toggle('fist',h.pose==='fist');const ps=h.p&&h.pose==='open'?'pinch':h.pose||'open';if(el._p!==ps){el._p=ps;el.innerHTML=`<b><svg viewBox="-14 -14 28 34" aria-hidden="true">${GLYPH[ps]||GLYPH.open}</svg>${POSE[ps]||''}</b>`}}});
   $('doneGesture').hidden=!(cam&&working);$('edgeL').hidden=$('edgeR').hidden=!(cam&&(phase==='sculpt'||phase==='decorate'||phase==='leather'));
   if(cam&&working){const up=hs.some(h=>h.pose==='thumb');
     doneT=up?doneT+dt:Math.max(0,doneT-dt*2);$('doneBar').style.width=clamp(doneT/1.5)*100+'%';$('doneText').textContent=up?'Hold it…':phase==='throw'||phase==='wedge'?'Done? Thumbs up and hold':phase==='decorate'?'Ready to glaze? Thumbs up and hold':phase==='leather'?'Finished carving? Thumbs up and hold':'Finished shaping? Thumbs up and hold';
     if(doneT>=1.5){doneT=0;if(phase==='throw'){const back=potHist.filter(q=>q.t<clock-2.4).pop()||potHist[0];if(back)P=structuredClone(back.P)}teach('Hands off.',true);nextStep()}}else doneT=0;
-  if(cam&&(phase==='alter'||phase==='sculpt'||phase==='decorate'||phase==='leather'))hoverPick($('tools'),dt,.8,k=>setTool(k));
+  if(cam&&(phase==='alter'||phase==='sculpt'||phase==='decorate'||phase==='leather'||phase==='throw'))hoverPick($('tools'),dt,phase==='throw'?1.2:.8,k=>setTool(k));
   if(cam&&phase==='glaze')hoverPick($('buckets'),dt,1.5,k=>fire(k))}
 $('buckets').hidden=true;
 
@@ -767,7 +817,7 @@ $('skipCentre').onclick=()=>{centreT=3.2;P.wob=.05;phase='throw';show('throwUI')
 $('doneThrow').onclick=()=>{if(phase==='throw')toAlter()};
 $('keepIt').onclick=()=>{kept=true;toAlter()};
 $('glazeIt').onclick=()=>{if(phase==='alter')toLeather()};
-$('doneSculpt').onclick=()=>{if(phase==='sculpt')toLeather()};$('doneLeather').onclick=()=>{if(phase==='leather')toDecorate()};$('wedgePush').onclick=()=>{if(phase==='wedge')wedgePush()};$('wedgeDone').onclick=()=>{if(phase==='wedge')finishWedge(false)};$('wedgeSkip').onclick=()=>{if(phase==='wedge')finishWedge(true)};$('doneDeco').onclick=()=>{if(phase==='decorate')toGlaze()};
+$('doneSculpt').onclick=()=>{if(phase==='sculpt')toLeather()};$('doneLeather').onclick=()=>{if(phase==='leather')toAddon()};$('doneAddon').onclick=()=>{if(phase==='leather')toDecorate()};$('wedgePush').onclick=()=>{if(phase==='wedge')wedgePush()};$('wedgeDone').onclick=()=>{if(phase==='wedge')finishWedge(false)};$('wedgeSkip').onclick=()=>{if(phase==='wedge')finishWedge(true)};$('doneDeco').onclick=()=>{if(phase==='decorate')toGlaze()};
 $('restart3').onclick=()=>{attempts++;setRec(getRec()+1);begin()};
 document.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{brush=+b.dataset.b;document.querySelectorAll('[data-b]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 function setMirror(m){mirror=m;$('mirrorBtn').setAttribute('aria-pressed',m);$('mirrorBtn').textContent=`Mirror: ${m?'on':'off'}`;buildTools()}
@@ -775,7 +825,7 @@ $('mirrorBtn').onclick=()=>setMirror(!mirror);
 const redoStack=[],alterRedo=[],carveRedo=[],decoRedo=[];
 $('undoS').onclick=()=>{if(undoStack.length){redoStack.push(D);D=undoStack.pop();clayDirty=true}};$('redoS').onclick=()=>{if(redoStack.length){undoStack.push(D);D=redoStack.pop();clayDirty=true}};
 $('undoA').onclick=()=>{const u=alterUndo.pop();if(u){alterRedo.push(snapAlter());Object.assign(P,u);buildHandles()}};$('redoA').onclick=()=>{const u=alterRedo.pop();if(u){alterUndo.push(snapAlter());Object.assign(P,u);buildHandles()}};
-for(const[id,d]of[['turnL',-1],['turnR',1],['decoL',-1],['decoR',1],['lthL',-1],['lthR',1]]){const b=$(id);b.addEventListener('pointerdown',()=>turnHold=d);for(const ev of['pointerup','pointerleave','pointercancel'])b.addEventListener(ev,()=>turnHold=0);
+for(const[id,d]of[['barL',-1],['barR',1]]){const b=$(id);b.addEventListener('pointerdown',()=>turnHold=d);for(const ev of['pointerup','pointerleave','pointercancel'])b.addEventListener(ev,()=>turnHold=0);
   b.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();turn+=d*.25}})}
 document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>b.dataset.k==='room'?startRoom():setKind(b.dataset.k));
 document.querySelectorAll('.wheelBtn').forEach(b=>b.onclick=()=>setWheel(!wheelOn));document.querySelectorAll('.spinBtn').forEach(b=>b.onclick=()=>setSpin(!bandSpin));
@@ -785,8 +835,18 @@ $('restart1').onclick=restart;$('restart2').onclick=restart;
 $('again').onclick=()=>{attempts=1;falls=0;begin()};
 $('clearShelf').onclick=()=>{const b=$('clearShelf');if(!b.dataset.sure){b.dataset.sure='1';b.textContent='Sure? Clear every pot';setTimeout(()=>{b.dataset.sure='';b.textContent='Clear'},4000);return}
   b.dataset.sure='';b.textContent='Clear';try{localStorage.removeItem('firstPot.shelf')}catch{}if(phase==='view')leaveView();drawShelf()};
-function toLeather(){if(kind==='hand')handsDown();phase='leather';setMat(kind==='hand'?sculptLeather:leatherMat);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){turn=0;pot.position.set(0,0,0)}decoLast=null;carveUndo.length=0;show('leatherUI');
+function toLeather(){if(kind==='hand')handsDown();phase='leather';setMat(kind==='hand'?sculptLeather:leatherMat);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){turn=0;pot.position.set(0,0,0)}decoLast=null;carveUndo.length=0;if(carveTool==='sprig')carveTool='carve';show('leatherUI');
   teach('A few days under plastic. It is leather-hard now: firm, but you can still carve it.',true)}
+function toAddon(){setSpin(false);carveTool='sprig';decoLast=null;show('addonUI');teach('Little extras. Pick a shape and touch the piece, or go straight on.',true)}
+/* back one step. What was made stays, except on the wheel: clay that has been thrown cannot be un-thrown */
+function goBack(){click(.1,700,.05);setSpin(false);decoLast=null;
+  switch(curUI){case'wedgeUI':return goIntro();case'centreUI':case'sculptUI':return startWedge();case'throwUI':beginForm();return teach('Fresh clay. Thrown clay cannot go back to a lump, so this is a new one to centre.',true);
+    case'alterUI':P.oval=0;P.spout=0;P.handles=[];buildHandles();potHist.length=0;contact=false;prevG=null;phase='throw';setWheel(true);show('throwUI');return teach('Back on the wheel. The squeeze, spout and handles came off.',true);
+    case'leatherUI':if(kind==='hand'){phase='sculpt';clay.material=sculptWet;for(const q of sprigMeshes)q.material=sculptWet;show('sculptUI')}else{toAlter();setMat(wetMat)}return teach('Soft again. Your carving is still there.',true);
+    case'addonUI':carveTool='carve';return show('leatherUI');
+    case'decoUI':phase='leather';setMat(kind==='hand'?sculptLeather:leatherMat);carveTool='sprig';return show('addonUI');
+    case'glazeUI':return toDecorate()}}
+document.querySelectorAll('.backBtn').forEach(b=>b.onclick=goBack);
 function toDecorate(){phase='decorate';const bq=bisqueOf();bq.emissiveIntensity=0;setMat(bq);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){turn=0;pot.position.set(0,0,0)}decoLast=null;decoUndo.length=0;show('decoUI');
   teach('Bone dry, fired once. Paint it now: the glaze will go over the top.',true)}
 function toGlaze(){setSpin(false);phase='glaze';const bq=bisqueOf();bq.emissiveIntensity=0;setMat(bq);ring.visible=false;marks.forEach(m=>m.visible=false);if(kind==='wheel'){spin=turn;dragRot=0}else spin=0;marks[0].scale.setScalar(1);show('glazeUI');teach(decoUsed?'Your painting is under there. Now the gamble.':'Now the gamble.',true)}
@@ -800,7 +860,15 @@ function setKind(k){kind=k;document.querySelectorAll('.mode').forEach(b=>b.setAt
   $('scene').setAttribute('aria-label',k==='wheel'?'The wheel. Shape the clay with your hands, mouse or touch. With the keyboard, up and down choose a height, left and right narrow or widen.':'The banding wheel. Pinch or press on the clay to work it. Left and right arrows turn it.');show(curUI)}
 
 /* ---------- altering on the wheel: squeeze, spout, handle, carve ---------- */
-const ICON={oval:'<ellipse cx="16" cy="16" rx="13" ry="8" fill="none" stroke="#2a1f19" stroke-width="2.5"/>',
+const ICON={brush:'<path d="M26 5L13 18" stroke="#2a1f19" stroke-width="3" stroke-linecap="round"/><path d="M13 18c-5 0-4 6-9 8 5 2 12 0 12-5z" fill="#22418c"/>',
+  fish:'<path d="M4 16c5-8 14-8 19 0-5 8-14 8-19 0z" fill="#a65a38"/><path d="M22 16l7-6v12z" fill="#a65a38"/><circle cx="10" cy="14.5" r="1.4" fill="#2a1f19"/>',
+  cat:'<path d="M7 6l5 5h8l5-5v12a9 9 0 0 1-18 0z" fill="#a65a38"/>',
+  bow:'<path d="M16 16L5 8v16zM16 16l11-8v16z" fill="#a65a38"/><circle cx="16" cy="16" r="3.2" fill="#6f3a22"/>',
+  flower:'<g fill="#a65a38"><circle cx="16" cy="8" r="5"/><circle cx="16" cy="24" r="5"/><circle cx="8" cy="16" r="5"/><circle cx="24" cy="16" r="5"/></g><circle cx="16" cy="16" r="3.5" fill="#6f3a22"/>',
+  leaf:'<path d="M6 26C6 12 14 6 27 5c-1 13-7 21-21 21z" fill="#a65a38"/><path d="M8 24L21 11" stroke="#6f3a22" stroke-width="1.5"/>',
+  hands:'<rect x="11" y="6" width="10" height="21" rx="4" fill="#a65a38"/><path d="M5 9v15M27 9v15" stroke="#2a1f19" stroke-width="3" stroke-linecap="round"/>',
+  finger:'<path d="M9 6h9v6q-4 4 0 8t0 7H9z" fill="#a65a38"/><path d="M29 16h-9" stroke="#2a1f19" stroke-width="3.5" stroke-linecap="round"/><path d="M12 13h3M12 20h3" stroke="#6f3a22" stroke-width="1.5" stroke-linecap="round"/>',
+  oval:'<ellipse cx="16" cy="16" rx="13" ry="8" fill="none" stroke="#2a1f19" stroke-width="2.5"/>',
   spout:'<path d="M7 28V12q0-3 3-4h9l8-4-3 7v17z" fill="none" stroke="#2a1f19" stroke-width="2.5" stroke-linejoin="round"/>',
   handle:'<rect x="5" y="7" width="15" height="21" rx="3" fill="none" stroke="#2a1f19" stroke-width="2.5"/><path d="M20 11q9 0 9 6t-9 6" fill="none" stroke="#2a1f19" stroke-width="2.5"/>',
   carve:'<path d="M5 27l11-11" stroke="#2a1f19" stroke-width="3" stroke-linecap="round"/><path d="M16 16c-1-6 4-11 9-10s3 9-3 11z" fill="none" stroke="#2a1f19" stroke-width="2.2"/>',
@@ -816,16 +884,25 @@ const ICON={oval:'<ellipse cx="16" cy="16" rx="13" ry="8" fill="none" stroke="#2
   cobalt:'<circle cx="16" cy="16" r="11" fill="#22418c"/>',iron:'<circle cx="16" cy="16" r="11" fill="#2b1c14"/>',copper:'<circle cx="16" cy="16" r="11" fill="#9c2f22"/>',slip:'<circle cx="16" cy="16" r="11" fill="#f3ece0" stroke="#2a1f19" stroke-width="1.5"/>',
   print:'<rect x="5" y="7" width="22" height="18" rx="2" fill="none" stroke="#2a1f19" stroke-width="2.5"/><path d="M7 23l7-8 5 5 3-3 4 6" fill="#a65a38"/><circle cx="21" cy="12" r="2.5" fill="#a65a38"/>',
   mirror:'<path d="M16 4v24" stroke="#2a1f19" stroke-width="2" stroke-dasharray="3 3"/><path d="M12 10l-7 6 7 6zM20 10l7 6-7 6z" fill="#a65a38"/>'};
-const TOOLS={leather:[['carve','Carve'],['erase','Smooth over'],['words','Words'],['roller','Pattern'],['stamp','Stamp'],['mark','My mark'],['sprig','Add-on']],deco:[['cobalt','Cobalt'],['iron','Iron'],['copper','Copper'],['slip','White'],['print','Picture'],['words','Words'],['roller','Pattern'],['stamp','Stamp'],['mark','My mark']],alter:[['oval','Squeeze'],['spout','Spout'],['handle','Handle']],sculpt:[['pull','Add'],['push','Press'],['smooth','Smooth'],['mirror','Mirror']]};
+const TOOLS={leather:[['carve','Carve'],['erase','Smooth over'],['words','Words'],['roller','Pattern'],['mark','My mark']],deco:[['brush','Brush'],['print','Picture'],['words','Words'],['roller','Pattern'],['mark','My mark']],addon:[['fish','Fish'],['cat','Cat'],['bow','Bow'],['flower','Flower'],['leaf','Leaf']],alter:[['oval','Squeeze'],['spout','Spout'],['handle','Handle']],throw:[['hands','Whole hand'],['finger','Fingertip']],sculpt:[['pull','Add'],['push','Press'],['smooth','Smooth'],['mirror','Mirror']]};
 const HINT={oval:'Pinch or press at the side of the pot and move inward to squeeze it oval, outward to widen it.',spout:'Pinch the rim on one side and pull outward to make a spout.',
   handle:'Pinch the side of the pot near the top, then drag down and outward. Let go where the handle should join.',carve:'Pinch or press on the surface and run along it to carve lines around the pot.'};
 let alterTool='oval',sculptTool='pull',alt=null;const alterUndo=[];
-function setTool(k){if(k==='mirror')return setMirror(!mirror);if(phase==='leather'){carveTool=k;if(BAND[k])teach(k==='mark'?'Touch the piece where your mark should go.':'Now touch the piece at the height where it should go.',true);else if(k==='sprig')teach('Pick a shape, then touch the piece where it should stick.',true);return buildTools()}if(phase==='decorate'){if(k==='print'&&!decoImg)return $('decoFile').click();decoTool=k;if(INK[k])decoInk=k;else if(BAND[k])teach(k==='mark'?'Touch the piece to stamp your mark in your last colour. Change the mark in the Carve step.':'Now touch the piece where it should go. It uses your last colour.',true);return buildTools()}if(phase==='alter'){alterTool=k;$('alterHint').textContent=HINT[k]}else sculptTool=k;buildTools()}
-function buildTools(){const set=phase==='alter'||curUI==='alterUI'?'alter':phase==='decorate'||curUI==='decoUI'?'deco':phase==='leather'||curUI==='leatherUI'?'leather':'sculpt',cur=set==='alter'?alterTool:set==='deco'?decoTool:set==='leather'?carveTool:sculptTool,O=$('tools'),Pn=$(set==='alter'?'alterTools':set==='deco'?'decoTools':set==='leather'?'leatherTools':'sculptTools');O.textContent='';Pn.textContent='';
-  for(const[k,label]of TOOLS[set]){const q=document.createElement('button'),i=document.createElement('i'),n=document.createElement('span');q.className='bucket';q.dataset.k=k;q.setAttribute('aria-pressed',k==='mirror'?mirror:k===cur);
+function setTool(k){if(k==='mirror')return setMirror(!mirror);if(curUI==='throwUI'){throwTool=k;return buildTools()}if(curUI==='addonUI'){sprigKind=k;return buildTools()}if(k==='brush')k=decoInk;if(phase==='leather'){carveTool=k;if(BAND[k])teach(k==='mark'?'Touch the piece where your mark should go.':'Now touch the piece at the height where it should go.',true);else if(k==='sprig')teach('Pick a shape, then touch the piece where it should stick.',true);return buildTools()}if(phase==='decorate'){if(k==='print'&&!decoImg)return $('decoFile').click();decoTool=k;if(INK[k])decoInk=k;else if(BAND[k])teach(k==='mark'?'Touch the piece to stamp your mark in your last colour. Change the mark in the Carve step.':'Now touch the piece where it should go. It uses your last colour.',true);return buildTools()}if(phase==='alter'){alterTool=k;$('alterHint').textContent=HINT[k]}else sculptTool=k;buildTools()}
+function pickInk(k){decoInk=k;if(INK[decoTool])decoTool=k;buildTools()}
+function buildTools(){const set=curUI==='throwUI'?'throw':curUI==='addonUI'?'addon':phase==='alter'||curUI==='alterUI'?'alter':phase==='decorate'||curUI==='decoUI'?'deco':phase==='leather'||curUI==='leatherUI'?'leather':'sculpt',cur=set==='throw'?throwTool:set==='addon'?sprigKind:set==='alter'?alterTool:set==='deco'?decoTool:set==='leather'?carveTool:sculptTool,O=$('tools'),on=k=>k===cur||(k==='brush'&&set==='deco'&&!!INK[cur]),Pn=$(set==='throw'?'throwTools':set==='addon'?'addonTools':set==='alter'?'alterTools':set==='deco'?'decoTools':set==='leather'?'leatherTools':'sculptTools');O.textContent='';Pn.textContent='';{const c=document.createElement('small');c.className='cap';c.textContent={throw:'Touch',addon:'Shape'}[set]||'Tools';O.append(c)}
+  if(set==='addon'){for(const box of[O,Pn]){const sel=document.createElement('select');sel.className='patSel';sel.setAttribute('aria-label','Shape');for(const k in PATK){const o=document.createElement('option');o.value=k;o.textContent=PATK[k];sel.append(o)}sel.value=sprigKind;sel.onchange=()=>setTool(sel.value);
+      const pv=document.createElement('img');pv.className='addPrev';pv.alt='';pv.src=stampCanvas(sprigKind,true).toDataURL();if(box===O)box.append(pv,sel);else{const r=document.createElement('div');r.className='patrow';r.append(pv,sel);box.append(r)}}}
+  else for(const[k,label]of TOOLS[set]){const q=document.createElement('button'),i=document.createElement('i'),n=document.createElement('span');q.className='bucket';q.dataset.k=k;q.setAttribute('aria-pressed',k==='mirror'?mirror:on(k));
     i.innerHTML=`<svg viewBox="0 0 32 32" aria-hidden="true">${ICON[k]}</svg>`;n.textContent=label;q.append(i,n);q.onclick=()=>setTool(k);O.append(q);
-    if(k==='mirror')continue;const b=document.createElement('button');b.textContent=label;b.setAttribute('aria-pressed',k===cur);b.onclick=()=>setTool(k);Pn.append(b)}
-  O.classList.toggle('many',TOOLS[set].length>5);if(set==='alter')$('alterHint').textContent=HINT[alterTool];document.querySelectorAll('.opt').forEach(o=>o.hidden=o.dataset.for!==cur)}
+    if(k==='mirror')continue;const b=document.createElement('button');b.textContent=label;b.setAttribute('aria-pressed',on(k));b.onclick=()=>setTool(k);Pn.append(b)}
+  const X=document.createElement('div');X.className='extra';
+  if(set==='deco'){const box=document.createElement('div'),row=$('inkRow');box.className='inks';row.textContent='';for(const k in INK){const nm={cobalt:'Cobalt blue',iron:'Iron black',copper:'Copper red',slip:'White'}[k],d=document.createElement('button');d.style.background=INK[k];d.title=nm;d.setAttribute('aria-label',nm);d.setAttribute('aria-pressed',k===decoInk);d.onclick=()=>pickInk(k);box.append(d);
+      const b=document.createElement('button');b.innerHTML=`<i style="background:${INK[k]}"></i>`;b.append(nm);b.setAttribute('aria-pressed',k===decoInk);b.onclick=()=>pickInk(k);row.append(b)}const c=document.createElement('small');c.className='cap';c.textContent='Colour';X.append(c,box)}
+  {const sz=[...$(curUI).querySelectorAll('[data-b],[data-c],[data-d]')];if(sz.length){const c=document.createElement('small'),box=document.createElement('div');c.className='cap';c.textContent='Size';box.className='sizes';sz.forEach((p,n)=>{const d=document.createElement('button'),w=6+n*5;d.innerHTML=`<i style="width:${w}px;height:${w}px"></i>`;d.title=p.textContent;d.setAttribute('aria-label','Size: '+p.textContent);d.setAttribute('aria-pressed',p.getAttribute('aria-pressed')==='true');d.onclick=()=>{p.click();buildTools()};box.append(d)});X.append(c,box)}}
+  O.classList.toggle('two',X.childElementCount>0);if(X.childElementCount)O.append(X);
+
+  O.classList.toggle('many',TOOLS[set].length>5&&!X.childElementCount);if(set==='alter')$('alterHint').textContent=HINT[alterTool];document.querySelectorAll('.opt').forEach(o=>o.hidden=o.dataset.for!==cur);setTip()}
 function rAtH(y){const f=clamp(y/P.h)*(K-1),i=Math.min(K-2,f|0),t=f-i;return lerp(P.r[i],P.r[i+1],t)}
 function buildHandles(){for(const m of handleMeshes){pot.remove(m);m.geometry.dispose()}handleMeshes.length=0;
   for(const q of P.handles){const side=q.side,rs=y=>rAtH(y)*(1-P.oval)-.04,V=(x,y)=>new THREE.Vector3(x,y,0),top=Math.max(rs(q.y1),rs(q.y2));
@@ -972,14 +1049,14 @@ $('decoFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(
   if(clear<edge*.3&&white>edge*.6){for(let i=0;i<d.length;i+=4){const m=Math.min(d[i],d[i+1],d[i+2]);d[i+3]=Math.round(d[i+3]*clamp((250-m)/40))}g.putImageData(id,0,0)}
   decoImg=c;decoTool='print';buildTools();teach('Now touch the piece where the picture should go. Each touch prints it once.',true)};
 document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{decoSize=+b.dataset.d;document.querySelectorAll('[data-d]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
-document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{carveSize=+b.dataset.c;document.querySelectorAll('[data-c]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{carveSize=+b.dataset.c;document.querySelectorAll('[data-c]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.c===b.dataset.c))});
 $('undoC').onclick=()=>{const u=carveUndo.pop();if(u){carveRedo.push(cg.getImageData(0,0,DW,DH));cg.putImageData(u,0,0);carveTex.needsUpdate=true}};$('redoC').onclick=()=>{const u=carveRedo.pop();if(u){carveUndo.push(cg.getImageData(0,0,DW,DH));cg.putImageData(u,0,0);carveTex.needsUpdate=true}};
 $('undoD').onclick=()=>{const u=decoUndo.pop();if(u){decoRedo.push(dg.getImageData(0,0,DW,DH));dg.putImageData(u,0,0);decoTex.needsUpdate=true}};$('redoD').onclick=()=>{const u=decoRedo.pop();if(u){decoUndo.push(dg.getImageData(0,0,DW,DH));dg.putImageData(u,0,0);decoTex.needsUpdate=true}};
 $('clearD').onclick=()=>{decoUndo.push(dg.getImageData(0,0,DW,DH));decoRedo.length=0;dg.clearRect(0,0,DW,DH);decoTex.needsUpdate=true};
 function decoLine(){const w=[wedgeLine(),marbleN?`The clay of ${marbleN===1?'a pot':marbleN+' pots'} that failed before it is marbled through this one.`:''].filter(Boolean).join(' '),c=carveUsed?'You carved into it while it was leather-hard.':'',d=paintLine();return[w,c,d].filter(Boolean).join(' ')}
 const QUIP={celadon:'Celadon: calm green, pooled wherever it pleased.',tenmoku:'Tenmoku: black with rusty edges, like good toast.',shino:'Shino: milky, with orange where the flame got nosy.',ash:'Wood ash: drippy. The kiln did that, not you.',
   cobalt:'Cobalt: very blue. No notes.',copper:'Copper red: dramatic, and it knows it.',turquoise:'Turquoise: ran everywhere. Enthusiastic.',honey:'Honey amber: looks like tea. Do not drink it.',white:'Tin white: hides nothing. Brave.',black:'Soft black: goes with everything.'};
-function sprigNames(){const cnt={};for(const q of sprigList)cnt[q.t]=(cnt[q.t]||0)+1;const n=Object.entries(cnt).map(([k,v])=>v>1?`${v} ${k==='fish'?'fish':k==='leaf'?'leaves':SPRIG[k].toLowerCase()+'s'}`:`a ${SPRIG[k].toLowerCase()}`);return n.length>1?n.slice(0,-1).join(', ')+' and '+n.at(-1):n[0]||''}
+function sprigNames(){const cnt={};for(const q of sprigList)cnt[q.t]=(cnt[q.t]||0)+1;const n=Object.entries(cnt).map(([k,v])=>v>1?`${v} ${k==='fish'?'fish':k==='leaf'?'leaves':PATK[k].toLowerCase()+'s'}`:`a ${PATK[k].toLowerCase()}`);return n.length>1?n.slice(0,-1).join(', ')+' and '+n.at(-1):n[0]||''}
 /* what the card says: one line on the shape, the two most notable things that happened, one on the glaze */
 function shortNote(){const s=[],hand=kind==='hand',bits=[];
   if(hand){const b=clayBounds();s.push(sCount.pull+sCount.push+sCount.smooth===0?'A lump. You left it a lump. Bold.':b.h>b.w*1.3?'Tall, for a lump.':b.w>b.h*1.4?'Low, wide and unbothered.':'It is definitely a something.')}
@@ -993,7 +1070,7 @@ function shortNote(){const s=[],hand=kind==='hand',bits=[];
   if(deco.length)bits.push(deco.length>2?'Decorated like you were paid by the mark.':`${deco.join(' and ').replace(/^./,c=>c.toUpperCase())}, by you.`);
   if(attempts>2)bits.push(`Attempt ${attempts}. Who is counting.`);
   s.push(...bits.slice(0,2));s.push((QUIP[glazeType]||glazeLine(glazeType))+(sheen==='matte'?' Matte, too.':sheen==='satin'?' Satin finish.':''));return s.join(' ')}
-function paintLine(){const extra=[bandUsed.has('words')?'Your words run around it.':'',bandUsed.has('roller')?'A pattern is rolled around it.':'',bandUsed.has('stamp')?'You stamped it.':'',bandUsed.has('mark')?'Your mark is pressed into it.':''].filter(Boolean).join(' ');const base=paintLine0(),cnt={};for(const q of sprigList)cnt[q.t]=(cnt[q.t]||0)+1;const names=Object.entries(cnt).map(([k,v])=>v>1?`${v} ${k==='fish'?'fish':k==='leaf'?'leaves':SPRIG[k].toLowerCase()+'s'}`:`a ${SPRIG[k].toLowerCase()}`),stuck=names.length?`You stuck on ${names.length>1?names.slice(0,-1).join(', ')+' and '+names.at(-1):names[0]}.`:'';return[base,extra,stuck].filter(Boolean).join(' ')}
+function paintLine(){const extra=[bandUsed.has('words')?'Your words run around it.':'',bandUsed.has('roller')?'A pattern is rolled around it.':'',bandUsed.has('stamp')?'You stamped it.':'',bandUsed.has('mark')?'Your mark is pressed into it.':''].filter(Boolean).join(' ');const base=paintLine0(),cnt={};for(const q of sprigList)cnt[q.t]=(cnt[q.t]||0)+1;const names=Object.entries(cnt).map(([k,v])=>v>1?`${v} ${k==='fish'?'fish':k==='leaf'?'leaves':PATK[k].toLowerCase()+'s'}`:`a ${PATK[k].toLowerCase()}`),stuck=names.length?`You stuck on ${names.length>1?names.slice(0,-1).join(', ')+' and '+names.at(-1):names[0]}.`:'';return[base,extra,stuck].filter(Boolean).join(' ')}
 function paintLine0(){if(!decoUsed)return'';const N={cobalt:'cobalt blue',iron:'iron black',copper:'copper red',slip:'white slip'},c=[...decoCols].map(k=>N[k]);
   const a=c.length?`You painted it in ${c.length>1?c.slice(0,-1).join(', ')+' and '+c.at(-1):c[0]}`:'';const b=decoPrints?(a?`, and printed a picture on it ${decoPrints>1?decoPrints+' times':''}`.trimEnd():`You printed a picture on it${decoPrints>1?' '+decoPrints+' times':''}`):'';
   return a||b?a+b+'.':''}
@@ -1007,6 +1084,13 @@ function sprigShape(t){const S=new THREE.Shape();
   else if(t==='cat'){S.moveTo(-.36,-.3);S.bezierCurveTo(-.5,-.1,-.48,.12,-.4,.2);S.lineTo(-.42,.5);S.lineTo(-.16,.34);S.bezierCurveTo(-.06,.38,.06,.38,.16,.34);S.lineTo(.42,.5);S.lineTo(.4,.2);S.bezierCurveTo(.48,.12,.5,-.1,.36,-.3);S.bezierCurveTo(.2,-.44,-.2,-.44,-.36,-.3)}
   else if(t==='bow'){S.moveTo(-.08,.06);S.lineTo(-.5,.3);S.bezierCurveTo(-.56,.1,-.56,-.1,-.5,-.3);S.lineTo(-.08,-.06);S.lineTo(-.2,-.42);S.lineTo(-.04,-.34);S.lineTo(0,-.14);S.lineTo(.04,-.34);S.lineTo(.2,-.42);S.lineTo(.08,-.06);S.lineTo(.5,-.3);S.bezierCurveTo(.56,-.1,.56,.1,.5,.3);S.lineTo(.08,.06);S.bezierCurveTo(.04,.12,-.04,.12,-.08,.06)}
   else if(t==='flower'){for(let i=0;i<=80;i++){const a=i/80*6.2832,r=.34+.16*Math.cos(5*a);i?S.lineTo(Math.cos(a)*r,Math.sin(a)*r):S.moveTo(r,0)}}
+  else if(t==='star'){for(let i=0;i<10;i++){const a=Math.PI/2+i*Math.PI/5,r=i%2?.22:.5;i?S.lineTo(Math.cos(a)*r,Math.sin(a)*r):S.moveTo(Math.cos(a)*r,Math.sin(a)*r)}}
+  else if(t==='moon'){const Ro=.47,ri=.39,cx=.2,cy=.08,d=Math.hypot(cx,cy),phi=Math.atan2(cy,cx),al=Math.acos((Ro*Ro+d*d-ri*ri)/(2*Ro*d)),be=Math.acos((d*d+ri*ri-Ro*Ro)/(2*d*ri));
+    for(let i=0;i<=40;i++){const a=phi+al+(2*Math.PI-2*al)*i/40;i?S.lineTo(Math.cos(a)*Ro,Math.sin(a)*Ro):S.moveTo(Math.cos(a)*Ro,Math.sin(a)*Ro)}for(let i=1;i<40;i++){const a=phi+Math.PI+be-2*be*i/40;S.lineTo(cx+Math.cos(a)*ri,cy+Math.sin(a)*ri)}}
+  else if(t==='clover'){for(let i=0;i<=120;i++){const a=i/120*6.2832,r=.13+.36*Math.abs(Math.cos(2*a))**.55,b=a+Math.PI/4;i?S.lineTo(Math.cos(b)*r,Math.sin(b)*r):S.moveTo(Math.cos(b)*r,Math.sin(b)*r)}}
+  else if(t==='mushroom'){S.moveTo(-.5,0);S.bezierCurveTo(-.5,.6,.5,.6,.5,0);S.bezierCurveTo(.4,-.06,.24,-.06,.15,-.03);S.lineTo(.2,-.4);S.bezierCurveTo(.12,-.5,-.12,-.5,-.2,-.4);S.lineTo(-.15,-.03);S.bezierCurveTo(-.24,-.06,-.4,-.06,-.5,0)}
+  else if(t==='frog'){S.moveTo(-.47,-.1);S.bezierCurveTo(-.5,.06,-.46,.16,-.4,.22);S.bezierCurveTo(-.42,.5,-.08,.5,-.09,.26);S.bezierCurveTo(-.03,.23,.03,.23,.09,.26);S.bezierCurveTo(.08,.5,.42,.5,.4,.22);S.bezierCurveTo(.46,.16,.5,.06,.47,-.1);S.bezierCurveTo(.42,-.42,-.42,-.42,-.47,-.1)}
+  else if(t==='dog'){S.moveTo(-.28,.3);S.bezierCurveTo(-.14,.42,.14,.42,.28,.3);S.bezierCurveTo(.52,.42,.58,0,.46,-.2);S.bezierCurveTo(.42,-.27,.35,-.22,.33,-.1);S.bezierCurveTo(.34,-.3,.18,-.44,0,-.44);S.bezierCurveTo(-.18,-.44,-.34,-.3,-.33,-.1);S.bezierCurveTo(-.35,-.22,-.42,-.27,-.46,-.2);S.bezierCurveTo(-.58,0,-.52,.42,-.28,.3)}
   else{S.moveTo(-.5,-.06);S.bezierCurveTo(-.2,.38,.24,.34,.5,.06);S.bezierCurveTo(.26,-.34,-.2,-.3,-.5,-.06)}
   return S}
 function sprigGeom(t){if(!sprigGeo[t]){const g=new THREE.ExtrudeGeometry(sprigShape(t),{depth:.2,bevelEnabled:true,bevelThickness:.08,bevelSize:.05,bevelSegments:4,curveSegments:14});g.translate(0,0,.03);sprigGeo[t]=g}return sprigGeo[t]}
@@ -1018,11 +1102,10 @@ function addSprig(q){const parent=kind==='hand'?clay:pot,n=new THREE.Vector3().f
 function setSprigs(list){for(const m of sprigMeshes){m.parent&&m.parent.remove(m);m.geometry.dispose()}sprigMeshes.length=0;sprigList=[];for(const q of list)addSprig({...q})}
 /* on a hand-built piece the glaze is painted on point by point, so the add-ons are given the glaze colour too */
 function tintSprigs(type){const G=GL[type],c=new THREE.Color().setRGB(G.base[0]/255,G.base[1]/255,G.base[2]/255,THREE.SRGBColorSpace);for(const m of sprigMeshes){const a=m.geometry.attributes.color;for(let i=0;i<a.count;i++)a.setXYZ(i,c.r,c.g,c.b);a.needsUpdate=true}}
-{const box=$('sprigKinds');for(const k in SPRIG){const b=document.createElement('button');b.textContent=SPRIG[k];b.setAttribute('aria-pressed',k===sprigKind);b.onclick=()=>{sprigKind=k;[...box.children].forEach(o=>o.setAttribute('aria-pressed',o===b))};box.append(b)}}
 $('sprigUndo').onclick=()=>{if(sprigList.length)setSprigs(sprigList.slice(0,-1))};
 
 /* ---------- bands and stamps: words around the pot, a rolled pattern, your own mark ---------- */
-let decoInk='cobalt',wordsSpot=false,wordsText='',pat={folds:4,seed:R()*1e9|0};const bandUsed=new Set(),patC=document.createElement('canvas');patC.width=patC.height=128;
+let decoInk='cobalt',wordsSpot=false,wordsText='',pat={folds:4,kind:'fish',spot:false};const bandUsed=new Set(),patC=document.createElement('canvas');patC.width=patC.height=128;
 const soft=(g,on)=>{try{g.filter=on?'blur(1.1px)':'none'}catch{}};
 /* words: the sentence is repeated as many whole times as fit, then stretched a little so it closes exactly */
 function bandWords(g,q,color,size,carve){const text=(wordsText||'').trim();if(!text){teach('Type your words in the panel first.',true);return}const F=clamp(size*q.sy,9,130),xs=q.sx/q.sy,unit=text+'   ·   ';
@@ -1031,14 +1114,13 @@ function bandWords(g,q,color,size,carve){const text=(wordsText||'').trim();if(!t
   g.save();g.font=`600 ${F}px "STIX Two Text",Georgia,serif`;const w=g.measureText(unit).width,n=Math.max(1,Math.round(DW/(w*xs)));g.setTransform(DW/(n*w),0,0,1,0,q.y);g.fillStyle=color;g.textBaseline='middle';soft(g,carve);
   for(let i=0;i<n;i++)g.fillText(unit,i*w,0);g.restore();soft(g,false)}
 /* a pattern tile: a few marks, repeated by turning and mirroring, like folded cut paper */
-function makePattern(){const g=patC.getContext('2d'),rr=rng(pat.seed),n=pat.folds;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,128,128);g.strokeStyle=g.fillStyle='#fff';g.lineCap='round';
-  const shapes=Array.from({length:3},()=>({t:rr()*3|0,a:8+rr()*46,b:6+rr()*50,c:rr()*.9,w:3+rr()*5}));
-  for(let k=0;k<n;k++)for(const m of[1,-1]){g.setTransform(1,0,0,1,64,64);g.rotate(k*2*Math.PI/n);g.scale(1,m);
-    for(const q of shapes){g.lineWidth=q.w;g.beginPath();if(q.t===0){g.moveTo(q.a*.3,2);g.quadraticCurveTo(q.a,q.b*q.c,Math.min(58,q.a+q.b*.4),3);g.stroke()}else if(q.t===1){g.arc(Math.min(52,q.a),4+q.b*.12,2+q.w*.9,0,6.2832);g.fill()}else{g.arc(0,0,Math.min(58,10+q.b),.08,Math.PI/n*.8);g.stroke()}}}
-  g.setTransform(1,0,0,1,0,0);document.querySelectorAll('.patPrev').forEach(c=>{const x=c.getContext('2d');x.clearRect(0,0,96,96);x.drawImage(patC,0,0,96,96)});document.querySelectorAll('.patFold').forEach(b=>b.textContent=`Folds: ${n}`)}
+const PATK={...SPRIG,frog:'Frog',clover:'Clover',dog:'Dog',mushroom:'Mushroom',star:'Star',moon:'Moon'};
+function makePattern(){const g=patC.getContext('2d'),n=pat.folds,src=stampCanvas(pat.kind,false),sz=n<2?112:Math.min(62,84*Math.sin(Math.PI/n)+8),rad=n<2?0:n<3?30:62-sz/2;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,128,128);
+  for(let k=0;k<n;k++){g.setTransform(1,0,0,1,64,64);g.rotate(k*2*Math.PI/n);g.drawImage(src,-sz/2,-rad-sz/2,sz,sz)}
+  g.setTransform(1,0,0,1,0,0);document.querySelectorAll('.patPrev').forEach(c=>{const x=c.getContext('2d');x.clearRect(0,0,96,96);x.drawImage(patC,0,0,96,96)});document.querySelectorAll('.patFold').forEach(b=>b.textContent=`Repeats: ${n<2?'none':n}`);document.querySelectorAll('.patSel').forEach(o=>o.value=pat.kind)}
 const tinted=(src,color)=>{const c=document.createElement('canvas');c.width=src.width;c.height=src.height;const g=c.getContext('2d');g.drawImage(src,0,0);g.globalCompositeOperation='source-in';g.fillStyle=color;g.fillRect(0,0,c.width,c.height);return c};
-function bandRoller(g,q,color,size,carve){const h=clamp(size*1.7*q.sy,14,DH*.4),n=Math.max(3,Math.round(DW/(h*q.sx/q.sy))),w=DW/n,t=tinted(patC,color),ln=Math.max(1.5,h*.035);g.save();soft(g,carve);
-  for(let i=0;i<n;i++)g.drawImage(t,i*w,q.y-h/2,w,h);g.fillStyle=color;g.fillRect(0,q.y-h/2-ln*2,DW,ln);g.fillRect(0,q.y+h/2+ln,DW,ln);g.restore();soft(g,false)}
+function bandRoller(g,q,color,size,carve){const h=clamp(size*1.7*q.sy,14,DH*.4),t=tinted(patC,color);g.save();soft(g,carve);
+  if(pat.spot){const w=Math.min(DW/4,h*q.sx/q.sy);wrapDraw(q.x,w/2,x=>g.drawImage(t,x-w/2,q.y-h/2,w,h))}else{const n=Math.max(3,Math.round(DW/(h*q.sx/q.sy))),w=DW/n;for(let i=0;i<n;i++)g.drawImage(t,i*w,q.y-h/2,w,h)}g.restore();soft(g,false)}
 /* your mark: initials in a ring or a square, kept in this browser and pressed in wherever you touch */
 const markC=document.createElement('canvas');markC.width=markC.height=128;let mark={t:'',shape:'round'};try{mark={...mark,...JSON.parse(localStorage.getItem('firstPot.mark')||'{}')}}catch{}
 let markImg=null;function drawMark(){const g=markC.getContext('2d');g.clearRect(0,0,128,128);if(mark.img){if(markImg)g.drawImage(markImg,0,0,128,128);const x=$('markPrev').getContext('2d');x.clearRect(0,0,96,96);x.drawImage(markC,0,0,96,96);$('markShape').textContent='Use initials instead';try{localStorage.setItem('firstPot.mark',JSON.stringify(mark))}catch{}return}g.strokeStyle=g.fillStyle='#fff';g.lineWidth=8;g.beginPath();if(mark.shape==='round')g.arc(64,64,56,0,6.2832);else g.roundRect(9,9,110,110,10);g.stroke();
@@ -1049,14 +1131,19 @@ function bandMark(g,q,color,size,carve){const w=Math.min(DW/5,.3*q.sx),h=.3*q.sy
 let stampKind='fish';const stampC={};
 function stampCanvas(t,solid){const key=t+solid;if(!stampC[key]){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),pts=sprigShape(t).getPoints(36);g.beginPath();pts.forEach((q,i)=>{const x=64+q.x*104,y=64-q.y*104;i?g.lineTo(x,y):g.moveTo(x,y)});g.closePath();
     g.fillStyle=g.strokeStyle='#fff';g.lineJoin='round';const face=()=>{for(const ex of[-.17,.17]){g.beginPath();g.ellipse(64+ex*104,64-.04*104,5.5,6.5,0,0,6.2832);g.fill()}g.beginPath();CATMOUTH(.026).forEach((q,i)=>{const x=64+q[0]*104,y=64-q[1]*104;i?g.lineTo(x,y):g.moveTo(x,y)});g.closePath();g.fill()};
-    if(solid){g.fill();if(t==='cat'){g.globalCompositeOperation='destination-out';face();g.globalCompositeOperation='source-over'}}else{g.lineWidth=9;g.stroke();if(t==='cat')face();if(t==='fish'||t==='flower'){g.beginPath();g.arc(t==='fish'?40:64,64,t==='flower'?12:5,0,6.2832);g.fill()}}stampC[key]=c}return stampC[key]}
-function bandStamp(g,q,color,size,carve){const k=size*2.2,w=Math.min(DW/4,k*q.sx),h=k*q.sy,t=tinted(stampCanvas(stampKind,!carve),color);g.save();soft(g,carve);wrapDraw(q.x,w/2,x=>g.drawImage(t,x-w/2,q.y-h/2,w,h));g.restore();soft(g,false)}
-const BAND={words:bandWords,roller:bandRoller,mark:bandMark,stamp:bandStamp};
-document.querySelectorAll('.stampKinds').forEach(box=>{for(const k in SPRIG){const b=document.createElement('button');b.textContent=SPRIG[k];b.dataset.s=k;b.setAttribute('aria-pressed',k===stampKind);b.onclick=()=>{stampKind=k;document.querySelectorAll('.stampKinds button').forEach(o=>o.setAttribute('aria-pressed',o.dataset.s===k))};box.append(b)}});
+    const dot=(x,y,r)=>{g.beginPath();g.arc(64+x*104,64-y*104,r,0,6.2832);g.fill()},det=()=>{if(t==='cat')face();else if(t==='fish')dot(-.23,0,5);else if(t==='flower')dot(0,0,12);
+      else if(t==='frog'){dot(-.24,.3,5);dot(.24,.3,5);g.lineWidth=4.5;g.lineCap='round';g.beginPath();g.arc(64,64-.12*104,26,.2*Math.PI,.8*Math.PI);g.stroke()}
+      else if(t==='dog'){dot(-.14,.08,5);dot(.14,.08,5);g.beginPath();g.ellipse(64,64+.14*104,8,6,0,0,6.2832);g.fill()}
+      else if(t==='mushroom'){dot(-.2,.2,7);dot(.12,.28,6);dot(.26,.12,4.5)}};
+    if(solid){g.fill();g.globalCompositeOperation='destination-out';det();g.globalCompositeOperation='source-over'}else{g.lineWidth=9;g.stroke();det()}stampC[key]=c}return stampC[key]}
+
+const BAND={words:bandWords,roller:bandRoller,mark:bandMark};
+
 document.querySelectorAll('.wordsIn').forEach(i=>i.addEventListener('input',()=>{wordsText=i.value;document.querySelectorAll('.wordsIn').forEach(o=>{if(o!==i)o.value=i.value})}));
 document.querySelectorAll('.wordsMode').forEach(b=>b.onclick=()=>{wordsSpot=!wordsSpot;document.querySelectorAll('.wordsMode').forEach(o=>o.textContent=`Placement: ${wordsSpot?'once, where I touch':'around the pot'}`)});
-document.querySelectorAll('.patNew').forEach(b=>b.onclick=()=>{pat.seed=R()*1e9|0;makePattern()});
-document.querySelectorAll('.patFold').forEach(b=>b.onclick=()=>{pat.folds=pat.folds>=8?2:pat.folds+2;makePattern()});
+document.querySelectorAll('.patSel').forEach(box=>{for(const k in PATK){const o=document.createElement('option');o.value=k;o.textContent=PATK[k];box.append(o)}box.onchange=()=>{pat.kind=box.value;makePattern()}});
+document.querySelectorAll('.patMode').forEach(b=>b.onclick=()=>{pat.spot=!pat.spot;document.querySelectorAll('.patMode').forEach(o=>o.textContent=`Placement: ${pat.spot?'once, where I touch':'around the pot'}`);setTip()});
+document.querySelectorAll('.patFold').forEach(b=>b.onclick=()=>{pat.folds=pat.folds>=8?1:pat.folds+1;makePattern()});
 $('markIn').value=mark.t;$('markIn').addEventListener('input',()=>{mark.t=$('markIn').value;drawMark()});$('markShape').onclick=()=>{if(mark.img){mark.img=null;markImg=null}else mark.shape=mark.shape==='round'?'square':'round';drawMark()};
 if(mark.img){const im=new Image();im.onload=()=>{markImg=im;drawMark()};im.src=mark.img}
 $('markUp').onclick=()=>$('markFile').click();
@@ -1164,7 +1251,7 @@ function strike(pt,dir,str,struck){if(!brk||brk.done)return;const rad=.22+str*.4
     if(d<rad||q.mesh===struck){const away=q.pivot.position.clone().sub(pt).normalize().multiplyScalar(.8).add(dir).normalize();loosen(q,away.multiplyScalar((1.2+R()*2.2)*(.5+str)).add(new THREE.Vector3(0,.8+R()*1.6*str,0)));n++}
     else if(d<rad*2.1+.25&&!q.cracked){q.cracked=true;q.pivot.position.add(new THREE.Vector3(R()-.5,R()-.5,R()-.5).multiplyScalar(.022));q.pivot.rotateOnWorldAxis(new THREE.Vector3(R()-.5,R()-.5,R()-.5).normalize(),(R()-.5)*.07)}}
   if(!brk.hits){if(brk.shelfN){storeShelf(loadShelf().filter(x=>x.n!==brk.shelfN));drawShelf()}$('smashCancel').hidden=!brk.room}
-  brk.hits++;shatter(str,brk.fired,n);if(!brk.room)shake(str);
+  brk.hits++;shatter(str,brk.fired,n);
   if(n&&brk.hits===1&&!brk.room)teach('Again.',true);
   if(left()<shards.length*.3)for(const q of shards)if(q.on)loosen(q,new THREE.Vector3((R()-.5)*1.2,.3+R(),(R()-.5)*1.2));
   $('brkbar').firstChild.style.width=left()/shards.length*100+'%';if(!left())breakDone()}
@@ -1287,22 +1374,8 @@ function blip(f,len=.25,v=.12){if(!ok())return;const c=snd.ctx,o=c.createOscilla
 function crack(){click(.5,1800,.3,'highpass');thud(.7)}
 $('sndBtn').onclick=()=>{snd.on=!snd.on;$('sndBtn').setAttribute('aria-pressed',snd.on);if(snd.on)sndInit()};
 
-/* ---------- exhibition mode: starts with a raised hand, resets itself, shows past pieces while it waits ---------- */
-let exhibit=false,lastActive=0,exT=0,exShow=0,exIdx=0;
-addEventListener('pointerdown',()=>{lastActive=clock});addEventListener('keydown',()=>{lastActive=clock});
+$('logo').onclick=e=>{e.preventDefault();if(!roomOn&&!['intro','result','view','smashed'].includes(phase)&&!confirm('Leave the piece you are making? It will be lost.'))return;if(document.fullscreenElement)document.exitFullscreen();setTab('make');goIntro()};
 function goIntro(){roomOn=false;if(tab==='room')markTab('make');setSprigs([]);clearShards();if(stash)leaveView();phase='intro';lumpM.visible=false;clearDeco(true);document.body.classList.remove('kiln');DU.decoMarble.value=0;setKind(kind);show('introUI')}
-function setExhibit(on){exhibit=on;document.body.classList.toggle('exhibit',on);$('exhibitBtn').textContent=on?'Leave exhibition mode':'Exhibition mode';lastActive=clock;exT=0;
-  if(on){sndInit();if(!camOn&&navigator.mediaDevices)startCam(true);document.documentElement.requestFullscreen?.().catch(()=>{})}else{$('exBanner').hidden=true;if(phase==='view')leaveView();if(document.fullscreenElement)document.exitFullscreen()}}
-$('exhibitBtn').onclick=()=>{setTab('make');setExhibit(!exhibit)};
-function exhibitTick(dt){if(!exhibit)return;const b=$('exBanner');if(camHands.length||pointers.size)lastActive=clock;const idle=clock-lastActive;
-  if(phase==='intro'||phase==='view'){b.hidden=false;const h=camOn&&camHands.find(x=>x.pose!=='fist'&&x.pose!=='thumb');
-    if(h){exT+=dt;const k=h.u<.5?'wheel':'hand';$('exText').textContent=(k==='wheel'?'The wheel':'Hand-building')+': keep your hand up';$('exBar').style.width=clamp(exT/1.5)*100+'%';
-      if(exT>=1.5){exT=0;if(phase==='view')leaveView();phase='intro';setKind(k);mode='cam';attempts=1;begin()}}
-    else{exT=0;$('exBar').style.width='0%';$('exText').textContent=camOn?'Hold up a hand to start. Left side: the wheel. Right side: hand-building.':'Choose a way to start.';
-      /* while it waits, past pieces take turns on the wheel */
-      exShow+=dt;if(idle>6&&(phase==='intro'||exShow>8)){const L=loadShelf().filter(p=>p.shape);if(L.length){exShow=0;exIdx=(exIdx+1)%L.length;if(phase==='view')leaveView();viewPot(L[exIdx].n)}}}}
-  else{b.hidden=true;exT=0;if(phase==='result'){if(idle>10&&clock-resultAt>25)goIntro()}else if(phase!=='fire'&&phase!=='falling'&&idle>50)goIntro()}}
-
 /* ---------- loop ---------- */
 let camFit=1;const zoom={l:1.15,k:1};
 function resize(){const b=wrap.getBoundingClientRect();if(!b.width||!b.height)return;renderer.setSize(b.width,b.height,false);cam.aspect=b.width/b.height;camFit=cam.aspect<1?1/cam.aspect:1;placeCam();cam.updateProjectionMatrix()}
