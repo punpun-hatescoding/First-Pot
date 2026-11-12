@@ -63,10 +63,11 @@ button:focus-visible{outline:3px solid var(--clay);outline-offset:2px}
 button.main{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}
 button.main:hover:not(:disabled){background:#000}
 button:disabled{opacity:.4;cursor:default}
-.glazes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-.glazes button{border-radius:14px;text-align:left;padding:12px;display:grid;gap:6px;font-size:14px;line-height:1.35}
-.glazes button b{font-size:17px}
-.glazes i{display:block;height:34px;border-radius:10px;box-shadow:inset 0 -6px 12px rgba(0,0,0,.18)}
+.glazes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0 8px}
+.glazes button{border-radius:999px;text-align:left;padding:5px 12px 5px 5px;min-height:0;display:flex;align-items:center;gap:9px;font-size:15px;line-height:1.2}
+.glazes button b{font-weight:600}
+.glazes i{flex:none;width:30px;height:30px;border-radius:50%;box-shadow:inset 0 -5px 9px rgba(0,0,0,.2)}
+#glazeDesc{min-height:2.8em;margin:0}
 .sig{font-size:14px;letter-spacing:.08em;color:var(--clay);margin:8px 0 14px}
 .note{font-size:19px;line-height:1.55}
 #status{font-size:14px;color:var(--dim);min-height:20px}
@@ -323,6 +324,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p>Touch the clay, then move in to narrow it and lift it, or out, slowly, to swell it. Move up and down to choose where.</p>
       <div class="tbtns" id="throwTools" role="group" aria-label="Touch"></div>
       <p class="dim">Whole hand shapes the pot. <b>Fingertip</b> presses a groove at the height you touch: hold longer for a deeper one, then move up or down for the next. Rows of grooves make ridges. Go over a groove with the whole hand to smooth it away.</p>
+      <p class="dim" id="camFinger" hidden>With the camera there is no button to press: point one finger and touch the clay for a groove, then open your hand to go back to shaping.</p>
       <p class="dim" id="camDone" hidden>When it feels finished, give a thumbs-up and hold it for a moment. A thumbs-up hand never touches the clay. No need to click. With a keyboard, press Enter.</p>
       <div class="meter">Wobble<div class="bar warn" id="wbar"><i></i></div></div>
       <div class="btns"><button id="doneThrow" class="main">It's done</button><button id="restart1">Start again</button></div>
@@ -346,9 +348,10 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <h2>Choose a glaze</h2>
       <p>The pot has dried and been fired once. Now pick what it will be dipped in. You will not know exactly how it turns out.</p>
       <p class="dim" id="camGlaze" hidden>Hold a hand over a glaze bucket on the wheel until its ring fills.</p>
-      <div class="tbtns" role="group" aria-label="How the kiln cools"><button data-f="matte">Slow cool: matte</button><button data-f="satin">Even cool: satin</button><button data-f="glossy" aria-pressed="true">Fast cool: glossy</button></div>
+      <div class="tbtns" role="group" aria-label="How the kiln cools"><button data-f="matte" title="Cooled slowly">Matte</button><button data-f="satin" title="Cooled evenly">Satin</button><button data-f="glossy" title="Cooled fast" aria-pressed="true">Glossy</button></div>
       <p class="dim">How the kiln cools decides the surface. Cooled slowly, the glaze goes soft and matte. Cooled fast, it stays glassy. Choose this first, then the glaze.</p>
       <div class="glazes" id="glazes"></div>
+      <div class="dim" id="glazeDesc" aria-live="polite"></div>
     </section>
 
     <section id="fireUI" hidden>
@@ -465,24 +468,24 @@ function teach(t,force){if(!force&&clock-lastTeach<6)return;lastTeach=clock;$('t
 let curUI='introUI',kind='wheel';
 const STEPS={wheel:['Wedge','Centre','Throw','Alter','Carve','Add-ons','Paint','Glaze','Fire'],hand:['Wedge','Sculpt','Carve','Add-ons','Paint','Glaze','Fire']};
 const STEPAT={wheel:{wedgeUI:0,centreUI:1,throwUI:2,fallUI:2,alterUI:3,leatherUI:4,addonUI:5,decoUI:6,glazeUI:7,fireUI:8,resultUI:9},hand:{wedgeUI:0,sculptUI:1,leatherUI:2,addonUI:3,decoUI:4,glazeUI:5,fireUI:6,resultUI:7}};
-function show(id){curUI=id;buildGuide(id);$('buckets').hidden=id!=='glazeUI';{const tu=id==='alterUI'||id==='sculptUI'||id==='decoUI'||id==='leatherUI'||id==='throwUI'||id==='addonUI';$('tools').hidden=!(tu&&mode==='cam'&&CAMUI.includes(id));if(tu)buildTools()}setTip();
+function show(id){curUI=id;buildGuide(id);$('buckets').hidden=true;{const tu=id==='alterUI'||id==='sculptUI'||id==='decoUI'||id==='leatherUI'||id==='throwUI'||id==='addonUI';$('tools').hidden=!(tu&&mode==='cam'&&CAMUI.includes(id));if(tu)buildTools()}setTip();
   {const B=$('bar'),turnable=['sculptUI','leatherUI','addonUI','decoUI'].includes(id),q=c=>B.querySelector(c);q('.backBtn').hidden=!['wedgeUI','centreUI','throwUI','sculptUI','alterUI','leatherUI','addonUI','decoUI','glazeUI'].includes(id);$('barL').hidden=$('barR').hidden=!turnable;q('.spinBtn').hidden=!['sculptUI','leatherUI','decoUI'].includes(id);q('.wheelBtn').hidden=!(id==='centreUI'||id==='throwUI');B.hidden=q('.backBtn').hidden}
-  for(const e of['camDone','camGlaze','camAlter','camSculpt','camDeco','camWedge','camLeather'])$(e).hidden=!(mode==='cam'&&CAMUI.includes(id));
+  for(const e of['camFinger','camDone','camGlaze','camAlter','camSculpt','camDeco','camWedge','camLeather'])$(e).hidden=!(mode==='cam'&&CAMUI.includes(id));
   for(const s of['introUI','smashUI','wedgeUI','sculptUI','alterUI','leatherUI','addonUI','decoUI','centreUI','throwUI','fallUI','glazeUI','fireUI','resultUI','viewUI'])$(s).hidden=s!==id;
   const st=STEPAT[kind][id]??-1,ol=$('steps');ol.textContent='';if(id!=='viewUI')STEPS[kind].forEach((n,i)=>{const li=document.createElement('li');li.textContent=n;li.className=i===st?'on':i<st?'done':'';ol.append(li)})}
 /* one short line on the workspace itself; the full text stays in the side panel */
 const TIP={wedgeUI:['Drag up, then back down. Repeat until the air is gone.','Open hands: push up, come back down. Repeat.'],
   centreUI:['Press beside the clay and hold still.','Palms on the clay. Hold still.'],
-  throwUI:{hands:['Drag in: taller. Drag out, slowly: wider.','Palms closer: taller. Apart, slowly: wider.'],finger:['Press on the clay to make a groove. Move up or down for the next one.','Close your hands in at one height to press a groove.']},
+  throwUI:{hands:['Drag in: taller. Drag out, slowly: wider.','Palms closer: taller. Apart, slowly: wider. Point a finger for a groove.'],finger:['Press on the clay to make a groove. Move up or down for the next one.','Pointing: touch the clay to press a groove. Open your hand to shape again.']},
   alterUI:{oval:['Drag in at the side to squeeze it oval.','Pinch at the side and move in to squeeze it oval.'],spout:['Drag the rim outward to pull a spout.','Pinch the rim and pull out for a spout.'],handle:['Drag from near the top, down and out. Let go where it joins.','Pinch near the top, drag down and out, let go.']},
   sculptUI:{pull:['Press on the clay and drag out to add.','Pinch the clay and pull out to add.'],push:['Click to press a dent.','Pinch once to press a dent.'],smooth:['Press and rub to smooth.','Pinch and rub to smooth.']},
   leatherUI:{carve:['Press and drag to carve.'],erase:['Rub over carving to smooth it away.'],words:['Type your words on the right, then touch the pot.'],roller:['Touch the pot at the height where the shapes should go around.'],mark:['Touch the pot to press in your mark.']},
   addonUI:['Pick a shape, then touch the pot to stick it on.'],smashUI:['Click the pot to break pieces off.','Make a fist and punch through it. Or click it.'],
   decoUI:{_:['Press and drag to paint.'],print:['Touch the pot where the picture should go.'],words:['Type your words on the right, then touch the pot.'],roller:['Touch the pot at the height where the shapes should go around.'],mark:['Touch the pot to stamp your mark.']},
-  glazeUI:['Pick a bucket to dip it.','Hold a hand over a bucket to dip it.']};
-function setTip(){const el=$('tip');let t=TIP[curUI];if(t&&!Array.isArray(t)){const k=curUI==='throwUI'?throwTool:curUI==='alterUI'?alterTool:curUI==='sculptUI'?sculptTool:curUI==='leatherUI'?carveTool:decoTool;t=t[k]||t._;if(k==='roller'&&pat.spot)t=['Touch the pot where the shape should go.']}
+  glazeUI:['Pick a glaze to dip the pot.','Pick a glaze to dip the pot.']};
+function setTip(){const el=$('tip');let t=TIP[curUI];if(t&&!Array.isArray(t)){const k=curUI==='throwUI'?(fingerNow()?'finger':throwTool):curUI==='alterUI'?alterTool:curUI==='sculptUI'?sculptTool:curUI==='leatherUI'?carveTool:decoTool;t=t[k]||t._;if(k==='roller'&&pat.spot)t=['Touch the pot where the shape should go.']}
   if(t&&bandSpin&&(curUI==='leatherUI'||curUI==='decoUI')&&t===(TIP[curUI].carve||TIP[curUI]._))t=['Hold the tool still: the wheel draws the line around.'];
-  el.hidden=!t||!mode;if(t)el.textContent=t[mode==='cam'&&(CAMUI.includes(curUI)||curUI==='smashUI')&&t[1]?1:0]}
+  el.hidden=!t||(!mode&&curUI!=='smashUI');if(t)el.textContent=t[(curUI==='smashUI'?camOn:mode==='cam'&&CAMUI.includes(curUI))&&t[1]?1:0]}
 let throwTool='hands';
 let bandSpin=false;function setSpin(on){bandSpin=on;document.querySelectorAll('.spinBtn').forEach(b=>{b.textContent=on?'Stop the wheel':'Spin the wheel';b.setAttribute('aria-pressed',on)});if(on)teach('Hold the tool still and let the wheel bring the clay to it.',true);setTip()}
 let wheelOn=true;function setWheel(on){wheelOn=on;document.querySelectorAll('.wheelBtn').forEach(b=>b.textContent=on?'Stop the wheel':'Start the wheel');if(!on&&(phase==='centre'||phase==='throw'))teach('The wheel is still. Look at it, turn it over in your head. Start it again to keep throwing.',true)}
@@ -491,7 +494,10 @@ function beginForm(){if(kind==='hand')return beginSculpt();pot.visible=true;clay
   teach(mode==='cam'?'Wet hands, slow wheel. Bring both hands to the clay.':'Press and hold beside the clay, then drag toward it.',true)}
 
 /* the shaping itself */
-function shape(dt){if(!hands.length){contact=false;ring.visible=false;marks.forEach(m=>m.visible=false);return}
+/* with the camera, the hand itself picks the touch while throwing: a pointing finger presses a groove, an open hand shapes. It is held for a moment so one misread frame does not swap them */
+let fingerT=0;const fingerNow=()=>throwTool==='finger'||fingerT>0;
+function shape(dt){{const was=fingerT>0,pt=phase==='throw'&&camNow()&&hands.length>0&&hands.every(h=>h.pose==='point');fingerT=pt?.4:Math.max(0,fingerT-dt);if(was!==fingerT>0){setTip();if(curUI==='throwUI')buildTools()}}
+  if(!hands.length){contact=false;ring.visible=false;marks.forEach(m=>m.visible=false);return}
   let target,v;if(hands.length>=2){const[a,b]=hands;v=(a.v+b.v)/2;const f0=clamp(heightFrac(v)),y=f0*P.h;target=Math.abs(worldX(a.u,y)-worldX(b.u,y))/2}
   else{v=hands[0].v;const f0=clamp(heightFrac(v)),y=f0*P.h;target=Math.abs(worldX(hands[0].u,y))}
   const f=heightFrac(v);if(f<-.1||f>1.15){contact=false;ring.visible=false;marks.forEach(m=>m.visible=false);prevG=null;return}
@@ -502,7 +508,7 @@ function shape(dt){if(!hands.length){contact=false;ring.visible=false;marks.forE
   touchMat.emissive.setHex(contact?0xd06a3a:0x000000);touchMat.emissiveIntensity=contact?.6:0;
   const g={t:target,f};let speed=0;if(prevG)speed=(Math.abs(g.t-prevG.t)+Math.abs(g.f-prevG.f)*P.h)/Math.max(dt,1/120);prevG=g;
   if(!contact)return;if(!touched){touched=true;teach('Good. Feel it push back.')}
-  if(phase==='throw'&&throwTool==='finger'){/* a fingertip: a groove at this height, the shape is left alone */
+  if(phase==='throw'&&fingerNow()){/* a fingertip: a groove at this height, the shape is left alone */
     const gy=ri/(K-1)*P.h;if(ri>1&&ri<K-2&&target<cur+.06){const g=P.grooves.find(q=>Math.abs(q.y-gy)<Math.max(.08,P.h/(K-1)*1.5));if(g)g.d=Math.min(.08,g.d+dt*.07);else if(P.grooves.length<18){P.grooves.push({y:gy,d:.02});if(P.grooves.length===1)teach('A groove. Hold for a deeper one, then move up or down for the next.',true)}}
     P.wob=Math.max(0,P.wob-dt*.05);return}
   const tgt=clamp(target,WALL+.07,2.1),hWas=P.h;
@@ -540,7 +546,8 @@ const GL={
   honey:{name:'Honey amber',sw:'linear-gradient(#e6c074,#6e3c0c)',base:[190,128,40],pool:[118,66,16],thin:[228,190,110],rough:.06,run:.5,desc:'Clear amber. The clay shows through, like tea.',line:'The amber stayed clear, and the clay shows through it like tea.'},
   white:{name:'Tin white',sw:'linear-gradient(#ffffff,#d9d4c6)',base:[240,238,230],pool:[224,226,222],thin:[228,208,182],rough:.14,run:.1,desc:'Plain white. It shows every line you carved or painted.',line:'The white hid nothing: every line you made is there.'},
   black:{name:'Soft black',sw:'linear-gradient(#5a5350,#0e0e10)',base:[28,28,30],pool:[12,12,14],thin:[74,64,58],rough:.5,run:.1,cc:.15,desc:'Almost no shine. All you see is the shape.',line:'The black took the shine away and left only the shape.'}};
-{const G=$('glazes');for(const[k,g]of Object.entries(GL)){const b=document.createElement('button'),i=document.createElement('i'),n=document.createElement('b'),d=document.createElement('span');i.style.background=g.sw;n.textContent=g.name;d.textContent=g.desc;b.append(i,n,d);b.onclick=()=>fire(k);G.append(b);
+const GLAZEHINT='Point at a glaze to read about it. Click to dip the pot.';$('glazeDesc').textContent=GLAZEHINT;
+{const G=$('glazes');for(const[k,g]of Object.entries(GL)){const b=document.createElement('button'),i=document.createElement('i'),n=document.createElement('b'),say=on=>{$('glazeDesc').textContent=on?g.name+'. '+g.desc:GLAZEHINT};i.style.background=g.sw;n.textContent=g.name;b.title=g.desc;b.append(i,n);b.onclick=()=>fire(k);b.onpointerenter=b.onfocus=()=>say(true);b.onpointerleave=b.onblur=()=>say(false);G.append(b);
   const q=document.createElement('button'),qi=document.createElement('i'),qn=document.createElement('span');q.className='bucket';q.dataset.k=k;qi.style.background=g.sw;qn.textContent=g.name;q.append(qi,qn);q.onclick=()=>fire(k);$('buckets').append(q)}}
 let glazeStats={};
 function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -694,14 +701,15 @@ $('saveShelf').onclick=async()=>{const L=loadShelf().slice().reverse();if(!L.len
 
 /* ---------- hands: MediaPipe, or mouse and touch ---------- */
 const MP='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';let HL=null,camOn=false,lastVT=-1;const vid=$('cam');
-async function startCam(quiet){const st=$('status');st.textContent='Loading hand tracking (about 8 MB the first time)…';$('useHands').disabled=true;
+/* the camera is asked for as the page loads, so a punch always works in the rage room; picking mouse and touch only hides it while making */
+async function startCam(quiet){const st=$('status');if(camOn){if(!quiet){mode='cam';begin()}return}if(startCam.busy){if(!quiet)startCam.want=true;return}startCam.busy=true;st.textContent='Loading hand tracking (about 8 MB the first time)…';$('useHands').disabled=!quiet;
   try{if(!HL){const V=await import(MP+'/vision_bundle.mjs'),fs=await V.FilesetResolver.forVisionTasks(MP+'/wasm');
       HL=await V.HandLandmarker.createFromOptions(fs,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:'GPU'},runningMode:'VIDEO',numHands:2})}
-    vid.srcObject=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});await vid.play();camOn=true;vid.hidden=false;mode='cam';st.textContent='';if(!quiet)begin()}
+    vid.srcObject=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});await vid.play();camOn=true;st.textContent='';if(phase==='break'&&brk&&brk.room)$('smashP').textContent='Make a fist and punch through it, or click it.';if((!quiet||startCam.want)&&phase==='intro'){mode='cam';begin()}}
   catch(e){st.textContent=`The camera could not start (${e.name||'error'}). Mouse and touch work the same way.`}
-  $('useHands').disabled=false}
+  startCam.busy=startCam.want=false;$('useHands').disabled=false}
 const camHands=[];
-function track(){if(!camOn||!HL||vid.readyState<2||vid.currentTime===lastVT)return;lastVT=vid.currentTime;let r;try{r=HL.detectForVideo(vid,performance.now())}catch{return}
+function track(){vid.hidden=!(camOn&&(mode==='cam'||phase==='break'));if(vid.hidden){camHands.length=0;return}if(!HL||vid.readyState<2||vid.currentTime===lastVT)return;lastVT=vid.currentTime;let r;try{r=HL.detectForVideo(vid,performance.now())}catch{return}
   const vw=vid.videoWidth||640,vh=vid.videoHeight||480,box=wrap.getBoundingClientRect(),sa=box.width/box.height,va=vw/vh;
   /* a pinch: thumb tip and index tip close together, measured against the size of the hand */
   /* poses read from the fingers: a finger is out when its tip is well beyond its middle joint, seen from the wrist */
@@ -709,12 +717,13 @@ function track(){if(!camOn||!HL||vid.readyState<2||vid.currentTime===lastVT)retu
   const next=(r.landmarks||[]).map(lm=>{const size=Math.hypot(lm[0].x-lm[9].x,lm[0].y-lm[9].y),ratio=Math.hypot(lm[4].x-lm[8].x,lm[4].y-lm[8].y)/size,
       W=i=>Math.hypot(lm[i].x-lm[0].x,lm[i].y-lm[0].y),out=(t,j)=>W(t)/W(j),curled=[[12,10],[16,14],[20,18]].every(([t,j])=>out(t,j)<1.05),
       idx=out(8,6),fist=curled&&idx<1.08,thumbUp=fist&&lm[4].y<lm[2].y&&Math.hypot(lm[4].x-lm[5].x,lm[4].y-lm[5].y)>size*.42,point=curled&&idx>1.2&&ratio>.45;
-    const pinch=ratio<.3,pose=thumbUp?'thumb':fist?'fist':point?'point':pinch?'pinch':'open',
-      p=pen?{x:lm[8].x,y:lm[8].y}:pinch?{x:(lm[4].x+lm[8].x)/2,y:(lm[4].y+lm[8].y)/2}:[0,5,9,13,17].reduce((a,i)=>({x:a.x+lm[i].x/5,y:a.y+lm[i].y/5}),{x:0,y:0});let u=1-p.x,v=p.y;
+    /* when breaking, any hand with its last three fingers folded is a fist: a punch seen from the front often shows the thumb or the index knuckle sticking up */
+    const pinch=ratio<.3,pose=phase==='break'?(curled?'fist':pinch?'pinch':'open'):thumbUp?'thumb':fist?'fist':point?'point':pinch?'pinch':'open',
+      p=pen||(point&&phase==='throw')?{x:lm[8].x,y:lm[8].y}:pinch?{x:(lm[4].x+lm[8].x)/2,y:(lm[4].y+lm[8].y)/2}:[0,5,9,13,17].reduce((a,i)=>({x:a.x+lm[i].x/5,y:a.y+lm[i].y/5}),{x:0,y:0});let u=1-p.x,v=p.y;
     if(va>sa){const k=sa/va;u=(u-.5)/k+.5}else{const k=va/sa;v=(v-.5)/k+.5}return{u,v,p:pen?point:pinch,ratio,idx,pose,pen}}).sort((a,b)=>a.u-b.u);
   /* a pinch starts below 0.30 and only ends above 0.45, and pinched hands are smoothed more, so small shakes do not start and stop work */
   /* when painting or carving, one pointing finger is the brush: it starts at a clear point and ends only when the finger folds */
-  camHands.length=0;next.forEach((h,i)=>{const old=lastCam[i];if(old&&old.pose==='thumb'&&h.pose==='fist')h.pose='thumb';const p=h.pose==='thumb'||h.pose==='fist'?false:h.pen?(old&&old.p?h.idx>1.05:h.p):(old&&old.p?h.ratio<.45:h.p),k=p?.3:.5;
+  camHands.length=0;next.forEach((h,i)=>{const old=lastCam[i];if(old&&old.pose==='thumb'&&h.pose==='fist'&&phase!=='break')h.pose='thumb';const p=h.pose==='thumb'||h.pose==='fist'?false:h.pen?(old&&old.p?h.idx>1.05:h.p):(old&&old.p?h.ratio<.45:h.p),k=p?.3:.5;
     camHands.push(old?{u:lerp(old.u,h.u,k),v:lerp(old.v,h.v,k),p,pose:h.pose}:{...h,p})});lastCam=camHands.map(h=>({...h}))}
 let lastCam=[];
 const pointers=new Map();
@@ -740,7 +749,7 @@ const FG=d=>`<path d="${d}" fill="none" stroke="#2a1f19" stroke-width="6.4" stro
   PALM=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="#a65a38" stroke="#2a1f19" stroke-width="1.4"/>`,CR=d=>`<path d="${d}" fill="none" stroke="#2a1f19" stroke-width="1.5" stroke-linecap="round"/>`;
 const GLYPH={open:FG('M-10 13L-13.5 7')+FG('M-5.6 7V-5M-1.9 7V-9M1.9 7V-9M5.6 7V-5')+PALM(-8.6,4,17.2,14),
   pinch:FG('M11 6V2M14 8V5')+PALM(2,4,14,14)+FG('M8 7L0 0')+FG('M5 15L0 0')+`<circle r="2" fill="#fbf4ea" stroke="#2a1f19" stroke-width="1"/>`,
-  point:FG('M0 8V-9')+PALM(-6,4,15,14)+FG('M-6 13L-8 9.5')+CR('M3 4v6M6.3 4v6'),
+  point:FG('M-5 8V-9')+PALM(-7.5,4,16,14)+FG('M-7 14L-10.5 10')+CR('M-1.2 4v6M2.2 4v6M5.6 4v6'),
   thumb:FG('M-2 5V-9')+PALM(-7,2,16,14)+CR('M-7 6.5h-3.4M-7 10h-3.4M-7 13.5h-3.4'),
   fist:PALM(-8,-1,16,15)+CR('M-4 -1v6M0 -1v6M4 -1v6')+FG('M-8 9L-10.5 6'),
   side:FG('M4 12L10 4')+FG('M-1.6 6V-9M1.8 6V-8')+PALM(-5,4,10.5,14),
@@ -764,7 +773,7 @@ const ART={
 const C=(art,glyph,cam,mouse)=>({art,glyph,cam,mouse});
 const GUIDE={wedgeUI:[C('wedge','open','Open hands: push up, come back','Drag up, then down')],
   centreUI:[C('hold','side','Palms facing, on the clay, hold','Press beside the clay, hold')],
-  throwUI:[C('tall','side','Palms closer: taller','Drag in: taller'),C('wide','side','Apart, slowly: wider','Drag out, slowly: wider'),C('tap','point','Fingertip: press in, a groove','Fingertip: press, a groove')],
+  throwUI:[C('tall','side','Palms closer: taller','Drag in: taller'),C('wide','side','Apart, slowly: wider','Drag out, slowly: wider'),C('tap','point','Point one finger: press in, a groove','Fingertip: press, a groove')],
   alterUI:[C('pull','pinch','Pinch and drag','Press and drag'),C('hover','open','Hover: pick a tool',null)],
   sculptUI:[C('pull','pinch','Add: pinch, pull out','Add: press, drag out'),C('tap','pinch','Press: pinch once','Press: click once'),C('rub','pinch','Smooth: pinch and rub','Smooth: press and rub'),C('turn','open','Hand at the edge: turn',null),C('hover','open','Hover: pick a tool',null)],
   leatherUI:[C('carve','point','Point one finger: carve','Press and drag: carve'),C('turn','open','Hand at the edge: turn',null),C('hover','open','Hover: pick a tool',null)],
@@ -802,7 +811,7 @@ function hoverPick(box,dt,hold,cb){const b=wrap.getBoundingClientRect(),st=box._
 const potHist=[];
 function gestures(dt){recTick(dt);breakTick(dt);smashTick(dt);ghostTick(dt);sndTick();if(phase==='throw'&&P&&(!potHist.length||clock-potHist.at(-1).t>.2)){potHist.push({t:clock,P:structuredClone(P)});if(potHist.length>30)potHist.shift()}else if(phase!=='throw'&&potHist.length)potHist.length=0;
   const cam=camNow()&&camOn,hs=camHands,working=['wedge','throw','alter','sculpt','leather','decorate'].includes(phase);
-  ['hd0','hd1'].forEach((id,i)=>{const h=hs[i],el=$(id);el.hidden=!(h&&((cam&&working)||(mode==='cam'&&camOn&&phase==='break')));if(!el.hidden){el.style.left=h.u*100+'%';el.style.top=h.v*100+'%';el.classList.toggle('pinch',!!h.p);el.classList.toggle('thumb',h.pose==='thumb');el.classList.toggle('fist',h.pose==='fist');const ps=h.p&&h.pose==='open'?'pinch':h.pose||'open';if(el._p!==ps){el._p=ps;el.innerHTML=`<b><svg viewBox="-14 -14 28 34" aria-hidden="true">${GLYPH[ps]||GLYPH.open}</svg>${POSE[ps]||''}</b>`}}});
+  ['hd0','hd1'].forEach((id,i)=>{const h=hs[i],el=$(id);el.hidden=!(h&&((cam&&working)||(camOn&&phase==='break')));if(!el.hidden){el.style.left=h.u*100+'%';el.style.top=h.v*100+'%';el.classList.toggle('pinch',!!h.p);el.classList.toggle('thumb',h.pose==='thumb');el.classList.toggle('fist',h.pose==='fist');const ps=h.p&&h.pose==='open'?'pinch':h.pose||'open';if(el._p!==ps){el._p=ps;el.innerHTML=`<b><svg viewBox="-14 -14 28 34" aria-hidden="true">${GLYPH[ps]||GLYPH.open}</svg>${POSE[ps]||''}</b>`}}});
   $('doneGesture').hidden=!(cam&&working);$('edgeL').hidden=$('edgeR').hidden=!(cam&&(phase==='sculpt'||phase==='decorate'||phase==='leather'));
   if(cam&&working){const up=hs.some(h=>h.pose==='thumb');
     doneT=up?doneT+dt:Math.max(0,doneT-dt*2);$('doneBar').style.width=clamp(doneT/1.5)*100+'%';$('doneText').textContent=up?'Hold it…':phase==='throw'||phase==='wedge'?'Done? Thumbs up and hold':phase==='decorate'?'Ready to glaze? Thumbs up and hold':phase==='leather'?'Finished carving? Thumbs up and hold':'Finished shaping? Thumbs up and hold';
@@ -814,7 +823,7 @@ $('buckets').hidden=true;
 /* ---------- controls ---------- */
 $('useHands').onclick=()=>{sndInit();startCam()};
 $('useMouse').onclick=()=>{sndInit();mode='mouse';begin()};
-if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia))$('useHands').hidden=true;
+if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia))$('useHands').hidden=true;else startCam(true);
 $('skipCentre').onclick=()=>{centreT=3.2;P.wob=.05;phase='throw';show('throwUI')};
 $('doneThrow').onclick=()=>{if(phase==='throw')toAlter()};
 $('keepIt').onclick=()=>{kept=true;toAlter()};
@@ -891,7 +900,7 @@ const HINT={oval:'Pinch or press at the side of the pot and move inward to squee
 let alterTool='oval',sculptTool='pull',alt=null;const alterUndo=[];
 function setTool(k){if(k==='mirror')return setMirror(!mirror);if(curUI==='throwUI'){throwTool=k;return buildTools()}if(curUI==='addonUI'){sprigKind=k;return buildTools()}if(k==='brush')k=decoInk;if(phase==='leather'){carveTool=k;if(BAND[k])teach(k==='mark'?'Touch the piece where your mark should go.':'Now touch the piece at the height where it should go.',true);else if(k==='sprig')teach('Pick a shape, then touch the piece where it should stick.',true);return buildTools()}if(phase==='decorate'){if(k==='print'&&!decoImg)return $('decoFile').click();decoTool=k;if(INK[k])decoInk=k;else if(BAND[k])teach(k==='mark'?'Touch the piece to stamp your mark in your last colour. Change the mark in the Carve step.':'Now touch the piece where it should go. It uses your last colour.',true);return buildTools()}if(phase==='alter'){alterTool=k;$('alterHint').textContent=HINT[k]}else sculptTool=k;buildTools()}
 function pickInk(k){decoInk=k;if(INK[decoTool])decoTool=k;buildTools()}
-function buildTools(){const set=curUI==='throwUI'?'throw':curUI==='addonUI'?'addon':phase==='alter'||curUI==='alterUI'?'alter':phase==='decorate'||curUI==='decoUI'?'deco':phase==='leather'||curUI==='leatherUI'?'leather':'sculpt',cur=set==='throw'?throwTool:set==='addon'?sprigKind:set==='alter'?alterTool:set==='deco'?decoTool:set==='leather'?carveTool:sculptTool,O=$('tools'),on=k=>k===cur||(k==='brush'&&set==='deco'&&!!INK[cur]),Pn=$(set==='throw'?'throwTools':set==='addon'?'addonTools':set==='alter'?'alterTools':set==='deco'?'decoTools':set==='leather'?'leatherTools':'sculptTools');O.textContent='';Pn.textContent='';{const c=document.createElement('small');c.className='cap';c.textContent={throw:'Touch',addon:'Shape'}[set]||'Tools';O.append(c)}
+function buildTools(){const set=curUI==='throwUI'?'throw':curUI==='addonUI'?'addon':phase==='alter'||curUI==='alterUI'?'alter':phase==='decorate'||curUI==='decoUI'?'deco':phase==='leather'||curUI==='leatherUI'?'leather':'sculpt',cur=set==='throw'?(fingerNow()?'finger':throwTool):set==='addon'?sprigKind:set==='alter'?alterTool:set==='deco'?decoTool:set==='leather'?carveTool:sculptTool,O=$('tools'),on=k=>k===cur||(k==='brush'&&set==='deco'&&!!INK[cur]),Pn=$(set==='throw'?'throwTools':set==='addon'?'addonTools':set==='alter'?'alterTools':set==='deco'?'decoTools':set==='leather'?'leatherTools':'sculptTools');O.textContent='';Pn.textContent='';{const c=document.createElement('small');c.className='cap';c.textContent={throw:'Touch',addon:'Shape'}[set]||'Tools';O.append(c)}
   if(set==='addon'){for(const box of[O,Pn]){const sel=document.createElement('select');sel.className='patSel';sel.setAttribute('aria-label','Shape');for(const k in PATK){const o=document.createElement('option');o.value=k;o.textContent=PATK[k];sel.append(o)}sel.value=sprigKind;sel.onchange=()=>setTool(sel.value);
       const pv=document.createElement('img');pv.className='addPrev';pv.alt='';pv.src=stampCanvas(sprigKind,true).toDataURL();if(box===O)box.append(pv,sel);else{const r=document.createElement('div');r.className='patrow';r.append(pv,sel);box.append(r)}}}
   else for(const[k,label]of TOOLS[set]){const q=document.createElement('button'),i=document.createElement('i'),n=document.createElement('span');q.className='bucket';q.dataset.k=k;q.setAttribute('aria-pressed',k==='mirror'?mirror:on(k));
@@ -1264,11 +1273,11 @@ function strikeAt(u,v,str,du,dv){rc.setFromCamera({x:u*2-1,y:1-v*2},cam);const h
   strike(hit.point,f.multiplyScalar(.7).addScaledVector(rt,du).addScaledVector(up,-dv).normalize(),str,hit.object);return true}
 function enterBreak(fromShelf,room){if(brk)return;const fired=room||phase==='result'||phase==='view',prev={phase,ui:curUI,src:kind==='hand'?clay:pot};fracture(fired);
   brk={prev,fired,room:!!room,shelfN:fired&&!room?(fromShelf?viewN:potN):0,hits:0,done:false,cool:[0,0],last:[]};phase='break';
-  $('smashH').textContent='Break it';$('smashP').textContent=mode==='cam'?'Make a fist and punch through it. A harder punch breaks more. Or click it.':'Click it to chip pieces off. Swipe across it fast to hit harder.';
-  $('smashAll').hidden=false;$('smashCancel').hidden=false;$('smashNext').hidden=true;$('brkbar').firstChild.style.width='100%';show('smashUI');if(room){$('smashCancel').textContent='Leave';$('smashP').textContent=(mode==='cam'&&camOn?'Make a fist and punch through it, or click it.':'Click it, or swipe across it fast to hit harder.')+` Pots broken: ${roomN}.`}else{$('smashCancel').textContent='Change my mind';teach(fired?'It took a week to make. It is yours to break.':'Go on.',true)}}
+  $('smashH').textContent='Break it';$('smashP').textContent=camOn?'Make a fist and punch through it. A harder punch breaks more. Or click it.':'Click it to chip pieces off. Swipe across it fast to hit harder.';
+  $('smashAll').hidden=false;$('smashCancel').hidden=false;$('smashNext').hidden=true;$('brkbar').firstChild.style.width='100%';show('smashUI');if(room){$('smashCancel').textContent='Leave';$('smashP').textContent=(camOn?'Make a fist and punch through it, or click it.':'Click it, or swipe across it fast to hit harder.')+` Pots broken: ${roomN}.`}else{$('smashCancel').textContent='Change my mind';teach(fired?'It took a week to make. It is yours to break.':'Go on.',true)}}
 function breakTick(dt){if(phase!=='break'||!brk||brk.done)return;
-  camHands.forEach((h,i)=>{const o=brk.last[i];brk.cool[i]=Math.max(0,(brk.cool[i]||0)-dt);if(o&&dt>0){const du=(h.u-o.u)/dt,dv=(h.v-o.v)/dt,sp=Math.hypot(du,dv);
-      if(h.pose==='fist'&&sp>1.1&&!brk.cool[i]&&strikeAt(h.u,h.v,clamp(sp/4.5,.25,1),du/sp,dv/sp))brk.cool[i]=.22}brk.last[i]={u:h.u,v:h.v}});brk.last.length=camHands.length}
+  camHands.forEach((h,i)=>{const o=brk.last[i];brk.cool[i]=Math.max(0,(brk.cool[i]||0)-dt);brk.fist=brk.fist||[];brk.fist[i]=h.pose==='fist'?.4:Math.max(0,(brk.fist[i]||0)-dt);if(o&&dt>0){const du=(h.u-o.u)/dt,dv=(h.v-o.v)/dt,sp=Math.hypot(du,dv);
+      if(brk.fist[i]>0&&sp>1.1&&!brk.cool[i]&&strikeAt(h.u,h.v,clamp(sp/4.5,.25,1),du/sp,dv/sp))brk.cool[i]=.22}brk.last[i]={u:h.u,v:h.v}});brk.last.length=camHands.length}
 /* mouse and touch: a click chips, a fast swipe hits hard */
 let swipe=null;
 wrap.addEventListener('pointerdown',e=>{if(phase!=='break'||e.target.closest('button,select,input,label'))return;const q=uvOf(e);swipe={u:q.u,v:q.v,t:performance.now(),cool:0};strikeAt(q.u,q.v,.45,0,0)});
