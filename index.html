@@ -34,7 +34,7 @@ aside .steps{gap:8px 5px;flex-wrap:wrap}aside .steps li{flex:1 0 18%;font-size:c
 .brand h1{margin:0;font-size:44px;font-weight:600;letter-spacing:-.01em;line-height:1}
 .brand h1 em{font-weight:400;color:var(--clay)}
 .brand p{margin:6px 0 0;color:var(--dim);font-style:italic}
-#teacher{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);max-width:min(560px,80%);background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;padding:12px 18px;font-style:italic;box-shadow:0 10px 30px rgba(60,35,20,.12);transition:opacity .5s;pointer-events:none}
+#teacher{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);max-width:min(560px,80%);background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;padding:13px 20px;font-size:18px;font-style:italic;box-shadow:0 10px 30px rgba(60,35,20,.12);transition:opacity .5s;pointer-events:none}
 #teacher b{font-style:normal;font-weight:600;color:var(--clay);margin-right:6px}
 #teacher.off{opacity:0}
 aside{padding:28px 28px 40px;border-left:1px solid var(--line);background:rgba(255,250,243,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
@@ -62,6 +62,8 @@ button:hover:not(:disabled){background:#fff}
 button:focus-visible{outline:3px solid var(--clay);outline-offset:2px}
 button.main{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}
 button.main:hover:not(:disabled){background:#000}
+.btns button.main{font-size:18px;padding:14px 28px}
+.btns{align-items:center}.btns button.quiet{margin-left:auto;background:none;border-color:transparent;color:var(--dim);font-size:14px;padding:6px 8px;min-height:0;text-decoration:underline;text-underline-offset:3px}.btns button.quiet:hover{color:var(--ink);background:none}.btns button.quiet[data-sure="1"]{color:#a23b2a;font-weight:600}
 button:disabled{opacity:.4;cursor:default}
 .glazes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0 8px}
 .glazes button{border-radius:999px;text-align:left;padding:5px 12px 5px 5px;min-height:0;display:flex;align-items:center;gap:9px;font-size:15px;line-height:1.2}
@@ -92,14 +94,16 @@ button:disabled{opacity:.4;cursor:default}
 .tag small{color:var(--dim)}
 .slot.empty{cursor:default}
 .slot.empty::before{content:'';position:absolute;left:32%;right:32%;bottom:2px;height:34%;border:1.5px dashed rgba(42,31,25,.18);border-radius:40% 40% 10px 10px}
-.gesture{position:absolute;left:50%;top:22px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 18px 8px 10px;font-size:15px;box-shadow:0 8px 24px rgba(60,35,20,.12);pointer-events:none}
-#tip{position:absolute;left:50%;top:22px;transform:translateX(-50%);max-width:min(480px,calc(100% - 40px));text-align:center;font-size:15px;line-height:1.3;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;padding:8px 16px;box-shadow:0 8px 24px rgba(60,35,20,.1);pointer-events:none;z-index:3}
-#bar{position:absolute;left:50%;top:12px;transform:translateX(-50%);display:flex;gap:8px;z-index:4;max-width:calc(100% - 24px)}
-#bar button{min-height:0;padding:11px 20px;font-size:16px;white-space:nowrap;background:rgba(255,250,243,.95)}#bar .backBtn,#bar .spinBtn,#bar .wheelBtn{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}#bar .spinBtn[aria-pressed="true"]{background:var(--clay);border-color:var(--clay)}
+.gesture{position:absolute;left:50%;top:22px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 18px 8px 10px;font-size:17px;box-shadow:0 8px 24px rgba(60,35,20,.12);pointer-events:none}
+#tip{position:absolute;left:50%;top:22px;transform:translateX(-50%);max-width:min(600px,calc(100% - 40px));text-align:center;font-size:20px;font-weight:600;line-height:1.3;background:#fffaf2;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:2px solid var(--clay);border-radius:16px;padding:11px 22px;box-shadow:0 10px 28px rgba(60,35,20,.16);pointer-events:none;z-index:3}
+#tip::before{content:'Do this';display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin-bottom:3px}
+#bar{position:absolute;right:18px;top:12px;display:flex;gap:8px;z-index:4;max-width:calc(100% - 24px)}
+#bar button{min-height:0;padding:11px 20px;font-size:16px;white-space:nowrap;background:rgba(255,250,243,.95)}#scene>.backBtn{position:absolute;left:18px;top:12px;z-index:4;min-height:0;padding:11px 20px;font-size:16px;white-space:nowrap}#scene>.backBtn{background:var(--ink);color:#fbf4ea;border-color:var(--ink)}#bar .spinBtn,#bar .wheelBtn{background:var(--clay);color:#fffaf2;border-color:var(--clay);font-weight:600;padding:13px 24px 13px 18px;font-size:17px;box-shadow:0 8px 22px rgba(166,90,56,.32)}#bar .spinBtn::before,#bar .wheelBtn::before{content:'↻';display:inline-block;margin-right:9px;font-size:1.15em;line-height:1;vertical-align:-1px}#bar .spinBtn:hover,#bar .wheelBtn:hover{background:#8f4a2c}#bar .spinBtn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);box-shadow:0 0 0 3px #fffaf2,0 0 0 6px var(--clay)}#bar .spinBtn[aria-pressed="true"]::before{animation:spinIco 1.6s linear infinite}@keyframes spinIco{to{transform:rotate(360deg)}}@media (prefers-reduced-motion:reduce){#bar .spinBtn::before{animation:none!important}}
+.turnBtn{position:absolute;top:50%;transform:translateY(-50%);z-index:4;min-height:0;padding:14px 20px;font-size:16px;white-space:nowrap;background:rgba(255,250,243,.95);box-shadow:0 6px 18px rgba(60,35,20,.12)}#barL{left:18px}#barR{right:18px}
 .tbtns button.ti{display:inline-flex;align-items:center;gap:9px;padding-left:8px}.tbtns button.ti i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#fbf6ee;box-shadow:inset 0 0 0 1px var(--line);flex:none}.tbtns button.ti svg{width:22px;height:22px}
-#bar:not([hidden])~#tip,#scene:has(#bar:not([hidden])) .gesture{top:74px}
-#scene:has(#bar:not([hidden])) .gesture:not([hidden])~#tip{top:132px}
-.gesture:not([hidden])~#tip{top:80px}
+#bar:not([hidden])~#tip,#scene:has(#bar:not([hidden])) .gesture{top:92px}
+#scene:has(#bar:not([hidden])) .gesture:not([hidden])~#tip{top:154px}
+.gesture:not([hidden])~#tip{top:84px}
 .gesture svg{width:40px;height:30px;flex:none}
 .gesture .hold{width:90px;height:6px;border-radius:6px;background:rgba(42,31,25,.12);overflow:hidden}
 .gesture .hold i{display:block;height:100%;width:0;background:var(--clay)}
@@ -153,10 +157,10 @@ a.logo{color:inherit;text-decoration:none;cursor:pointer}
 @media (prefers-reduced-motion:reduce){#ghost svg{animation:none!important}}
 /* gesture cards: one small moving picture and a few words for each thing you can do */
 .guide{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 6px}
-.gcard{width:108px;text-align:center;font-size:13px;line-height:1.25}
+.gcard{width:108px;text-align:center;font-size:14.5px;line-height:1.25}
 .gcard svg{width:108px;height:72px;display:block;margin-bottom:5px;background:#f6eee2;border:1px solid rgba(42,31,25,.12);border-radius:12px}
 .gcard .a{animation:2.6s ease-in-out infinite}
-.more{margin:6px 0}.more summary{cursor:pointer;font-size:14px;color:#6f5f52;width:max-content;padding:4px 0}
+.more{margin:6px 0}.more summary{cursor:pointer;font-size:15px;color:#6f5f52;width:max-content;padding:4px 0}
 @keyframes gUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
 @keyframes gSq{0%,100%{transform:scale(1,1)}50%{transform:scale(1.12,.8)}}
 @keyframes gInL{0%,15%,100%{transform:translateX(0)}55%,80%{transform:translateX(11px)}}
@@ -189,13 +193,15 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
   #buckets .bucket i,#tools .bucket i,#tools.many .bucket i{width:44px}
   #buckets,#tools,#tools.many{display:flex;flex-wrap:wrap;justify-content:center;width:max-content;max-width:96vw}
   .bucket{padding:2px 4px;font-size:13px;gap:3px}
-  .gesture{top:12px;max-width:calc(100% - 32px);font-size:13px;padding:6px 14px 6px 8px}
+  .gesture{top:12px;max-width:calc(100% - 32px);font-size:14px;padding:6px 14px 6px 8px}
   .gesture .hold{width:60px}
   #tools{flex-wrap:wrap;justify-content:center;max-width:calc(100% - 16px)}#tools.two{display:flex}#tools .cap{display:none}#tools .extra{display:contents}#tools .inks{display:flex;margin:0}#tools .sizes{flex-direction:row}
-  #tip{top:12px;font-size:13px;padding:6px 12px;max-width:calc(100% - 24px)}.gesture:not([hidden])~#tip{top:62px}
-  #bar{top:8px;gap:5px}#bar button{padding:9px 12px;font-size:14px}#bar:not([hidden])~#tip,#scene:has(#bar:not([hidden])) .gesture{top:58px}#scene:has(#bar:not([hidden])) .gesture:not([hidden])~#tip{top:108px}
-  #tip{transition:opacity .4s}#scene:has(#teacher:not(.off)) #tip{opacity:0}#scene:has(.gesture:not([hidden])) #teacher{top:62px}#scene:has(#bar:not([hidden])) #teacher{top:58px}#scene:has(#bar:not([hidden])):has(.gesture:not([hidden])) #teacher{top:108px}#teacher{top:12px;bottom:auto;width:max-content;max-width:calc(100% - 24px);font-size:14px;padding:8px 14px}
-  #cam{left:auto;right:12px;top:12px;bottom:auto;width:110px}
+  #tip{top:12px;font-size:16px;padding:7px 13px;max-width:calc(100% - 24px)}.gesture:not([hidden])~#tip{top:64px}
+  .turnBtn{top:auto;bottom:16px;transform:none;padding:11px 14px;font-size:14px}#barL{left:10px}#barR{right:10px}
+  #scene>.backBtn{left:10px;top:8px;padding:9px 12px;font-size:14px}
+  #bar{top:8px;right:10px;gap:5px}#bar button,#bar .spinBtn,#bar .wheelBtn{padding:9px 13px;font-size:14px}#bar:not([hidden])~#tip,#scene:has(#bar:not([hidden])) .gesture{top:66px}#scene:has(#bar:not([hidden])) .gesture:not([hidden])~#tip{top:118px}
+  #tip{transition:opacity .4s}#scene:has(#teacher:not(.off)) #tip{opacity:0}#scene:has(.gesture:not([hidden])) #teacher{top:62px}#scene:has(#bar:not([hidden])) #teacher{top:66px}#scene:has(#bar:not([hidden])):has(.gesture:not([hidden])) #teacher{top:118px}#teacher{top:12px;bottom:auto;width:max-content;max-width:calc(100% - 24px);font-size:15px;padding:8px 14px}
+  #cam{left:auto;right:12px;top:12px;bottom:auto;width:110px}#scene:has(#bar:not([hidden])) #cam{top:auto;bottom:66px;right:auto;left:10px;width:96px}
   #edgeL{left:6px}#edgeR{right:6px}
   .zoom{right:10px;bottom:auto;top:132px}
 }
@@ -211,7 +217,8 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
     <div class="gesture" id="doneGesture" hidden><svg viewBox="0 0 40 30" aria-hidden="true"><rect x="13" y="13" width="15" height="15" rx="4" fill="#a65a38"/><path d="M17 14V5q0-3 3-3t2 4l-1 7" fill="#a65a38" stroke="#2a1f19" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 18h-3M13 22h-3M13 26h-3" stroke="#2a1f19" stroke-width="1.6" stroke-linecap="round"/></svg><span id="doneText">Done? Thumbs up and hold</span><span class="hold"><i id="doneBar"></i></span></div>
     <div id="buckets" hidden aria-label="Glazes"></div>
     <div id="tools" hidden aria-label="Tools"></div>
-    <div id="bar" hidden role="group" aria-label="Step and wheel"><button class="backBtn">‹ Back</button><button id="barL" aria-label="Turn left">‹ Turn</button><button class="spinBtn">Spin the wheel</button><button class="wheelBtn">Stop the wheel</button><button id="barR" aria-label="Turn right">Turn ›</button></div>
+    <div id="bar" hidden role="group" aria-label="Wheel"><button class="spinBtn">Spin the wheel</button><button class="wheelBtn">Stop the wheel</button></div>
+    <button class="backBtn" hidden>‹ Back</button><button id="barL" class="turnBtn" hidden aria-label="Turn left">‹ Turn</button><button id="barR" class="turnBtn" hidden aria-label="Turn right">Turn ›</button>
     <div id="tip" hidden aria-hidden="true"></div>
     <div class="zoom" role="group" aria-label="Zoom"><button id="sndBtn" aria-label="Sound" aria-pressed="true" title="Sound">♪</button><button id="zoomIn" aria-label="Zoom in">+</button><button id="zoomOut" aria-label="Zoom out">−</button><button id="zoomReset" aria-label="Reset zoom">⟲</button></div>
     <div class="edge" id="edgeL" hidden aria-hidden="true">‹</div><div class="edge" id="edgeR" hidden aria-hidden="true">›</div>
@@ -225,7 +232,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
     <section id="introUI">
       <h2>What will you make?</h2>
       <div class="modes" role="group" aria-label="Mode">
-        <button class="mode" data-k="wheel" aria-pressed="true"><b>On the wheel</b><span>Throw a pot with both hands while the clay spins. Then change it by hand: squeeze it oval, pinch a spout, pull a handle, carve lines, then paint it.</span></button>
+        <button class="mode" data-k="wheel" aria-pressed="true"><b>On the wheel</b><span>Throw a pot with both hands while the clay spins. Then change it by hand: pinch a spout, pull a handle, carve lines, then paint it.</span></button>
         <button class="mode" data-k="hand" aria-pressed="false"><b>Hand-build <small class="wip">Still in construction</small></b><span>Start from a lump and make anything: a cat, a creature, a strange cup. Add clay, press it in, smooth it. Then paint it.</span></button>
       </div>
       <div class="how" id="howHand" hidden>
@@ -252,7 +259,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p class="dim">Mirror copies one side to the other, so two ears come out even. Zoom with + and −.</p>
       <div class="btns"><button id="undoS">Undo</button><button id="redoS">Redo</button></div>
       <p class="dim" id="camSculpt" hidden>With the camera: hold a hand over a tool to switch (the Mirror chip turns mirroring on and off). Pinch to work, open your hand to stop. Hold a hand at the far left or right edge to turn the clay. Give a thumbs-up and hold it to move on.</p>
-      <div class="btns"><button id="doneSculpt" class="main">Let it stiffen</button><button id="restart3">Start again</button></div>
+      <div class="btns"><button id="doneSculpt" class="main">Let it stiffen</button><button id="restart3" class="quiet">Start again</button></div>
     </section>
 
     <section id="alterUI" hidden>
@@ -327,7 +334,7 @@ footer{padding:16px 28px 28px;font-size:14px;color:var(--dim)}
       <p class="dim" id="camFinger" hidden>With the camera there is no button to press: point one finger and touch the clay for a groove, then open your hand to go back to shaping.</p>
       <p class="dim" id="camDone" hidden>When it feels finished, give a thumbs-up and hold it for a moment. A thumbs-up hand never touches the clay. No need to click. With a keyboard, press Enter.</p>
       <div class="meter">Wobble<div class="bar warn" id="wbar"><i></i></div></div>
-      <div class="btns"><button id="doneThrow" class="main">It's done</button><button id="restart1">Start again</button></div>
+      <div class="btns"><button id="doneThrow" class="main">It's done</button><button id="restart1" class="quiet">Start again</button></div>
       <p class="dim" id="throwInfo"></p>
     </section>
 
@@ -398,6 +405,7 @@ import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {MarchingCubes} from 'three/addons/objects/MarchingCubes.js';
 import {STLExporter} from 'three/addons/exporters/STLExporter.js';
+import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
 const $=id=>document.getElementById(id);
 const R=Math.random,clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t,RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -469,7 +477,7 @@ let curUI='introUI',kind='wheel';
 const STEPS={wheel:['Wedge','Centre','Throw','Alter','Carve','Add-ons','Paint','Glaze','Fire'],hand:['Wedge','Sculpt','Carve','Add-ons','Paint','Glaze','Fire']};
 const STEPAT={wheel:{wedgeUI:0,centreUI:1,throwUI:2,fallUI:2,alterUI:3,leatherUI:4,addonUI:5,decoUI:6,glazeUI:7,fireUI:8,resultUI:9},hand:{wedgeUI:0,sculptUI:1,leatherUI:2,addonUI:3,decoUI:4,glazeUI:5,fireUI:6,resultUI:7}};
 function show(id){curUI=id;buildGuide(id);$('buckets').hidden=true;{const tu=id==='alterUI'||id==='sculptUI'||id==='decoUI'||id==='leatherUI'||id==='throwUI'||id==='addonUI';$('tools').hidden=!(tu&&mode==='cam'&&CAMUI.includes(id));if(tu)buildTools()}setTip();
-  {const B=$('bar'),turnable=['sculptUI','leatherUI','addonUI','decoUI'].includes(id),q=c=>B.querySelector(c);q('.backBtn').hidden=!['wedgeUI','centreUI','throwUI','sculptUI','alterUI','leatherUI','addonUI','decoUI','glazeUI'].includes(id);$('barL').hidden=$('barR').hidden=!turnable;q('.spinBtn').hidden=!['sculptUI','leatherUI','decoUI'].includes(id);q('.wheelBtn').hidden=!(id==='centreUI'||id==='throwUI');B.hidden=q('.backBtn').hidden}
+  {const B=$('bar'),turnable=['sculptUI','leatherUI','addonUI','decoUI'].includes(id),q=c=>document.querySelector('#scene '+c);q('.backBtn').hidden=!['wedgeUI','centreUI','throwUI','sculptUI','alterUI','leatherUI','addonUI','decoUI','glazeUI'].includes(id);$('barL').hidden=$('barR').hidden=!turnable;q('.spinBtn').hidden=!['sculptUI','leatherUI','decoUI'].includes(id);q('.wheelBtn').hidden=!(id==='centreUI'||id==='throwUI');B.hidden=q('.backBtn').hidden}
   for(const e of['camFinger','camDone','camGlaze','camAlter','camSculpt','camDeco','camWedge','camLeather'])$(e).hidden=!(mode==='cam'&&CAMUI.includes(id));
   for(const s of['introUI','smashUI','wedgeUI','sculptUI','alterUI','leatherUI','addonUI','decoUI','centreUI','throwUI','fallUI','glazeUI','fireUI','resultUI','viewUI'])$(s).hidden=s!==id;
   const st=STEPAT[kind][id]??-1,ol=$('steps');ol.textContent='';if(id!=='viewUI')STEPS[kind].forEach((n,i)=>{const li=document.createElement('li');li.textContent=n;li.className=i===st?'on':i<st?'done':'';ol.append(li)})}
@@ -727,7 +735,7 @@ function track(){vid.hidden=!(camOn&&(mode==='cam'||phase==='break'));if(vid.hid
     camHands.push(old?{u:lerp(old.u,h.u,k),v:lerp(old.v,h.v,k),p,pose:h.pose}:{...h,p})});lastCam=camHands.map(h=>({...h}))}
 let lastCam=[];
 const pointers=new Map();
-wrap.addEventListener('pointerdown',e=>{if(e.target.closest('button,select,input,label'))return;if(phase==='result'||phase==='view'){drag={x:e.clientX,r:dragRot};wrap.setPointerCapture(e.pointerId);return}if(!mode||camNow())return;wrap.setPointerCapture(e.pointerId);pointers.set(e.pointerId,uvOf(e))});
+wrap.addEventListener('pointerdown',e=>{if(e.target.closest('button,select,input,label'))return;if(phase==='result'||phase==='view'){drag={x:e.clientX,r:dragRot};wrap.setPointerCapture(e.pointerId);return}if(!mode)return;wrap.setPointerCapture(e.pointerId);pointers.set(e.pointerId,uvOf(e))});
 wrap.addEventListener('pointermove',e=>{if(drag){dragRot=drag.r+(e.clientX-drag.x)*.01;return}const q=pointers.get(e.pointerId);if(q&&!q.gone){if(e.pointerType==='mouse'&&!e.buttons){pointers.delete(e.pointerId);return}pointers.set(e.pointerId,uvOf(e))}});
 const up=e=>{const q=pointers.get(e.pointerId);if(q&&!q.seen)q.gone=true;else pointers.delete(e.pointerId);drag=null};wrap.addEventListener('pointerup',up);wrap.addEventListener('pointercancel',up);
 let drag=null;
@@ -739,7 +747,9 @@ wrap.addEventListener('keydown',e=>{if(e.key==='Enter'&&['wedge','throw','alter'
   if(!kb.on){kb.on=true;kb.r=P.r[Math.round(kb.f*(K-1))]}kb.f=clamp(kb.f+k[0]);kb.r=clamp(kb.r+k[1],.2,2.1);clearTimeout(kb.h);kb.h=setTimeout(()=>kb.on=false,1500)});
 /* the camera is used for the big movements: wedging, centring, throwing, sculpting. The fine work after that is done with the mouse or a finger */
 const CAMPH=['wedge','centre','throw','falling','fallen','sculpt'],CAMUI=['wedgeUI','centreUI','throwUI','fallUI','sculptUI'],camNow=()=>mode==='cam'&&CAMPH.includes(phase);
-function gatherHands(){hands.length=0;if(camNow())hands.push(...camHands.filter(h=>h.pose!=='thumb'&&h.pose!=='fist'));else{for(const[id,q]of pointers){if(q.gone&&q.seen){pointers.delete(id);continue}q.seen=true;hands.push(q)}}
+/* the mouse or a finger on the screen always works, even when the camera was chosen: while one is pressed it takes over from the tracked hands */
+const camHandsNow=()=>camNow()&&!pointers.size;
+function gatherHands(){hands.length=0;if(camHandsNow())hands.push(...camHands.filter(h=>h.pose!=='thumb'&&h.pose!=='fist'));else{for(const[id,q]of pointers){if(q.gone&&q.seen){pointers.delete(id);continue}q.seen=true;hands.push(q)}}
   if(kb.on&&!hands.length){const y=kb.f*P.h,[a,v]=screenOf(kb.r,y);hands.push({u:a,v})}}
 
 /* ---------- small moving pictures instead of paragraphs ---------- */
@@ -829,7 +839,7 @@ $('doneThrow').onclick=()=>{if(phase==='throw')toAlter()};
 $('keepIt').onclick=()=>{kept=true;toAlter()};
 $('glazeIt').onclick=()=>{if(phase==='alter')toLeather()};
 $('doneSculpt').onclick=()=>{if(phase==='sculpt')toLeather()};$('doneLeather').onclick=()=>{if(phase==='leather')toAddon()};$('doneAddon').onclick=()=>{if(phase==='leather')toDecorate()};$('wedgePush').onclick=()=>{if(phase==='wedge')wedgePush()};$('wedgeDone').onclick=()=>{if(phase==='wedge')finishWedge(false)};$('wedgeSkip').onclick=()=>{if(phase==='wedge')finishWedge(true)};$('doneDeco').onclick=()=>{if(phase==='decorate')toGlaze()};
-$('restart3').onclick=()=>{attempts++;setRec(getRec()+1);begin()};
+$('restart3').onclick=e=>{if(!sure(e.currentTarget))return;attempts++;setRec(getRec()+1);begin()};
 function setMirror(m){mirror=m;$('mirrorBtn').setAttribute('aria-pressed',m);$('mirrorBtn').textContent=`Mirror: ${m?'on':'off'}`;buildTools()}
 $('mirrorBtn').onclick=()=>setMirror(!mirror);
 const redoStack=[],alterRedo=[],carveRedo=[],decoRedo=[];
@@ -841,7 +851,9 @@ document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>b.dataset.k==='room'
 document.querySelectorAll('.wheelBtn').forEach(b=>b.onclick=()=>setWheel(!wheelOn));document.querySelectorAll('.spinBtn').forEach(b=>b.onclick=()=>setSpin(!bandSpin));
 $('toIntro').onclick=()=>{setKind(kind==='wheel'?'hand':'wheel');phase='intro';show('introUI');scrollTo({top:0,behavior:RM?'auto':'smooth'})};
 const restart=()=>{attempts++;setRec(getRec()+1);begin();teach('Wedge it, centre it, again. This is the whole job.',true)};
-$('restart1').onclick=restart;$('restart2').onclick=restart;
+/* throwing away the piece takes two clicks, so a slip next to the main button costs nothing */
+function sure(b){if(b.dataset.sure==='1'){b.dataset.sure='';b.textContent='Start again';return true}b.dataset.sure='1';b.textContent='Sure? Click again';clearTimeout(b._t);b._t=setTimeout(()=>{b.dataset.sure='';b.textContent='Start again'},4000);return false}
+$('restart1').onclick=e=>{if(sure(e.currentTarget))restart()};$('restart2').onclick=restart;
 $('again').onclick=()=>{attempts=1;falls=0;begin()};
 $('clearShelf').onclick=()=>{const b=$('clearShelf');if(!b.dataset.sure){b.dataset.sure='1';b.textContent='Sure? Clear every pot';setTimeout(()=>{b.dataset.sure='';b.textContent='Clear'},4000);return}
   b.dataset.sure='';b.textContent='Clear';try{localStorage.removeItem('firstPot.shelf')}catch{}if(phase==='view')leaveView();drawShelf()};
@@ -851,7 +863,7 @@ function toAddon(){setSpin(false);carveTool='sprig';decoLast=null;show('addonUI'
 /* back one step. What was made stays, except on the wheel: clay that has been thrown cannot be un-thrown */
 function goBack(){click(.1,700,.05);setSpin(false);decoLast=null;
   switch(curUI){case'wedgeUI':return goIntro();case'centreUI':case'sculptUI':return startWedge();case'throwUI':beginForm();return teach('Fresh clay. Thrown clay cannot go back to a lump, so this is a new one to centre.',true);
-    case'alterUI':P.oval=0;P.spout=0;P.handles=[];buildHandles();potHist.length=0;contact=false;prevG=null;phase='throw';setWheel(true);show('throwUI');return teach('Back on the wheel. The squeeze, spout and handles came off.',true);
+    case'alterUI':P.oval=0;P.spout=0;P.handles=[];buildHandles();potHist.length=0;contact=false;prevG=null;phase='throw';setWheel(true);show('throwUI');return teach('Back on the wheel. The spout and handles came off.',true);
     case'leatherUI':if(kind==='hand'){phase='sculpt';clay.material=sculptWet;for(const q of sprigMeshes)q.material=sculptWet;show('sculptUI')}else{toAlter();setMat(wetMat)}return teach('Soft again. Your carving is still there.',true);
     case'addonUI':carveTool='carve';return show('leatherUI');
     case'decoUI':phase='leather';setMat(kind==='hand'?sculptLeather:leatherMat);carveTool='sprig';return show('addonUI');
@@ -894,10 +906,10 @@ const ICON={brush:'<path d="M26 5L13 18" stroke="#2a1f19" stroke-width="3" strok
   cobalt:'<circle cx="16" cy="16" r="11" fill="#22418c"/>',iron:'<circle cx="16" cy="16" r="11" fill="#2b1c14"/>',copper:'<circle cx="16" cy="16" r="11" fill="#9c2f22"/>',slip:'<circle cx="16" cy="16" r="11" fill="#f3ece0" stroke="#2a1f19" stroke-width="1.5"/>',
   print:'<rect x="5" y="7" width="22" height="18" rx="2" fill="none" stroke="#2a1f19" stroke-width="2.5"/><path d="M7 23l7-8 5 5 3-3 4 6" fill="#a65a38"/><circle cx="21" cy="12" r="2.5" fill="#a65a38"/>',
   mirror:'<path d="M16 4v24" stroke="#2a1f19" stroke-width="2" stroke-dasharray="3 3"/><path d="M12 10l-7 6 7 6zM20 10l7 6-7 6z" fill="#a65a38"/>'};
-const TOOLS={leather:[['carve','Carve'],['erase','Smooth over'],['words','Words'],['roller','Pattern'],['mark','My mark']],deco:[['brush','Brush'],['print','Picture'],['words','Words'],['roller','Pattern'],['mark','My mark']],addon:[['fish','Fish'],['cat','Cat'],['bow','Bow'],['flower','Flower'],['leaf','Leaf']],alter:[['oval','Squeeze'],['spout','Spout'],['handle','Handle']],throw:[['hands','Whole hand'],['finger','Fingertip']],sculpt:[['pull','Add'],['push','Press'],['smooth','Smooth'],['mirror','Mirror']]};
+const TOOLS={leather:[['carve','Carve'],['erase','Smooth over'],['words','Words'],['roller','Pattern'],['mark','My mark']],deco:[['brush','Brush'],['print','Picture'],['words','Words'],['roller','Pattern'],['mark','My mark']],addon:[['fish','Fish'],['cat','Cat'],['bow','Bow'],['flower','Flower'],['leaf','Leaf']],alter:[['spout','Spout'],['handle','Handle']],throw:[['hands','Whole hand'],['finger','Fingertip']],sculpt:[['pull','Add'],['push','Press'],['smooth','Smooth'],['mirror','Mirror']]};
 const HINT={oval:'Pinch or press at the side of the pot and move inward to squeeze it oval, outward to widen it.',spout:'Pinch the rim on one side and pull outward to make a spout.',
   handle:'Pinch the side of the pot near the top, then drag down and outward. Let go where the handle should join.',carve:'Pinch or press on the surface and run along it to carve lines around the pot.'};
-let alterTool='oval',sculptTool='pull',alt=null;const alterUndo=[];
+let alterTool='spout',sculptTool='pull',alt=null;const alterUndo=[];
 function setTool(k){if(k==='mirror')return setMirror(!mirror);if(curUI==='throwUI'){throwTool=k;return buildTools()}if(curUI==='addonUI'){sprigKind=k;return buildTools()}if(k==='brush')k=decoInk;if(phase==='leather'){carveTool=k;if(BAND[k])teach(k==='mark'?'Touch the piece where your mark should go.':'Now touch the piece at the height where it should go.',true);else if(k==='sprig')teach('Pick a shape, then touch the piece where it should stick.',true);return buildTools()}if(phase==='decorate'){if(k==='print'&&!decoImg)return $('decoFile').click();decoTool=k;if(INK[k])decoInk=k;else if(BAND[k])teach(k==='mark'?'Touch the piece to stamp your mark in your last colour. Change the mark in the Carve step.':'Now touch the piece where it should go. It uses your last colour.',true);return buildTools()}if(phase==='alter'){alterTool=k;$('alterHint').textContent=HINT[k]}else sculptTool=k;buildTools()}
 function pickInk(k){decoInk=k;if(INK[decoTool])decoTool=k;buildTools()}
 function buildTools(){const set=curUI==='throwUI'?'throw':curUI==='addonUI'?'addon':phase==='alter'||curUI==='alterUI'?'alter':phase==='decorate'||curUI==='decoUI'?'deco':phase==='leather'||curUI==='leatherUI'?'leather':'sculpt',cur=set==='throw'?(fingerNow()?'finger':throwTool):set==='addon'?sprigKind:set==='alter'?alterTool:set==='deco'?decoTool:set==='leather'?carveTool:sculptTool,O=$('tools'),on=k=>k===cur||(k==='brush'&&set==='deco'&&!!INK[cur]),Pn=$(set==='throw'?'throwTools':set==='addon'?'addonTools':set==='alter'?'alterTools':set==='deco'?'decoTools':set==='leather'?'leatherTools':'sculptTools');O.textContent='';Pn.textContent='';{const c=document.createElement('small');c.className='cap';c.textContent={throw:'Touch',addon:'Shape'}[set]||'Tools';O.append(c)}
@@ -1094,17 +1106,19 @@ function sprigShape(t){const S=new THREE.Shape();
   if(t==='fish'){S.moveTo(-.5,0);S.bezierCurveTo(-.3,.34,.12,.34,.26,.04);S.lineTo(.5,.26);S.lineTo(.5,-.26);S.lineTo(.26,-.04);S.bezierCurveTo(.12,-.34,-.3,-.34,-.5,0)}
   else if(t==='cat'){S.moveTo(-.36,-.3);S.bezierCurveTo(-.5,-.1,-.48,.12,-.4,.2);S.lineTo(-.42,.5);S.lineTo(-.16,.34);S.bezierCurveTo(-.06,.38,.06,.38,.16,.34);S.lineTo(.42,.5);S.lineTo(.4,.2);S.bezierCurveTo(.48,.12,.5,-.1,.36,-.3);S.bezierCurveTo(.2,-.44,-.2,-.44,-.36,-.3)}
   else if(t==='bow'){S.moveTo(-.08,.06);S.lineTo(-.5,.3);S.bezierCurveTo(-.56,.1,-.56,-.1,-.5,-.3);S.lineTo(-.08,-.06);S.lineTo(-.2,-.42);S.lineTo(-.04,-.34);S.lineTo(0,-.14);S.lineTo(.04,-.34);S.lineTo(.2,-.42);S.lineTo(.08,-.06);S.lineTo(.5,-.3);S.bezierCurveTo(.56,-.1,.56,.1,.5,.3);S.lineTo(.08,.06);S.bezierCurveTo(.04,.12,-.04,.12,-.08,.06)}
-  else if(t==='flower'){for(let i=0;i<=80;i++){const a=i/80*6.2832,r=.34+.16*Math.cos(5*a);i?S.lineTo(Math.cos(a)*r,Math.sin(a)*r):S.moveTo(r,0)}}
+  else if(t==='flower'){for(let i=0;i<80;i++){const a=i/80*6.2832,r=.34+.16*Math.cos(5*a);i?S.lineTo(Math.cos(a)*r,Math.sin(a)*r):S.moveTo(r,0)}}
   else if(t==='star'){for(let i=0;i<10;i++){const a=Math.PI/2+i*Math.PI/5,r=i%2?.22:.5;i?S.lineTo(Math.cos(a)*r,Math.sin(a)*r):S.moveTo(Math.cos(a)*r,Math.sin(a)*r)}}
   else if(t==='moon'){const Ro=.47,ri=.39,cx=.2,cy=.08,d=Math.hypot(cx,cy),phi=Math.atan2(cy,cx),al=Math.acos((Ro*Ro+d*d-ri*ri)/(2*Ro*d)),be=Math.acos((d*d+ri*ri-Ro*Ro)/(2*d*ri));
     for(let i=0;i<=40;i++){const a=phi+al+(2*Math.PI-2*al)*i/40;i?S.lineTo(Math.cos(a)*Ro,Math.sin(a)*Ro):S.moveTo(Math.cos(a)*Ro,Math.sin(a)*Ro)}for(let i=1;i<40;i++){const a=phi+Math.PI+be-2*be*i/40;S.lineTo(cx+Math.cos(a)*ri,cy+Math.sin(a)*ri)}}
-  else if(t==='clover'){for(let i=0;i<=120;i++){const a=i/120*6.2832,r=.13+.36*Math.abs(Math.cos(2*a))**.55,b=a+Math.PI/4;i?S.lineTo(Math.cos(b)*r,Math.sin(b)*r):S.moveTo(Math.cos(b)*r,Math.sin(b)*r)}}
+  else if(t==='clover'){/* the outline must not end on its own first point: a doubled point leaves a nick in that leaf */for(let i=0;i<120;i++){const a=i/120*6.2832,r=.13+.36*Math.abs(Math.cos(2*a))**.55,b=a+Math.PI/4;i?S.lineTo(Math.cos(b)*r,Math.sin(b)*r):S.moveTo(Math.cos(b)*r,Math.sin(b)*r)}}
   else if(t==='mushroom'){S.moveTo(-.5,0);S.bezierCurveTo(-.5,.6,.5,.6,.5,0);S.bezierCurveTo(.4,-.06,.24,-.06,.15,-.03);S.lineTo(.2,-.4);S.bezierCurveTo(.12,-.5,-.12,-.5,-.2,-.4);S.lineTo(-.15,-.03);S.bezierCurveTo(-.24,-.06,-.4,-.06,-.5,0)}
   else if(t==='frog'){S.moveTo(-.47,-.1);S.bezierCurveTo(-.5,.06,-.46,.16,-.4,.22);S.bezierCurveTo(-.42,.5,-.08,.5,-.09,.26);S.bezierCurveTo(-.03,.23,.03,.23,.09,.26);S.bezierCurveTo(.08,.5,.42,.5,.4,.22);S.bezierCurveTo(.46,.16,.5,.06,.47,-.1);S.bezierCurveTo(.42,-.42,-.42,-.42,-.47,-.1)}
   else if(t==='dog'){S.moveTo(-.28,.3);S.bezierCurveTo(-.14,.42,.14,.42,.28,.3);S.bezierCurveTo(.52,.42,.58,0,.46,-.2);S.bezierCurveTo(.42,-.27,.35,-.22,.33,-.1);S.bezierCurveTo(.34,-.3,.18,-.44,0,-.44);S.bezierCurveTo(-.18,-.44,-.34,-.3,-.33,-.1);S.bezierCurveTo(-.35,-.22,-.42,-.27,-.46,-.2);S.bezierCurveTo(-.58,0,-.52,.42,-.28,.3)}
   else{S.moveTo(-.5,-.06);S.bezierCurveTo(-.2,.38,.24,.34,.5,.06);S.bezierCurveTo(.26,-.34,-.2,-.3,-.5,-.06)}
   return S}
-function sprigGeom(t){if(!sprigGeo[t]){const g=new THREE.ExtrudeGeometry(sprigShape(t),{depth:.2,bevelEnabled:true,bevelThickness:.08,bevelSize:.05,bevelSegments:4,curveSegments:14});g.translate(0,0,.03);sprigGeo[t]=g}return sprigGeo[t]}
+/* puffy, like a pressed sweet: a thin core with a deep round bevel, and the surface shaded as one smooth skin instead of flat facets */
+function sprigGeom(t){if(!sprigGeo[t]){const e=new THREE.ExtrudeGeometry(sprigShape(t),{depth:.05,bevelEnabled:true,bevelThickness:.15,bevelSize:.075,bevelSegments:10,curveSegments:28});e.deleteAttribute('uv');e.deleteAttribute('normal');
+  const m=mergeVertices(e,1e-4);m.computeVertexNormals();const g=m.toNonIndexed();g.setAttribute('uv',new THREE.BufferAttribute(new Float32Array(g.attributes.position.count*2),2));g.translate(0,0,.06);e.dispose();m.dispose();sprigGeo[t]=g}return sprigGeo[t]}
 /* the shape is laid flat against the surface where you touched, the right way up, and sunk in a little so it joins */
 function addSprig(q){const parent=kind==='hand'?clay:pot,n=new THREE.Vector3().fromArray(q.n).normalize(),x=new THREE.Vector3(0,1,0).cross(n);if(x.lengthSq()<1e-4)x.set(1,0,0);x.normalize();const y=n.clone().cross(x),
     m=new THREE.Matrix4().makeBasis(x,y,n).scale(new THREE.Vector3(q.s,q.s,q.s)).setPosition(new THREE.Vector3().fromArray(q.p).addScaledVector(n,q.s*.03)),g=sprigGeom(q.t).clone();g.applyMatrix4(m);
@@ -1180,7 +1194,7 @@ function startWedge(){marbleN=getRec();DU.decoMarble.value=marbleN?Math.min(1,.5
 function wedgePush(){thud(.9);const gap=clock-wedge.last,rush=gap<.45;wedge.last=clock;wedge.n++;wedge.air*=rush?.9:.7;wedge.sq=1;wedge.rot-=.55;wedge.base=null;drawLump(wedge.air);$('airbar').firstChild.style.width=wedge.air*100+'%';
   if(rush)teach('Slower. Rushing folds air back in.');else if(wedge.n===3)teach('Push with the heels of your hands. Roll it back. Again.',true);
   if(wedge.air<.12&&!wedge.done){wedge.done=true;teach('Cut it with the wire: no holes. It is ready.',true);setTimeout(()=>{if(phase==='wedge')finishWedge(false)},1600)}}
-function wedgeTick(dt){gatherHands();const cam=mode==='cam',h=cam?(hands.length?{v:hands.reduce((a,x)=>a+x.v,0)/hands.length}:null):hands.find(x=>x.p),reach=cam?.06:.09;
+function wedgeTick(dt){const cam=camHandsNow();gatherHands();const h=cam?(hands.length?{v:hands.reduce((a,x)=>a+x.v,0)/hands.length}:null):hands.find(x=>x.p),reach=cam?.06:.09;
   if(h){if(wedge.base===null||h.v>wedge.base)wedge.base=h.v;const push=clamp((wedge.base-h.v)/reach);wedge.sq=Math.max(wedge.sq,push*.9);
     if(wedge.arm&&push>=1){wedge.arm=false;wedgePush()}else if(!wedge.arm&&push<.35){wedge.arm=true;wedge.base=h.v}}else{wedge.base=null;wedge.arm=true}
   wedge.sq=Math.max(0,wedge.sq-dt*2.2);const s=wedge.sq;lumpM.scale.set(1+.26*s,1-.3*s,1+.2*s);lumpM.position.y=.55-.17*s;lumpM.position.z=-.15*s;
@@ -1364,11 +1378,12 @@ const anyCrack=(v,at=0)=>play(['crack','crack1','crack3'][Math.random()*3|0],v,0
 function sndTick(){if(!snd.ctx)return;const c=snd.ctx,t=c.currentTime,on=snd.on?1:0,spinning=(phase==='centre'||phase==='throw'||phase==='falling')&&wheelOn,set=(g,v)=>g.gain.setTargetAtTime(v*on,t,.09);
   set(snd.hum,spinning?.05:0);set(snd.whirr.g,spinning?.05:0);snd.humO.frequency.setTargetAtTime(52+(P?P.wob*10:0),t,.2);snd.whirr.fl.frequency.setTargetAtTime(240+(P?P.wob*160:0),t,.2);
   const down=hands.some(h=>h.p),painting=phase==='decorate'&&decoEng&&down,carvingNow=phase==='leather'&&decoEng&&down,L=snd.L;
-  set(snd.touch.g,(spinning&&contact)||(phase==='sculpt'&&eng)||(phase==='alter'&&alt)||(painting&&!L.paint2)?.14:0);if(L.paint2)set(L.paint2,painting?.8:0);
+  set(snd.touch.g,(phase==='sculpt'&&eng)||(painting&&!L.paint2)?.14:0);if(L.paint2)set(L.paint2,painting?.8:0);
   set(snd.scratch.g,carvingNow&&!L.carving?.07:0);if(L.carving)set(L.carving,carvingNow?.8:0);
   const glow=phase==='fire'?Math.sin(clamp(fireT/6)*Math.PI):0;set(snd.roar.g,.5*glow);if(L.fire)set(L.fire,.22*glow);
   if(glow>.2&&Math.random()<.05)click(.05+Math.random()*.08,900+Math.random()*2500)}
-function ok(){return snd.ctx&&snd.on}
+/* centring, throwing and altering are quiet: only the wheel is heard there, so every short sound is held back in those steps */
+function ok(){return snd.ctx&&snd.on&&!['centre','throw','falling','fallen','alter'].includes(phase)}
 /* a short burst of filtered noise: a click, a slap, the bite of a break */
 function click(v,f,len=.03,type='bandpass',at=0){if(!ok())return;const c=snd.ctx,t=c.currentTime+at,src=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();src.buffer=snd.buf;fl.type=type;fl.frequency.value=f;fl.Q.value=.9;
   g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+len);src.connect(fl).connect(g).connect(snd.master);src.start(t,Math.random()*1.5);src.stop(t+len+.02)}
@@ -1406,7 +1421,7 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;clock+=dt;tr
       $('throwInfo').textContent=`Height ${(P.h*10).toFixed(0)} cm · widest ${(Math.max(...P.r)*20).toFixed(0)} cm`}
     else if(phase!=='alter'){ring.visible=false;marks.forEach(m=>m.visible=false)}
     if(phase==='falling')fallTick(dt);if(phase==='fire')fireTick(dt);
-    const spinning=(phase==='centre'||phase==='throw'||phase==='falling')&&(wheelOn||phase==='falling');spin+=dt*(spinning?(RM?2:5.5):phase==='result'||phase==='view'?.35:.15);
+    const spinning=(phase==='centre'||phase==='throw'||phase==='falling')&&(wheelOn||phase==='falling');spin+=dt*(spinning?1.5/* the same speed as the banding wheel when carving and painting */:phase==='result'||phase==='view'?.35:.15);
     pot.rotation.y=phase==='alter'?0:phase==='decorate'||phase==='leather'?turn:spin+dragRot;const w=spinning?P.wob*.09:0;pot.position.x=Math.sin(spin*1)*w;pot.position.z=Math.cos(spin*1)*w;head.rotation.y=spin;
     rebuild()}
   render();requestAnimationFrame(frame)}
